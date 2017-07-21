@@ -21,19 +21,18 @@ var DongLiang = {
 	 * => [['a', 'b', 'c'], ['d']]
 	 **/
 	chunk: function(arr, n) {
-		//计算数组最多可以分成几个小数组
-		//Math.ceil()表示向上取整
-		var l = Math.ceil(arr.length / n);
-		//直接定义这个result中有几个数组，防止长度不断变化
-		var result = new Array(l);
-		for (var i = 0; i < l; i++) {
-			result[i] = [];
+		const len = arr.length,
+					num,
+					result
+		if (len < size || size <= 0) {
+			return [arr]
 		}
-		//往每个空数组里放元素
-		for (var j = 0; j < arr.length; j++) {
-			result[parseInt(j / n)][j % n] = arr[j];
+		len % size === 0 ? num = len / size : num = Math.floor(len / size) + 1
+		result = new Array(num)
+		for(let i = 0; i < num; i++) {
+			result[i] = arr.slice(size * i, size * (i + 1))
 		}
-		return result;
+		return result
 	},
 
 	/**
