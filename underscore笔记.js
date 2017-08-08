@@ -165,3 +165,24 @@ _.size = function(obj) {
   if (obj == null) return 0; // 这里用 == 是因为 undefined == null, 不穿参数返回 0
   return isArrayLike(obj) ? obj.length : _.keys(obj).length;
 };
+
+// Retrieve the values of an object's properties.
+// ===== //
+// _.values({one: 1, two: 2, three: 3});
+// => [1, 2, 3]
+// ===== //
+// 将一个对象的所有 values 值放入数组中
+// 仅限 own properties 上的 values
+// 不包括原型链上的
+// 并返回该数组
+// 为什么不用 [] 这种方式而是用 new Array ？
+_.values = function(obj) {
+  // 仅包括 own properties
+  const keys = _.keys(obj)
+  const length = keys.length
+  const values = Array(length)
+  for (var i = 0; i < length; i++) {
+    values[i] = obj[keys[i]]
+  }
+  return values
+}
