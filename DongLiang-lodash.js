@@ -35,6 +35,21 @@ var DongLiang = {
 		return result
 	},
 
+	isObject: function() {
+
+	}
+
+	keys: function(obj) {
+		if(!DongLiang.isObject(obj)) return []
+		const result = []
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				result.push(key)
+			}
+		}
+		return result
+	}
+
 	/**
 	 * 创建一个新数组并包含原数组中所有的非假值元素。例如 false、null、 0、""、undefined 和 NaN 都是“假值”。
 	 * 参数
@@ -92,8 +107,8 @@ var DongLiang = {
 	},
 
 	/**
-	 * 这个方法类似_.difference ，除了它接受一个 iteratee （愚人码头注：迭代器）， 调用array 和 values 中的每个元素以产生比较的标准。 结果值是从第一数组中选择。iteratee 会调用一个参数：(value)。（愚人码头注：首先使用迭代器分别迭代array 和 values中的每个元素，返回的值作为比较值）。 
-	 
+	 * 这个方法类似_.difference ，除了它接受一个 iteratee （愚人码头注：迭代器）， 调用array 和 values 中的每个元素以产生比较的标准。 结果值是从第一数组中选择。iteratee 会调用一个参数：(value)。（愚人码头注：首先使用迭代器分别迭代array 和 values中的每个元素，返回的值作为比较值）。
+
 	 * Note: 不像 _.pullAllBy，这个方法会返回一个新数组。
 	 * 参数
 	 * array (Array): 要检查的数组。
@@ -104,11 +119,11 @@ var DongLiang = {
 	 * 例子
 	 * _.differenceBy([3.1, 2.2, 1.3], [4.4, 2.5], Math.floor);
 	 * // => [3.1, 1.3]
-	 *  
+	 *
 	 * // The `_.property` iteratee shorthand.
-	 * _.differenceBy([{ 'x': 2 }, { 'x': 1 }], [{ 'x': 1 }], 'x'); 
+	 * _.differenceBy([{ 'x': 2 }, { 'x': 1 }], [{ 'x': 1 }], 'x');
 	 * // => [{ 'x': 2 }]
-	 * 
+	 *
 	 **/
 	differenceBy: function(array, values, iteratee) {
 		var fn, result = []
@@ -129,7 +144,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 这个方法类似_.difference ，除了它接受一个 comparator （愚人码头注：比较器），它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。 
+	 * 这个方法类似_.difference ，除了它接受一个 comparator （愚人码头注：比较器），它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
 	 * Note: 不像 _.pullAllBy，这个方法会返回一个新数组。
 	 * 参数
 	 * array (Array): 要检查的数组。
@@ -139,10 +154,10 @@ var DongLiang = {
 	 * (Array): 返回一个过滤值后的新数组。
 	 * 例子
 	 * var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
-	 *  
+	 *
 	 * _.differenceWith(objects, [{ 'x': 1, 'y': 2 }], _.isEqual);
 	 * // => [{ 'x': 2, 'y': 1 }]
-	 * 
+	 *
 	 **/
 	differenceWith: function(array, values, comparator) {
 		var result = []
@@ -223,21 +238,21 @@ var DongLiang = {
 	 *   { 'user': 'fred',    'active': false },
 	 *   { 'user': 'pebbles', 'active': false }
 	 * ];
-	 *  
+	 *
 	 * _.dropRightWhile(users, function(o) { return !o.active; });
 	 * // => objects for ['barney']
-	 *         
-	 * // The `_.matches` iteratee shorthand.      
-	 * _.dropRightWhile(users, { 'user': 'pebbles', 'active': false });    
-	 * // => objects for ['barney', 'fred']   
-	 *    
-	 * // The `_.matchesProperty` iteratee shorthand.   
-	 * _.dropRightWhile(users, ['active', false]);   
-	 * // => objects for ['barney']   
-	 *    
-	 * // The `_.property` iteratee shorthand.   
-	 * _.dropRightWhile(users, 'active');   
-	 * // => objects for ['barney', 'fred', 'pebbles']    
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.dropRightWhile(users, { 'user': 'pebbles', 'active': false });
+	 * // => objects for ['barney', 'fred']
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.dropRightWhile(users, ['active', false]);
+	 * // => objects for ['barney']
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.dropRightWhile(users, 'active');
+	 * // => objects for ['barney', 'fred', 'pebbles']
 	 **/
 	dropRightWhile: function(array, predicate) {
 		var fn, result = []
@@ -336,16 +351,16 @@ var DongLiang = {
 	 *   { 'user': 'fred',    'active': false },
 	 *   { 'user': 'pebbles', 'active': true }
 	 * ];
-	 * 
+	 *
 	 * _.findIndex(users, function(o) { return o.user == 'barney'; });
 	 * // => 0
-	 *  
-	 * _.findIndex(users, { 'user': 'fred', 'active': false });  
-	 * // => 1  
 	 *
-	 * _.findIndex(users, ['active', false]); 
+	 * _.findIndex(users, { 'user': 'fred', 'active': false });
+	 * // => 1
+	 *
+	 * _.findIndex(users, ['active', false]);
 	 * // => 0
-	 * 
+	 *
 	 * _.findIndex(users, 'active');
 	 * // => 2
 	 **/
@@ -386,7 +401,7 @@ var DongLiang = {
 	/**
 	 * 这个方式类似 _.findIndex， 区别是它是从右到左的迭代集合array中的元素。
 	 * 参数
-	 * array (Array): 要搜索的数组。 
+	 * array (Array): 要搜索的数组。
 	 * [predicate=_.identity] (Array|Function|Object|string): 这个函数会在每一次迭代调用。
 	 * [fromIndex=array.length-1] (number): The index to search from.
 	 * 返回值
@@ -397,16 +412,16 @@ var DongLiang = {
 	 *   { 'user': 'fred',    'active': false },
 	 *   { 'user': 'pebbles', 'active': true }
 	 * ];
-	 * 
+	 *
 	 * _.findLastIndex(users, function(o) { return o.user == 'pebbles'; });
 	 * // => 0
-	 *  
+	 *
 	 * _.findLastIndex(users, { 'user': 'barney', 'active': true });
-	 * // => 1  
+	 * // => 1
 	 *
 	 * findLastIndex(users, ['active', false]);
 	 * // => 2
-	 * 
+	 *
 	 * _.findLastIndex(users, 'active');
 	 * // => 0
 	 **/
@@ -473,10 +488,10 @@ var DongLiang = {
 	 * (Array): 返回减少嵌套层级后的新数组。
 	 * 例子
 	 * var array = [1, [2, [3, [4]], 5]];
-	 *  
+	 *
 	 * _.flattenDepth(array, 1);
 	 * // => [1, 2, [3, [4]], 5]
-	 *  
+	 *
 	 * _.flattenDepth(array, 2);
 	 * // => [1, 2, 3, [4], 5]
 	 **/
@@ -561,7 +576,7 @@ var DongLiang = {
 	 * 例子
 	 * _.intersectionBy([2.1, 1.2], [4.3, 2.4], Math.floor);
 	 * // => [2.1]
-	 * 
+	 *
 	 * // The `_.property` iteratee shorthand.
 	 * _.intersectionBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
 	 * // => [{ 'x': 1 }]
@@ -598,8 +613,8 @@ var DongLiang = {
 	 * 例子
 	 * var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
 	 * var others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
-	 * 
-	 * _.intersectionWith(objects, others, _.isEqual); 
+	 *
+	 * _.intersectionWith(objects, others, _.isEqual);
 	 * // => [{ 'x': 1, 'y': 2 }]
 	 **/
 	intersectionWith: function(arr1, arr2, iteratee) {
@@ -685,7 +700,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 这个方法类似于_.pullAll ，区别是这个方法接受一个 iteratee（迭代函数） 调用 array 和 values的每个值以产生一个值，通过产生的值进行了比较。iteratee 会传入一个参数： (value)。 
+	 * 这个方法类似于_.pullAll ，区别是这个方法接受一个 iteratee（迭代函数） 调用 array 和 values的每个值以产生一个值，通过产生的值进行了比较。iteratee 会传入一个参数： (value)。
 	 * Note: 不同于 _.differenceBy, 这个方法会改变数组 array。
 	 * 参数
 	 * array (Array): 要修改的数组。
@@ -694,9 +709,9 @@ var DongLiang = {
 	 * 返回值
 	 * (Array): 返回 array.
 	 * 例子
-	 * var array = [{ 'x': 1 }, { 'x': 2 }, { 'x': 3 }, { 'x': 1 }]; 
-	 *  
-	 * _.pullAllBy(array, [{ 'x': 1 }, { 'x': 3 }], 'x'); 
+	 * var array = [{ 'x': 1 }, { 'x': 2 }, { 'x': 3 }, { 'x': 1 }];
+	 *
+	 * _.pullAllBy(array, [{ 'x': 1 }, { 'x': 3 }], 'x');
 	 * console.log(array);
 	 * // => [{ 'x': 2 }]
 	 **/
@@ -714,17 +729,17 @@ var DongLiang = {
 	},
 
 	/**
-	 * 这个方法类似于 _.pullAll，区别是这个方法接受 comparator 调用array中的元素和values比较。comparator 会传入两个参数：(arrVal, othVal)。 
+	 * 这个方法类似于 _.pullAll，区别是这个方法接受 comparator 调用array中的元素和values比较。comparator 会传入两个参数：(arrVal, othVal)。
 	 * 注意: 和 _.differenceWith 不同, 这个方法会改变数组 array。
 	 * 参数
-	 * array (Array): 要修改的数组。 
+	 * array (Array): 要修改的数组。
 	 * values (Array): 要移除值的数组。
 	 * [comparator] (Function): comparator（比较器）调用每个元素。
 	 * 返回值
 	 * (Array): 返回 array.
 	 * 例子
 	 * var array = [{ 'x': 1, 'y': 2 }, { 'x': 3, 'y': 4 }, { 'x': 5, 'y': 6 }];
-	 *  
+	 *
 	 * _.pullAllWith(array, [{ 'x': 3, 'y': 4 }], _.isEqual);
 	 * console.log(array);
 	 * // => [{ 'x': 1, 'y': 2 }, { 'x': 5, 'y': 6 }]
@@ -750,12 +765,12 @@ var DongLiang = {
 
 	/**
 	 * 这个方法类似 _.sortedIndex ，除了它接受一个 iteratee （迭代函数），调用每一个数组（array）元素，返回结果和value 值比较来计算排序。iteratee 会传入一个参数：(value)。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要检查的排序数组。
 	 * value (*): 要评估的值。
 	 * [iteratee=_.identity] (Array|Function|Object|string): 迭代函数，调用每个元素。
 	 * @returns (Array): (number): 返回 value值 应该在数组array中插入的索引位置 index。
-	 * 
+	 *
 	 *
 	 *var objects = [{ 'x': 4 }, { 'x': 5 }];
 	 *_.sortedIndexBy(objects, { 'x': 4 }, function(o) { return o.x; });
@@ -784,12 +799,12 @@ var DongLiang = {
 
 	/**
 	 * 这个方法类似 _.sortedLastIndex ，除了它接受一个 iteratee （迭代函数），调用每一个数组（array）元素，返回结果和value 值比较来计算排序。iteratee 会传入一个参数：(value)。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要检查的排序数组。
 	 * value (*): 要评估的值。
 	 * [iteratee=_.identity] (Array|Function|Object|string): 迭代函数，调用每个元素。
 	 * @returns (number): 返回 value值 应该在数组array中插入的索引位置 index。
-	 * 
+	 *
 	 * var objects = [{ 'x': 4 }, { 'x': 5 }];
 	 * _.sortedLastIndexBy(objects, { 'x': 4 }, function(o) { return o.x; });
 	 * // => 1
@@ -817,14 +832,14 @@ var DongLiang = {
 
 	/**
 	 * 这个方法类似 _.lastIndexOf，除了它是在已经排序的数组array上执行二进制检索。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要搜索的数组。
 	 * value (*): 搜索的值。
 	 * @returns (number): (number): 返回匹配值的索引位置，否则返回 -1。
-	 * 
+	 *
 	 * _.sortedLastIndexOf([4, 5, 5, 5, 6], 5);
 	 * // => 3
-	 * 
+	 *
 	 */
 
 	sortedLastIndexOf: function(array, value) {
@@ -840,11 +855,11 @@ var DongLiang = {
 
 	/**
 	 * 这个方法类似 _.indexOf，除了它是在已经排序的数组array上执行二进制检索。。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要搜索的数组。
 	 * vvalue (*): 搜索的值
 	 * @returns (Array): (number): (number): 返回匹配值的索引位置，否则返回 -1。
-	 *_.sortedIndexOf([4, 5, 5, 5, 6], 5); 
+	 *_.sortedIndexOf([4, 5, 5, 5, 6], 5);
 	 * => 1
 	 *
 	 */
@@ -859,7 +874,7 @@ var DongLiang = {
 
 	/**
 	 * 此方法类似于_.sortedIndex，除了 它返回 value值 在 array 中尽可能大的索引位置（index）。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要搜索的数组。
 	 * vvalue (*): 搜索的值
 	 * @returns (Array): (number): 返回 value值 应该在数组array中插入的索引位置 index。
@@ -880,13 +895,13 @@ var DongLiang = {
 
 	/**
 	 * 这个方法类似 _.uniq，除了它会优化排序数组。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要搜索的数组。
 	 * @returns (number): (Array): 返回一个新的不重复的数组。
-	 * 
+	 *
 	 * _.sortedUniq([1, 1, 2]);
 	 * // => [1, 2]
-	 * 
+	 *
 	 */
 	sortedUniq: function(array) {
 
@@ -901,14 +916,14 @@ var DongLiang = {
 
 	/**
 	 * 这个方法类似 _.uniq，除了它会优化排序数组。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要检查的数组。
 	 * [iteratee] (Function): 迭代函数，调用每个元素。
 	 * @returns (number): (Array): 返回一个新的不重复的数组。
-	 * 
+	 *
 	 * _.sortedUniqBy([1.1, 1.2, 2.3, 2.4], Math.floor);
 	 * // => [1.1, 2.3]
-	 * 
+	 *
 	 */
 	sortedUniqBy: function(array, iteratee) {
 
@@ -936,18 +951,18 @@ var DongLiang = {
 
 	/**
 	 * 创建一个数组切片，从array数组的起始元素开始提取n个元素。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要检索的数组。
 	 * [n=1] (number): 要提取的元素个数。
 	 * @returns (number): (Array): 返回 array 数组的切片（从起始元素开始n个元素）。
-	 * 
+	 *
 	 * _.take([1, 2, 3]);
 	 * // => [1]
 	 * _.take([1, 2, 3], 2);
 	 * // => [1, 2]
-	 * _.take([1, 2, 3], 5); 
-	 * // => [1, 2, 3] 
-	 *  
+	 * _.take([1, 2, 3], 5);
+	 * // => [1, 2, 3]
+	 *
 	 * _.take([1, 2, 3], 0);
 	 * // => []
 	 */
@@ -961,23 +976,23 @@ var DongLiang = {
 
 	/**
 	 * 创建一个数组切片，从array数组的最后一个元素开始提取n个元素。
-	 * @param [arrays] 
+	 * @param [arrays]
 	 * array (Array): 要检索的数组。
 	 * [n=1] (number): 要提取的元素个数。
 	 * @returns (number): (Array): 返回 array 数组的切片（从结尾元素开始n个元素）。
-	 * 
+	 *
 	 * _.takeRight([1, 2, 3]);
 	 * // => [3]
-	 *  
-	 * _.takeRight([1, 2, 3], 2); 
+	 *
+	 * _.takeRight([1, 2, 3], 2);
 	 * // => [2, 3]
-	 *  
+	 *
 	 * _.takeRight([1, 2, 3], 5);
 	 * // => [1, 2, 3]
-	 *  
-	 * _.takeRight([1, 2, 3], 0); 
+	 *
+	 * _.takeRight([1, 2, 3], 0);
 	 * // => []
-	 * 
+	 *
 	 */
 
 	takeRight: function(array, number) {
@@ -1041,7 +1056,7 @@ var DongLiang = {
 	 * 返回值
 	 * (Array): 返回过滤值后的新数组。
 	 * 例子
-	 * 
+	 *
 	 * _.without([2, 1, 2, 3], 1, 2);
 	 * // => [3]
 	 **/
@@ -1074,14 +1089,14 @@ var DongLiang = {
 	},
 
 	/**
-	 * 这个方法类似 _.fromPairs，除了它接受2个数组，第一个数组中的值作为属性标识符（属性名），第二个数组中的值作为相应的属性值 
+	 * 这个方法类似 _.fromPairs，除了它接受2个数组，第一个数组中的值作为属性标识符（属性名），第二个数组中的值作为相应的属性值
 	 * 参数
 	 * [props=[]] (Array): The property identifiers.
 	 * [values=[]] (Array): The property values.
-	 *   
+	 *
 	 * 返回值
-	 * (Object): Returns the new object. 
-	 *  
+	 * (Object): Returns the new object.
+	 *
 	 * _.zipObject(['a', 'b'], [1, 2]);
 	 * // => { 'a': 1, 'b': 2 }
 	 *
@@ -1107,7 +1122,7 @@ var DongLiang = {
 	 * // => { '4': 1, '6': 2 }
 	 * _.countBy(['one', 'two', 'three'], 'length');
 	 * // => { '3': 2, '5': 1 }
-	 * 
+	 *
 	 **/
 	// 如何判断一个函数是不是函数？
 	// function isFunction(fn) {
@@ -1139,7 +1154,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 通过 predicate（断言函数） 检查 collection（集合）中的 所有 元素是否都返回真值。一旦 predicate（断言函数） 返回假值，迭代就马上停止。predicate（断言函数）调用三个参数： (value, index|key, collection)。 
+	 * 通过 predicate（断言函数） 检查 collection（集合）中的 所有 元素是否都返回真值。一旦 predicate（断言函数） 返回假值，迭代就马上停止。predicate（断言函数）调用三个参数： (value, index|key, collection)。
 	 * 注意: 这个方法对于对于空集合返回 true，因为空集合的任何元素都是 true 。
 	 * 参数
 	 * collection (Array|Object): 一个用来迭代的集合。
@@ -1228,12 +1243,12 @@ var DongLiang = {
 	 * ];
 	 * _.filter(users, function(o) { return !o.active; });
 	 * // => objects for ['fred']
-	 * _.filter(users, { 'age': 36, 'active': true }); 
+	 * _.filter(users, { 'age': 36, 'active': true });
 	 * // => objects for ['barney']
 	 * _.filter(users, ['active', false]);
 	 * // => objects for ['fred']
-	 * 
-	 * _.filter(users, 'active'); 
+	 *
+	 * _.filter(users, 'active');
 	 * // => objects for ['barney']
 	 **/
 	filter: function(arr, fn) {
@@ -1252,7 +1267,7 @@ var DongLiang = {
 		//函数中
 		for (var i = 0; i < arr.length; i++) {
 			result.push(fn(arr[i], i, arr));
-			// i表示位置 
+			// i表示位置
 		}
 		return result;
 	},
@@ -1313,25 +1328,25 @@ var DongLiang = {
 	 * 例子
 	 * _.castArray(1);
 	 * // => [1]
-	 *  
+	 *
 	 * _.castArray({ 'a': 1 });
 	 * // => [{ 'a': 1 }]
-	 *  
+	 *
 	 * _.castArray('abc');
 	 * // => ['abc']
-	 *  
+	 *
 	 * _.castArray(null);
 	 * // => [null]
-	 *  
+	 *
 	 * _.castArray(undefined);
 	 * // => [undefined]
-	 *  
+	 *
 	 * _.castArray();
-	 * // => [] 
-	 *  
+	 * // => []
+	 *
 	 * var array = [1, 2, 3];
 	 * console.log(_.castArray(array) === array);
-	 * // => true 
+	 * // => true
 	 **/
 	castArray：
 	function(value) {
@@ -1356,19 +1371,19 @@ var DongLiang = {
 	 * 例子
 	 * var object = { 'a': 1 };
 	 * var other = { 'a': 1 };
-	 *  
+	 *
 	 * _.eq(object, object);
 	 * // => true
-	 *  
+	 *
 	 * _.eq(object, other);
 	 * // => false
-	 *  
+	 *
 	 * _.eq('a', 'a');
 	 * // => true
-	 *  
+	 *
 	 * _.eq('a', Object('a'));
 	 * // => false
-	 *  
+	 *
 	 * _.eq(NaN, NaN);
 	 * // => true
 	 **/
@@ -1389,13 +1404,13 @@ var DongLiang = {
 	 * 例子
 	 * _.gt(3, 1);};
 	 * // => true;
-	 *  
+	 *
 	 * _.gt(3, 3);
 	 * // => false
-	 *  
+	 *
 	 * _.gt(1, 3);
 	 * // => false
-	
+
 	 **/
 	gt: function(value, other) {
 		return value > other
@@ -1411,10 +1426,10 @@ var DongLiang = {
 	 * 例子
 	 * _.gte(3, 1);
 	 * // => true
-	 *  
+	 *
 	 * _.gte(3, 3);
 	 * // => true
-	 *  
+	 *
 	 * _.gte(1, 3);
 	 * // => false
 	 **/
@@ -1456,7 +1471,7 @@ var DongLiang = {
 	 * _.isArray('abc');
 	 * // => false
 	 * _.isArray(_.noop);
-	 * // => false 
+	 * // => false
 	 **/
 	isArray: function(value) {
 		if (value instanceof Array) {
@@ -1472,12 +1487,12 @@ var DongLiang = {
 	 * 返回值
 	 * (boolean): 如果value是一个数组 buffer 返回 true，否则返回 false。
 	 * 例子
-	 * 
+	 *
 	 * _.isArrayBuffer(new ArrayBuffer(2));
 	 * // => true
 	 * _.isArrayBuffer(new Array(2));
 	 * // => false
-	 *  
+	 *
 	 **/
 	isArrayBuffer: function(value) {
 		//isArrayBuffer是一个构造函数
@@ -1514,7 +1529,7 @@ var DongLiang = {
 	 * 参数
 	 * value (*): 要检查的值。
 	 * 返回值
-	 * (boolean): 如果 value 是一个类数组对象，那么返回 true，否则返回 false。	
+	 * (boolean): 如果 value 是一个类数组对象，那么返回 true，否则返回 false。
 	 * 例子
 	 * _.isArrayLikeObject([1, 2, 3]);
 	 * // => true
@@ -1538,7 +1553,7 @@ var DongLiang = {
 
 
 	/**
-	 * 检查 value 是否为一个整数。。 
+	 * 检查 value 是否为一个整数。。
 	 * 参数
 	 * value (*): 要检查的值
 	 * 返回值
@@ -1546,14 +1561,14 @@ var DongLiang = {
 	 * 例子
 	 * _.isInteger(3);
 	 * // => true
-	 *  
+	 *
 	 * _.isInteger(Number.MIN_VALUE);
 	 * // => false
 	 *
 	 * _.isInteger(Infinity);
 	 * // => false
-	 *  
-	 * _.isInteger('3'); 
+	 *
+	 * _.isInteger('3');
 	 * // => false
 	 **/
 	isInteger: function(value) {
@@ -1568,7 +1583,7 @@ var DongLiang = {
 	 * 参数
 	 * value (*): 要检查的值。
 	 * 返回值
-	 * (boolean): 如果 value 是一个有效长度，那么返回 true，否则返回 false。	
+	 * (boolean): 如果 value 是一个有效长度，那么返回 true，否则返回 false。
 	 * 例子
 	 * _.isLength(3);
 	 * // => true
@@ -1591,11 +1606,11 @@ var DongLiang = {
 	 * 参数
 	 * value (*): 要检查的值。
 	 * 返回值
-	 * (boolean): 如果 value 是一个 Map 对象，那么返回 true，否则返回 false。	
+	 * (boolean): 如果 value 是一个 Map 对象，那么返回 true，否则返回 false。
 	 * 例子
 	 * _.isMap(new Map);
 	 * // => true
-	 *  
+	 *
 	 * _.isMap(new WeakMap);
 	 * // => false
 	 **/
@@ -1609,7 +1624,7 @@ var DongLiang = {
 	 * 参数
 	 * value (*): 要检查的值。
 	 * 返回值
-	 * (boolean): 如果 value 是一个 NaN，那么返回 true，否则返回 false。	
+	 * (boolean): 如果 value 是一个 NaN，那么返回 true，否则返回 false。
 	 * 例子
 	 * _.isNaN(NaN);
 	 * // => true
@@ -1618,7 +1633,7 @@ var DongLiang = {
 	 * isNaN(undefined);
 	 * // => true
 	 * _.isNaN(undefined);
-	 * // => false 
+	 * // => false
 	 **/
 	isNaN: function(value) {
 		if (typeof value == 'number' || typeof value == 'undefined') {
@@ -1630,7 +1645,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 检查 value 是否是一个原生函数。  
+	 * 检查 value 是否是一个原生函数。
 	 * 参数。
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -1638,15 +1653,15 @@ var DongLiang = {
 	 * 例子
 	 * _.isNative(Array.prototype.push);
 	 * // => true
-	 * _.isNative(_); 
-	 * // => false 
+	 * _.isNative(_);
+	 * // => false
 	 **/
 	isNative: function(fn) {
 		return /\s\[native code\]\s/.test(fn.toString())
 	},
 
 	/**
-	 * 检查 value 是否是 null 或者 undefined。  
+	 * 检查 value 是否是 null 或者 undefined。
 	 * 参数。
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -1654,10 +1669,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isNil(null);
 	 * // => true
-	 * 
+	 *
 	 * _.isNil(void 0);
 	 * // => true
-	 * 
+	 *
 	 * _.isNil(NaN);
 	 * // => false
 	 **/
@@ -1675,7 +1690,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 检查 valuealue 是否是 null。  
+	 * 检查 valuealue 是否是 null。
 	 * 参数。
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -1683,10 +1698,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isNull(null);
 	 * // => true
-	 *   
+	 *
 	 * _.isNull(void 0);
 	 * // => false
-	 * 
+	 *
 	 **/
 	isNull: function(value) {
 		if (!value && typeof(value) != "undefined" && value != 0 && value == value) {
@@ -1696,8 +1711,8 @@ var DongLiang = {
 	},
 
 	/**
-	 * 检查 value 是否是原始Number数值型 或者 对象。 
-	 * 注意: 要排除 Infinity, -Infinity, 以及 NaN 数值类型，用 _.isFinite 方法。 
+	 * 检查 value 是否是原始Number数值型 或者 对象。
+	 * 注意: 要排除 Infinity, -Infinity, 以及 NaN 数值类型，用 _.isFinite 方法。
 	 * 参数。
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -1705,15 +1720,15 @@ var DongLiang = {
 	 * 例子
 	 * _.isNumber(3);
 	 * // => true
-	 *  
+	 *
 	 * _.isNumber(Number.MIN_VALUE);
 	 * // => true
 	 *
 	 * _.isNumber(Infinity);
 	 * // => true
-	 *  
+	 *
 	 * _.isNumber('3');
-	 * // => false 
+	 * // => false
 	 **/
 	isNumber: function(value) {
 		if (DongLiang.isFinite(value) || value == Infinity || value == -Infinity) {
@@ -1723,7 +1738,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 检查 value 是否为 Object 的 language type。 (例如： arrays, functions, objects, regexes,new Number(0), 以及 new String(''))。  
+	 * 检查 value 是否为 Object 的 language type。 (例如： arrays, functions, objects, regexes,new Number(0), 以及 new String(''))。
 	 * 参数。
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -1731,13 +1746,13 @@ var DongLiang = {
 	 * 例子
 	 * _.isObject({});
 	 * // => true
-	 *  
+	 *
 	 * _.isObject([1, 2, 3]);
 	 * // => true
 	 *
 	 * _.isObject(_.noop);
 	 * // => true
-	 *  
+	 *
 	 * _.isObject(null);
 	 * // => false
 	 **/
@@ -1754,13 +1769,13 @@ var DongLiang = {
 	 * 例子
 	 * _.isObjectLike({});
 	 * // => true
-	 *  
+	 *
 	 * _.isObjectLike([1, 2, 3]);
 	 * // => true
-	 *  
+	 *
 	 * _.isObjectLike(_.noop);
 	 * // => false
-	 *  
+	 *
 	 * _.isObjectLike(null);
 	 * // => false
 	 **/
@@ -1777,16 +1792,16 @@ var DongLiang = {
 	 * 例子
 	 * function Foo() {
 	 *   this.a = 1;
-	 * } 
+	 * }
 	 * _.isPlainObject(new Foo);
 	 * // => false
-	 *  
+	 *
 	 * _.isPlainObject([1, 2, 3]);
 	 * // => false
-	 *  
+	 *
 	 * _.isPlainObject({ 'x': 0, 'y': 0 });
 	 * // => true
-	 *  
+	 *
 	 * _.isPlainObject(Object.create(null));
 	 * // => true
 	 **/
@@ -1803,17 +1818,17 @@ var DongLiang = {
 	 * 例子
 	 * _.isRegExp(/abc/);
 	 * // => true
-	 *  
+	 *
 	 * _.isRegExp('/abc/');
 	 * // => false
-	 *  
+	 *
 	 **/
 	isRegExp: function(value) {
 		return value instanceof RegExp
 	},
 
 	/**
-	 * 检查 value 是否是一个安全整数。 一个安全整数应该是符合 IEEE-754 标准的非双精度浮点数。 
+	 * 检查 value 是否是一个安全整数。 一个安全整数应该是符合 IEEE-754 标准的非双精度浮点数。
 	 * 参数。
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -1821,16 +1836,16 @@ var DongLiang = {
 	 * 例子
 	 * _.isSafeInteger(3);
 	 * // => true
-	 *   
+	 *
 	 * _.isSafeInteger(Number.MIN_VALUE);
-	 * // => false  
-	 *   
+	 * // => false
+	 *
 	 * _.isSafeInteger(Infinity);
-	 * // => false 
-	 *  
+	 * // => false
+	 *
 	 * _.isSafeInteger('3');
 	 * // => false
-	 *  
+	 *
 	 **/
 	isSafeInteger: function(value) {
 		return Number.isSafeInteger(value)
@@ -1845,10 +1860,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isSet(new Set);
 	 * // => true
-	 *  
+	 *
 	 * _.isSet(new WeakSet);
 	 * // => false
-	 *  
+	 *
 	 **/
 	isSet: function(value) {
 		return value instanceof Set
@@ -1863,10 +1878,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isString('abc');
 	 * // => true
-	 *  
+	 *
 	 * _.isString(1);
 	 * // => false
-	 *  
+	 *
 	 **/
 
 	isString: function(value) {
@@ -1884,10 +1899,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isSymbol(Symbol.iterator);
 	 * // => true
-	 *  
+	 *
 	 * _.isSymbol('abc');
 	 * // => false
-	 *  
+	 *
 	 **/
 
 	isSymbol: function(value) {
@@ -1905,10 +1920,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isUndefined(void 0);
 	 * // => true
-	 *  
+	 *
 	 * _.isUndefined(null);
 	 * // => false
-	 *  
+	 *
 	 **/
 
 	isUndefined: function(value) {
@@ -1926,10 +1941,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isWeakMap(new WeakMap);
 	 * // => true
-	 *  
+	 *
 	 * _.isWeakMap(new Map);
 	 * // => false
-	 *  
+	 *
 	 **/
 
 	isWeakMap: function(value) {
@@ -1946,10 +1961,10 @@ var DongLiang = {
 	 * 例子
 	 * _.isWeakSet(new WeakSet);
 	 * // => true
-	 *  
+	 *
 	 * _.isWeakSet(new Set);
 	 * // => false
-	 *  
+	 *
 	 **/
 	isWeakSet: function(value) {
 		return value instanceof WeakSet
@@ -1965,10 +1980,10 @@ var DongLiang = {
 	 * 例子
 	 * _.lt(1, 3);
 	 * // => true
-	 *  
-	 * _.lt(3, 3); 
-	 * // => false 
-	 *  
+	 *
+	 * _.lt(3, 3);
+	 * // => false
+	 *
 	 * _.lt(3, 1);
 	 * // => false
 	 **/
@@ -1991,10 +2006,10 @@ var DongLiang = {
 	 * 例子
 	 * _.lte(1, 3);
 	 * // => true
-	 *  
+	 *
 	 * _.lte(3, 3);
 	 * // => true
-	 *  
+	 *
 	 * _.lte(3, 1);
 	 * // => false
 	 **/
@@ -2012,16 +2027,16 @@ var DongLiang = {
 	 * 例子
 	 * _.toArray({ 'a': 1, 'b': 2 });
 	 * // => [1, 2]
-	 *  
+	 *
 	 * _.toArray('abc');
 	 * // => ['a', 'b', 'c']
-	 *  
-	 * _.toArray(1);    
-	 * // => []    
-	 *  
+	 *
+	 * _.toArray(1);
+	 * // => []
+	 *
 	 * _.toArray(null);
 	 * // => []
-	 *  
+	 *
 	 **/
 	toArray: function(value) {
 		var result = []
@@ -2044,16 +2059,16 @@ var DongLiang = {
 	 * 例子
 	 * _.toFinite(3.2);
 	 * // => 3.2
-	 *  
+	 *
 	 * _.toFinite(Number.MIN_VALUE);
 	 * // => 5e-324
-	 *  
+	 *
 	 * _.toFinite(Infinity);
 	 * // => 1.7976931348623157e+308
-	 *  
+	 *
 	 * _.toFinite('3.2');
 	 * // => 3.2
-	 *  
+	 *
 	 **/
 
 	toFinite: function(value) {
@@ -2082,16 +2097,16 @@ var DongLiang = {
 	 * 例子
 	 * _.toInteger(3.2);
 	 * // => 3
-	 *  
+	 *
 	 * _.toInteger(Number.MIN_VALUE);
 	 * // => 0
-	 *  
+	 *
 	 * _.toInteger(Infinity);
 	 * // => 1.7976931348623157e+308
-	 *  
+	 *
 	 * _.toInteger('3.2');
 	 * // => 3
-	 *  
+	 *
 	 **/
 	toInteger: function(value) {
 		var result
@@ -2109,7 +2124,7 @@ var DongLiang = {
 
 
 	/**
-	 * 转换 value 为用作类数组对象的长度整数。 
+	 * 转换 value 为用作类数组对象的长度整数。
 	 * 参数。
 	 * value (*): 要转换的值。
 	 * 返回值
@@ -2117,16 +2132,16 @@ var DongLiang = {
 	 * 例子
 	 * _.toLength(3.2);
 	 * // => 3
-	 *  
+	 *
 	 * _.toLength(Number.MIN_VALUE);
 	 * // => 0
-	 *  
+	 *
 	 * _.toLength(Infinity);
 	 * // => 4294967295
-	 *  
+	 *
 	 * _.toLength('3.2');
 	 * // => 3
-	 *  
+	 *
 	 **/
 
 	toLength: function(value) {
@@ -2144,7 +2159,7 @@ var DongLiang = {
 
 
 	/**
-	 * 转换 value 为一个数字。 
+	 * 转换 value 为一个数字。
 	 * 参数。
 	 * value (*): 要处理的值。
 	 * 返回值
@@ -2152,16 +2167,16 @@ var DongLiang = {
 	 * 例子
 	 * _.toNumber(3.2);
 	 * // => 3.2
-	 *  
+	 *
 	 * _.toNumber(Number.MIN_VALUE);
 	 * // => 5e-324
-	 *  
+	 *
 	 * _.toNumber(Infinity);
 	 * // => Infinity
-	 *  
+	 *
 	 * _.toNumber('3.2');
 	 * // => 3.2
-	 *  
+	 *
 	 **/
 	toNumber: function(value) {
 		return Number(value)
@@ -2170,7 +2185,7 @@ var DongLiang = {
 
 
 	/**
-	 * 转换 value 为安全整数。 安全整数可以用于比较和准确的表示。 
+	 * 转换 value 为安全整数。 安全整数可以用于比较和准确的表示。
 	 * 参数。
 	 * value (*): 要处理的值。
 	 * 返回值
@@ -2178,16 +2193,16 @@ var DongLiang = {
 	 * 例子
 	 * _.toSafeInteger(3.2);
 	 * // => 3
-	 *  
+	 *
 	 * _.toSafeInteger(Number.MIN_VALUE);
 	 * // => 0
-	 *  
+	 *
 	 * _.toSafeInteger(Infinity);
 	 * // => 9007199254740991
-	 *  
+	 *
 	 * _.toSafeInteger('3.2');
 	 * // => 3
-	 *  
+	 *
 	 **/
 	toSafeInteger: function(value) {
 		var result
@@ -2230,7 +2245,7 @@ var DongLiang = {
 	 * 例子
 	 * _.divide(6, 4);
 	 * // => 1.5
-	 *  
+	 *
 	 **/
 	divide: function(dividend, divisor) {
 		return dividend / divisor
@@ -2246,13 +2261,13 @@ var DongLiang = {
 	 * 例子
 	 * _.floor(4.006);
 	 * // => 4
-	 *  
+	 *
 	 * _.floor(0.046, 2);
 	 * // => 0.04
-	 * 
+	 *
 	 * _.floor(4060, -2);
 	 * // => 4000
-	 *  
+	 *
 	 **/
 	floor: function(number, precision = 0) {
 		return (parseInt(number * Math.pow(10, precision)) / Math.pow(10, precision))
@@ -2268,11 +2283,11 @@ var DongLiang = {
 	 * 例子
 	 * _.max([4, 2, 8, 6]);
 	 * // => 8
-	 *  
+	 *
 	 * _.max([]);
 	 * // => undefined
-	 * 
-	 *  
+	 *
+	 *
 	 **/
 	max: function(array) {
 		var biggest = -Infinity
@@ -2299,12 +2314,12 @@ var DongLiang = {
 	 * (*): 返回最大的值。
 	 * 例子
 	 * var objects = [{ 'n': 1 }, { 'n': 2 }];
-	 *  
+	 *
 	 * _.maxBy(objects, function(o) { return o.n; });
 	 * // => { 'n': 2 }
 	 * _.maxBy(objects, 'n');
 	 * // => { 'n': 2 }
-	 *  
+	 *
 	 **/
 
 	maxBy: function(array, iteratee) {
@@ -2341,7 +2356,7 @@ var DongLiang = {
 	 * 例子
 	 * _.mean([4, 2, 8, 6]);
 	 * // => 5
-	 *  
+	 *
 	 **/
 
 	mean: function(array) {
@@ -2360,12 +2375,12 @@ var DongLiang = {
 	 * (number): 返回平均值。
 	 * 例子
 	 * var objects = [{ 'n': 4 }, { 'n': 2 }, { 'n': 8 }, { 'n': 6 }];
-	 *  
-	 * _.meanBy(objects, function(o) { return o.n; }); 
-	 * // => 5 
+	 *
+	 * _.meanBy(objects, function(o) { return o.n; });
+	 * // => 5
 	 *
 	 * _.meanBy(objects, 'n');
-	 * // => 5 
+	 * // => 5
 	 **/
 	meanBy: function(array, iteratee) {
 
@@ -2396,7 +2411,7 @@ var DongLiang = {
 	 * 例子
 	 * _.min([4, 2, 8, 6]);
 	 * // => 2
-	 *  
+	 *
 	 * _.min([]);
 	 * // => undefined
 	 **/
@@ -2424,10 +2439,10 @@ var DongLiang = {
 	 * (*): 返回最小的值。
 	 * 例子
 	 * var objects = [{ 'n': 1 }, { 'n': 2 }];
-	 *  
+	 *
 	 * _.minBy(objects, function(o) { return o.n; });
 	 * // => { 'n': 1 }
-	 *   
+	 *
 	 * _.minBy(objects, 'n');
 	 * // => { 'n': 1 }
 	 **/
@@ -2484,12 +2499,12 @@ var DongLiang = {
 	 * 例子
 	 * _.round(4.006);
 	 * // => 4
-	 *  
+	 *
 	 * _.round(4.006, 2);
 	 * // => 4.01
-	 *  
+	 *
 	 * _.round(4060, -2);
-	 * // => 4100 
+	 * // => 4100
 	 **/
 	round: function(number, precision = 0) {
 		return Math.round(number * Math.pow(10, precision)) / Math.pow(10, precision)
@@ -2534,13 +2549,13 @@ var DongLiang = {
 	 * (number): 返回总和。
 	 * 例子
 	 * var objects = [{ 'n': 4 }, { 'n': 2 }, { 'n': 8 }, { 'n': 6 }];
-	 *  
+	 *
 	 * _.sumBy(objects, function(o) { return o.n; });
 	 * // => 20
-	 *  
+	 *
 	 * // The `_.property` iteratee shorthand.
 	 * _.sumBy(objects, 'n');
-	 * // => 20  
+	 * // => 20
 	 **/
 	sumBy: function(array, iteratee) {
 		if (array.length == 0) {
@@ -2572,9 +2587,9 @@ var DongLiang = {
 	 * 例子
 	 * _.clamp(-10, -5, 5);
 	 * // => -5
-	 *  
+	 *
 	 * _.clamp(10, -5, 5);
-	 * // => 5 
+	 * // => 5
 	 **/
 	clamp: function(number, lower, upper) {
 		if (number > lower && number < upper) {
@@ -2597,25 +2612,25 @@ var DongLiang = {
 	 * 例子
 	 * _.inRange(3, 2, 4);
 	 * // => true
-	 *  
+	 *
 	 * _.inRange(4, 8);
 	 * // => true
-	 *  
+	 *
 	 * _.inRange(4, 2);
 	 * // => false
-	 *  
+	 *
 	 * _.inRange(2, 2);
-	 * // => false  
-	 *  
-	 * _.inRange(1.2, 2); 
-	 * // => true
-	 *   
-	 * _.inRange(5.2, 4); 
 	 * // => false
-	 *  
-	 * _.inRange(-3, -2, -6); 
+	 *
+	 * _.inRange(1.2, 2);
 	 * // => true
-	 *  
+	 *
+	 * _.inRange(5.2, 4);
+	 * // => false
+	 *
+	 * _.inRange(-3, -2, -6);
+	 * // => true
+	 *
 	 **/
 
 	inRange: function(...args) {
@@ -2653,18 +2668,18 @@ var DongLiang = {
 	 * function Foo() {
 	 *   this.a = 1;
 	 * }
-	 *  
+	 *
 	 * function Bar() {
 	 *   this.c = 3;
 	 * }
 	 * // => false
-	 *  
+	 *
 	 * Foo.prototype.b = 2;
 	 * Bar.prototype.d = 4;
-	 *  
+	 *
 	 * _.assign({ 'a': 0 }, new Foo, new Bar);
 	 * // => { 'a': 1, 'c': 3 }
-	 *   
+	 *
 	 **/
 	assign: function(object, ...args) {
 		for (var i = 0; i < args.length; i++) {
@@ -2680,7 +2695,7 @@ var DongLiang = {
 
 
 	/**
-	 * 这个方法类似 _.assign， 除了它会遍历并继承来源对象的属性。 
+	 * 这个方法类似 _.assign， 除了它会遍历并继承来源对象的属性。
 	 * Note: 这方法会改变 object。
 	 * 参数。
 	 * object (Object): 目标对象。
@@ -2691,18 +2706,18 @@ var DongLiang = {
 	 * function Foo() {
 	 *   this.a = 1;
 	 * }
-	 *  
+	 *
 	 * function Bar() {
 	 *   this.c = 3;
 	 * }
 	 * // => false
-	 *  
+	 *
 	 * Foo.prototype.b = 2;
 	 * Bar.prototype.d = 4;
-	 *  
+	 *
 	 * assignIn({ 'a': 0 }, new Foo, new Bar);
 	 * //  => { 'a': 1, 'b': 2, 'c': 3, 'd': 4 }
-	 *   
+	 *
 	 **/
 
 	assignIn: function(object, ...args) {
@@ -2724,7 +2739,7 @@ var DongLiang = {
 	 * (Array): 返回选中值的数组。
 	 * 例子
 	 * var object = { 'a': [{ 'b': { 'c': 3 } }, 4] };
-	 *  
+	 *
 	 * _.at(object, ['a[0].b.c', 'a[1]']);
 	 * // => [3, 4]
 	 *
@@ -2739,7 +2754,7 @@ var DongLiang = {
 
 
 	/**
-	 * 分配来源对象的可枚举属性到目标对象所有解析为 undefined 的属性上。 来源对象从左到右应用。 一旦设置了相同属性的值，后续的将被忽略掉。 
+	 * 分配来源对象的可枚举属性到目标对象所有解析为 undefined 的属性上。 来源对象从左到右应用。 一旦设置了相同属性的值，后续的将被忽略掉。
 	 * Note: 这方法会改变 object。
 	 * 参数。
 	 * object (Object): 目标对象。
@@ -2770,18 +2785,18 @@ var DongLiang = {
 	 * 返回值
 	 * (Object): 返回 object。
 	 * 例子
-	 * 
+	 *
 	 * function Foo() {
 	 *   this.a = 1;
 	 *   this.b = 2;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = 3;
-	 *  
+	 *
 	 * _.forIn(new Foo, function(value, key) {
 	 *   console.log(key);
 	 * });
-	 * // => Logs 'a', 'b', then 'c' (无法保证遍历的顺序)。 
+	 * // => Logs 'a', 'b', then 'c' (无法保证遍历的顺序)。
 	 **/
 	forIn: function(object, iteratee) {
 		for (var key in object) {
@@ -2798,7 +2813,7 @@ var DongLiang = {
 	 * 例子
 	 * _.isBoolean(false);
 	 * // => true
-	 *  
+	 *
 	 * _.isBoolean(null);
 	 * // => false
 	 **/
@@ -2811,14 +2826,14 @@ var DongLiang = {
 	 * 返回值
 	 * (Object): 返回 object。
 	 * 例子
-	 * 
+	 *
 	 * function Foo() {
 	 *   this.a = 1;
 	 *   this.b = 2;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = 3;
-	 *  
+	 *
 	 * forInRight(new Foo, function(value, key) {
 	 *   console.log(key);
 	 * });
@@ -2845,14 +2860,14 @@ var DongLiang = {
 	 * 返回值
 	 * (Object): 返回 object。
 	 * 例子
-	 * 
+	 *
 	 * function Foo() {
 	 *   this.a = 1;
 	 *   this.b = 2;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = 3;
-	 *  
+	 *
 	 * _.forOwn(new Foo, function(value, key) {
 	 *   console.log(key);
 	 * });
@@ -2875,14 +2890,14 @@ var DongLiang = {
 	 * 返回值
 	 * (Object): 返回 object。
 	 * 例子
-	 * 
+	 *
 	 * function Foo() {
 	 *   this.a = 1;
 	 *   this.b = 2;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = 3;
-	 *  
+	 *
 	 * _.forOwnRight(new Foo, function(value, key) {
 	 *   console.log(key);
 	 * });
@@ -2909,14 +2924,14 @@ var DongLiang = {
 	 * 返回值
 	 * (Array): 返回函数名。
 	 * 例子
-	 * 
+	 *
 	 * function Foo() {
 	 *   this.a = _.constant('a');
 	 *   this.b = _.constant('b');
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = _.constant('c');
-	 *  
+	 *
 	 * _.functions(new Foo);
 	 * // => ['a', 'b']
 	 **/
@@ -2940,14 +2955,14 @@ var DongLiang = {
 	 * 返回值
 	 * (Array): 返回函数名。
 	 * 例子
-	 * 
+	 *
 	 * function Foo() {
 	 *   this.a = _.constant('a');
 	 *   this.b = _.constant('b');
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = _.constant('c');
-	 *  
+	 *
 	 * _.functionsIn(new Foo);
 	 * // => ['a', 'b', 'c']
 	 **/
@@ -2967,19 +2982,19 @@ var DongLiang = {
 	 * object (Object): 要检索的对象。
 	 * path (Array|string): 要获取属性的路径。
 	 * [defaultValue] (*): 如果解析值是 undefined ，这值会被返回。
-	 *    
+	 *
 	 * 返回值
 	 * (*): 返回解析的值。
 	 * 例子
-	 * 
+	 *
 	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
-	 *  
+	 *
 	 * _.get(object, 'a[0].b.c');
 	 * // => 3
-	 *  
+	 *
 	 * _.get(object, ['a', '0', 'b', 'c']);
 	 * // => 3
-	 *  
+	 *
 	 * _.get(object, 'a.b.c', 'default');
 	 * // => 'default'
 	 **/
@@ -3004,24 +3019,24 @@ var DongLiang = {
 	 * 参数。
 	 * object (Object): 要检索的对象。
 	 * path (Array|string): 要检查的路径path
-	 *    
+	 *
 	 * 返回值
 	 * [defaultValue] (*): 如果解析值是 undefined ，这值会被返回。
 	 * (boolean): 如果path存在，那么返回 true ，否则返回 false。
 	 * 例子
-	 * 
+	 *
 	 * var object = { 'a': { 'b': 2 } };
 	 * var other = _.create({ 'a': _.create({ 'b': 2 }) });
-	 *  
+	 *
 	 * _.has(object, 'a');
 	 * // => true
-	 *  
+	 *
 	 * _.has(object, 'a.b');
 	 * // => true
-	 *  
+	 *
 	 * _.has(object, ['a', 'b']);
-	 * // => true 
-	 *  
+	 * // => true
+	 *
 	 * _.has(other, 'a');
 	 * // => false
 	 **/
@@ -3046,20 +3061,20 @@ var DongLiang = {
 	 * 参数。
 	 * object (Object): 要键值倒置对象。
 	 * [iteratee=_.identity] (Function): 每次迭代时调用的函数。
-	 *    
+	 *
 	 * 返回值
 	 * (Object): 返回新的键值倒置后的对象
 	 * 例子
 	 * var object = { 'a': 1, 'b': 2, 'c': 1 };
-	 *  
+	 *
 	 * _.invertBy(object);
 	 * // => { '1': ['a', 'c'], '2': ['b'] }
-	 *  
+	 *
 	 * _.invertBy(object, function(value) {
 	 *   return 'group' + value;
 	 * });
 	 * // => { 'group1': ['a', 'c'], 'group2': ['b'] }
-	 *  
+	 *
 	 **/
 	invertBy: function(object, iteratee) {
 		var result = {}
@@ -3089,14 +3104,14 @@ var DongLiang = {
 	 * 返回值
 	 * (Object): 返回映射后的新对象。
 	 * 例子
-	 * var users = { 
-	 *   'fred':    { 'user': 'fred',    'age': 40 },  
-	 *   'pebbles': { 'user': 'pebbles', 'age': 1 }    
-	 * };   
-	 *   
-	 * _.mapValues(users, function(o) { return o.age; }); 
-	 * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)   
-	 *   
+	 * var users = {
+	 *   'fred':    { 'user': 'fred',    'age': 40 },
+	 *   'pebbles': { 'user': 'pebbles', 'age': 1 }
+	 * };
+	 *
+	 * _.mapValues(users, function(o) { return o.age; });
+	 * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
+	 *
 	 * _.mapValues(users, 'age');
 	 * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
 	 **/
@@ -3126,7 +3141,7 @@ var DongLiang = {
 	 * (Object): 返回新对象。
 	 * 例子
 	 * var object = { 'a': 1, 'b': '2', 'c': 3 };
-	 *  
+	 *
 	 * _.omit(object, ['a', 'c']);
 	 * // => { 'b': '2' }
 	 **/
@@ -3143,13 +3158,13 @@ var DongLiang = {
 	/**
 	 * 反向版 _.pickBy；这个方法一个对象，这个对象忽略 predicate（断言函数）判断不是真值的属性后，object自身和继承的可枚举属性组成。predicate调用与2个参数：(value, key)。
 	 * 参数。
-	 * object (Object): 来源对象。 
-	 * [predicate=_.identity] (Function): 调用每一个属性的函数。 
+	 * object (Object): 来源对象。
+	 * [predicate=_.identity] (Function): 调用每一个属性的函数。
 	 * 返回值
 	 * (Object): 返回新对象。
 	 * 例子
 	 * var object = { 'a': 1, 'b': '2', 'c': 3 };
-	 *  
+	 *
 	 * _.omitBy(object, _.isNumber);
 	 * // => { 'b': '2' }
 	 **/
@@ -3178,9 +3193,9 @@ var DongLiang = {
 	 * 返回值
 	 * (boolean): 如果 value 是一个日期对象，那么返回 true，否则返回 false。
 	 * 例子
-	 * _.isDate(new Date); 
+	 * _.isDate(new Date);
 	 * // => true
-	 *  
+	 *
 	 * _.isDate('Mon April 23 2012');
 	 * // => false
 	 **/
@@ -3197,7 +3212,7 @@ var DongLiang = {
 	 * 例子
 	 * _.isElement(document.body);
 	 * // => true
-	 *  
+	 *
 	 * _.isElement('<body>');
 	 * // => false
 	 **/
@@ -3207,11 +3222,11 @@ var DongLiang = {
 
 	/**
 	 * 检查 value 是否为一个空对象，集合，映射或者set。 判断的依据是除非是有枚举属性的对象，length 大于 0 的 arguments object, array, string 或类jquery选择器。
-	 *  
-	 * 对象如果被认为为空，那么他们没有自己的可枚举属性的对象。 
-	 *  
+	 *
+	 * 对象如果被认为为空，那么他们没有自己的可枚举属性的对象。
+	 *
 	 * 类数组值，比如arguments对象，array，buffer，string或者类jQuery集合的length 为 0，被认为是空。类似的，map（映射）和set 的size 为 0，被认为是空。
-	 *  
+	 *
 	 * 参数
 	 * value (*): 要检查的值。
 	 * 返回值
@@ -3219,13 +3234,13 @@ var DongLiang = {
 	 * 例子
 	 * _.isEmpty(null);
 	 * // => true
-	 *  
+	 *
 	 * _.isEmpty(true);
 	 * // => true
-	 *  
+	 *
 	 * _.isEmpty(1);
 	 * // => true
-	 *  
+	 *
 	 * _.isEmpty([1, 2, 3]);
 	 * // => false
 	 *
@@ -3295,7 +3310,7 @@ var DongLiang = {
 	 * 例子
 	 * _.isError(new Error);
 	 * // => true
-	 *  
+	 *
 	 * _.isError(Error);
 	 * // => false
 	 **/
@@ -3310,10 +3325,10 @@ var DongLiang = {
 	},
 
 	/**
-	 * 检查 value 是否是原始有限数值。  
-	 * 
-	 * ** 注意:** 这个方法基于 Number.isFinite. 
-	 * 
+	 * 检查 value 是否是原始有限数值。
+	 *
+	 * ** 注意:** 这个方法基于 Number.isFinite.
+	 *
 	 * 参数
 	 * value (*): 要检查的值
 	 * 返回值
@@ -3321,7 +3336,7 @@ var DongLiang = {
 	 * 例子
 	 * _.isFinite(3);
 	 * // => true
-	 *  
+	 *
 	 * _.isFinite(Number.MIN_VALUE);
 	 * // => true
 	 * _.isFinite(Infinity);
@@ -3348,7 +3363,7 @@ var DongLiang = {
 	 * 例子
 	 * _.isFunction(_);
 	 * // => true
-	 *  
+	 *
 	 * _.isFunction(/abc/);
 	 * // => false
 	 *
@@ -3358,7 +3373,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 检查 value 是否为一个整数。。 
+	 * 检查 value 是否为一个整数。。
 	 * 参数
 	 * value (*): 要检查的值
 	 * 返回值
@@ -3366,14 +3381,14 @@ var DongLiang = {
 	 * 例子
 	 * _.isInteger(3);
 	 * // => true
-	 *  
+	 *
 	 * _.isInteger(Number.MIN_VALUE);
 	 * // => false
 	 *
 	 * _.isInteger(Infinity);
 	 * // => false
-	 *  
-	 * _.isInteger('3'); 
+	 *
+	 * _.isInteger('3');
 	 * // => false
 	 **/
 	isInteger: function(value) {
@@ -3385,7 +3400,7 @@ var DongLiang = {
 
 
 	/**
-	 * 分配来源对象的可枚举属性到目标对象上。 来源对象的应用规则是从左到右，随后的下一个对象的属性会覆盖上一个对象的属性。 
+	 * 分配来源对象的可枚举属性到目标对象上。 来源对象的应用规则是从左到右，随后的下一个对象的属性会覆盖上一个对象的属性。
 	 * 注意: 这方法会改变 object，参考自 Object.assign.
 	 * 参数
 	 * object (Object): 目标对象。
@@ -3396,14 +3411,14 @@ var DongLiang = {
 	 * function Foo() {
 	 *   this.a = 1;
 	 * }
-	 *  
+	 *
 	 * function Bar() {
 	 *   this.c = 3;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.b = 2;
 	 * Bar.prototype.d = 4;
-	 *  
+	 *
 	 * _.assign({ 'a': 0 }, new Foo, new Bar);
 	 * // => { 'a': 1, 'c': 3 }
 	 *
@@ -3476,13 +3491,13 @@ var DongLiang = {
 	/**
 	 * 创建一个对象，这个对象组成为从 object 中经 predicate 判断为真值的属性。 predicate调用2个参数：(value, key)
 	。 * 参数。
-	 * object (Object): 来源对象。 
-	 * [predicate=_.identity] (Function): 调用每一个属性的函数。 
+	 * object (Object): 来源对象。
+	 * [predicate=_.identity] (Function): 调用每一个属性的函数。
 	 * 返回值
 	 * (Object): 返回新对象。
 	 * 例子
 	 * var object = { 'a': 1, 'b': '2', 'c': 3 };
-	 *  
+	 *
 	 * _.pickBy(object, _.isNumber);
 	 * // => { 'a': 1, 'c': 3 }
 	 **/
@@ -3509,11 +3524,11 @@ var DongLiang = {
 	 *   this.a = 1;
 	 *   this.b = 2;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = 3;
-	 *  
+	 *
 	 * _.toPairs(new Foo);
-	 * // => [['a', 1], ['b', 2]] (iteration order is not guaranteed)  
+	 * // => [['a', 1], ['b', 2]] (iteration order is not guaranteed)
 	 **/
 	toPairs: function(object) {
 		var result = []
@@ -3539,9 +3554,9 @@ var DongLiang = {
 	 *   this.a = 1;
 	 *   this.b = 2;
 	 * }
-	 *  
+	 *
 	 * Foo.prototype.c = 3;
-	 *  
+	 *
 	 * toPairsIn(new Foo);
 	 * // => [['a', 1], ['b', 2], ['c', 3]] (iteration order is not guaranteed)
 	 **/
@@ -3557,23 +3572,23 @@ var DongLiang = {
 	},
 
 	/**
-	 * 创建 object 自身可枚举属性的值为数组。 
+	 * 创建 object 自身可枚举属性的值为数组。
 	 * 注意: 非对象的值会强制转换为对象。
 	 * 参数
 	 * object (Object): 要检索的对象。
-	 * 
+	 *
 	 * 返回值
 	 * (Array): 返回对象属性的值的数组。
 	 *function Foo() {
 	 *  this.a = 1;
 	 *  this.b = 2;
 	 *}
-	 * 
+	 *
 	 * Foo.prototype.c = 3;
-	 * 
+	 *
 	 * values(new Foo);
 	 * => [1, 2] (无法保证遍历的顺序)
-	 * 
+	 *
 	 * values('hi');
 	 * => ['h', 'i']
 	 *
@@ -3623,16 +3638,16 @@ var DongLiang = {
 	},
 
 	/**
-	 * 转义string中的 "&", "<", ">", '"', "'", 和 "`" 字符为HTML实体字符。 
+	 * 转义string中的 "&", "<", ">", '"', "'", 和 "`" 字符为HTML实体字符。
 	 * 注意: 不会转义其他字符。如果需要，可以使用第三方库，例如 he。
 	 * 参数
 	 * [string=''] (string): 要转义的字符串。
 	 * 返回值
-	 * (string): 返回处理后的字符串。	
+	 * (string): 返回处理后的字符串。
 	 * 例子
 	 * _.escape('fred, barney, & pebbles');
 	 * // => 'fred, barney, &amp; pebbles'
-	 *  
+	 *
 	 **/
 	//"&", "<", ">", '"', "'", 和 "`"
 	escape: function(string) {
@@ -3658,11 +3673,11 @@ var DongLiang = {
 	 * 参数
 	 * [string=''] (string): 要转义的字符串。
 	 * 返回值
-	 * (string): 返回处理后的字符串。	
+	 * (string): 返回处理后的字符串。
 	 * 例子
 	 * _.escapeRegExp('[lodash](https://lodash.com/)');
 	 * // => '\[lodash\]\(https://lodash\.com/\)'
-	 *  
+	 *
 	 **/
 	escapeRegExp: function(string) {
 		var exchanged = {
@@ -3691,14 +3706,14 @@ var DongLiang = {
 	 * 参数
 	 * [string=''] (string): 要转义的字符串。
 	 * 返回值
-	 * (string): 返回处理后的字符串。	
+	 * (string): 返回处理后的字符串。
 	 * 例子
 	 * _.lowerFirst('Fred');
 	 * // => 'fred'
-	 *  
+	 *
 	 * _.lowerFirst('FRED');
 	 * // => 'fRED'
-	 *  
+	 *
 	 **/
 	lowerFirst: function(string) {
 		return string.slice(0, 1).toLowerCase() +
@@ -3713,16 +3728,16 @@ var DongLiang = {
 	 * [length=0] (number): 填充的长度。
 	 * [chars=' '] (string): 填充字符。
 	 * 返回值
-	 * (string): 返回填充后的字符串。	
+	 * (string): 返回填充后的字符串。
 	 * 例子
 	 * _.pad('abc', 8);
 	 * // => '  abc   '
-	 *  
+	 *
 	 *  _.pad('abc', 8, '_-');
-	 *  // => '_-abc_-_' 
+	 *  // => '_-abc_-_'
 	 * _.pad('abc', 3);
 	 * // => 'abc'
-	 *  
+	 *
 	 **/
 	pad: function(string, length, chars = ' ') {
 		if (string.length < length) {
@@ -3747,16 +3762,16 @@ var DongLiang = {
 	 * [length=0] (number): 填充的长度。
 	 * [chars=' '] (string): 填充字符。
 	 * 返回值
-	 * (string): 返回填充后的字符串。	
+	 * (string): 返回填充后的字符串。
 	 * 例子
 	 * _.padEnd('abc', 6);
 	 * // => 'abc   '
-	 *  
+	 *
 	 * _.padEnd('abc', 6, '_-');
 	 * // => 'abc_-_'
 	 * _.padEnd('abc', 3);
 	 * // => 'abc'
-	 *  
+	 *
 	 **/
 	padEnd: function(string, length, chars = ' ') {
 		if (string.length < length) {
@@ -3773,16 +3788,16 @@ var DongLiang = {
 	 * [length=0] (number): 填充的长度。
 	 * [chars=' '] (string): 填充字符。
 	 * 返回值
-	 * (string): 返回填充后的字符串。	
+	 * (string): 返回填充后的字符串。
 	 * 例子
 	 * _.padStart('abc', 6);
 	 * // => '   abc'
-	 *  
+	 *
 	 * _.padStart('abc', 6, '_-');
 	 * // => '_-_abc'
 	 * _.padStart('abc', 3);
 	 * // => 'abc'
-	 *  
+	 *
 	 **/
 	padStart: function(string, length, chars = ' ') {
 		if (string.length < length) {
@@ -3793,16 +3808,16 @@ var DongLiang = {
 	},
 
 	/**
-	 * 转换string字符串为指定基数的整数。 如果基数是 undefined 或者 0，则radix基数默认是10，如果string字符串是16进制，则radix基数为 16。 
+	 * 转换string字符串为指定基数的整数。 如果基数是 undefined 或者 0，则radix基数默认是10，如果string字符串是16进制，则radix基数为 16。
 	 * 参数
 	 * string (string): 要转换的字符串。
 	 * [radix=10] (number):转换基数。
 	 * 返回值
-	 * (number): 返回转换后的整数。	
+	 * (number): 返回转换后的整数。
 	 * 例子
 	 * _.parseInt('08');
 	 * // => 8
-	 *  
+	 *
 	 * _.map(['6', '08', '10'], _.parseInt);
 	 * // => [6, 8, 10]
 	 **/
@@ -3821,7 +3836,7 @@ var DongLiang = {
 	 * [string=''] (string): 要重复的字符串。
 	 * [n=1] (number): 重复的次数。
 	 * 返回值
-	 * (string): 返回重复的字符串。	
+	 * (string): 返回重复的字符串。
 	 * 例子
 	 * _.repeat('*', 3);
 	 * // => '***'
@@ -3842,7 +3857,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 替换string字符串中匹配的pattern为给定的replacement 。 
+	 * 替换string字符串中匹配的pattern为给定的replacement 。
 	 * 参数
 	 * [string=''] (string): 待替换的字符串。
 	 * pattern (RegExp|string): 要匹配的内容。
@@ -3880,18 +3895,18 @@ var DongLiang = {
 	},
 
 	/**
-	 * 从string字符串中移除前面和后面的 空格 或 指定的字符。 
+	 * 从string字符串中移除前面和后面的 空格 或 指定的字符。
 	 * 参数
 	 * [string=''] (string): 要处理的字符串。
 	 * [chars=whitespace] (string): 要移除的字符。
 	 * 返回值
-	 * (string): 返回处理后的字符串。	
+	 * (string): 返回处理后的字符串。
 	 * 例子
 	 * _.trim('  abc  ');
 	 * // => 'abc'
 	 * _.trim('-_-abc-_-', '_-');
 	 * // => 'abc'
-	 *  
+	 *
 	 * _.map(['  foo  ', '  bar  '], _.trim);
 	 * // => ['foo', 'bar']
 	 **/
@@ -3904,16 +3919,16 @@ var DongLiang = {
 	},
 
 	/**
-	 * 从string字符串中移除后面的 空格 或 指定的字符。符。 
+	 * 从string字符串中移除后面的 空格 或 指定的字符。符。
 	 * 参数
 	 * [string=''] (string): 要处理的字符串。
 	 * [chars=whitespace] (string): 要移除的字符。
 	 * 返回值
-	 * (string): 返回处理后的字符串。	
+	 * (string): 返回处理后的字符串。
 	 * 例子
 	 * _.trimEnd('  abc  ');
 	 * // => '  abc'
-	 *  
+	 *
 	 * _.trimEnd('-_-abc-_-', '_-');
 	 * // => '-_-abc'
 	 **/
@@ -3926,16 +3941,16 @@ var DongLiang = {
 	},
 
 	/**
-	 * 从string字符串中移除前面的 空格 或 指定的字符。。 
+	 * 从string字符串中移除前面的 空格 或 指定的字符。。
 	 * 参数
 	 * [string=''] (string): 要处理的字符串。
 	 * [chars=whitespace] (string): 要移除的字符。
 	 * 返回值
-	 * (string): 返回处理后的字符串。	
+	 * (string): 返回处理后的字符串。
 	 * 例子
 	 * _.trimStart('  abc  ');
 	 * // => 'abc  '
-	 *  
+	 *
 	 * _.trimStart('-_-abc-_-', '_-');
 	 * // => 'abc-_-'
 	 **/
@@ -4110,7 +4125,7 @@ var DongLiang = {
 	// 	function isDigit(char) {
 	// 		//因为i可能指到最后一个字符的后一个位置了
 	// 		//这时把char取出来的话是undefined
-	// 		//比如json = `123 ` 
+	// 		//比如json = `123 `
 	// 		if (!char) {
 	// 			return false;
 	// 		}
@@ -4147,7 +4162,7 @@ var DongLiang = {
 	},
 
 	/**
-	 * 创建一个从 object 中选中的属性的对象。 
+	 * 创建一个从 object 中选中的属性的对象。
 	 * 注意: 这个方法对于对于空集合返回 true，因为空集合的任何元素都是 true 。
 	 * 参数
 	 * object (Object): 来源对象。
@@ -4190,7 +4205,7 @@ var DongLiang = {
 	 * 创建唯一值的数组，这个数组包含所有给定数组都包含的元素，使用 SameValueZero进行相等性比较。（愚人码头注：可以理解为给定数组的交集
 	 * @param [arrays] (...Array): 待检查的数组。
 	 * @returns (Array): 返回一个包含所有传入数组交集元素的新数组
-	 * 
+	 *
 	 */
 	slice: function(start, end) {
 
@@ -4240,7 +4255,7 @@ var DongLiang = {
 // 	}
 // 	if (precision < 0) {
 // 		var newArray = number.split('');
-// 		newArray = newArray.splice[newArray.length-1+precision] = 
+// 		newArray = newArray.splice[newArray.length-1+precision] =
 
 // 	}
 // }
@@ -4315,7 +4330,7 @@ compact函数已完成
 concat函数完成
 ==================================================================
 */
-/*	
+/*
  *作用：创建一个新歌数组，把你传入的两个数组/值连接起来
  *参数：array (Array): 需要连接的数组,[values] (...Array): 需要连接的值
  * 返回值：(Array): 返回过滤后的数组.
@@ -4332,7 +4347,7 @@ concat函数完成
 
 //用arrguments，因为参数不确定嘛
 //这里出现了一个颠覆三观的bug
-//var 
+//var
 // function concat() {
 // 	var length = arguments.length;
 // 	var result = arguments[0];
@@ -4496,7 +4511,7 @@ indexOf函数完成
 
 lastIndexOf([1, 2, 1, 2], 2);
 // => 3
- 
+
 // Search from the `fromIndex`.
 lastIndexOf([1, 2, 1, 2], 2, 2);
 // => 1
@@ -4640,7 +4655,7 @@ pull函数完成
 pullAll函数完成
 
 var array = ['a', 'b', 'c', 'a', 'b', 'c'];
- 
+
 pullAll(array, ['a', 'c']);
 console.log(array);
 // => ['b', 'b']
@@ -4659,7 +4674,7 @@ console.log(array);
 // 			for (var j = 0; j < arguments[1].length; j++) {
 // 				if (arguments[0][i] == arguments[1][j]) {
 // 					arguments[0].splice(i, 1)
-// 					j = -1; 
+// 					j = -1;
 // 				}
 // 			}
 // 		}
@@ -4675,10 +4690,10 @@ pullAt函数   完成
 
 var array = ['a', 'b', 'c', 'd'];
 var pulled = pullAt(array, [1, 3]);
- 
+
 console.log(array);
 // => ['a', 'c']
- 
+
 console.log(pulled);
 // => ['b', 'd']
 ==================================================================
@@ -4799,13 +4814,13 @@ takeRight函数完成
 
 _.takeRight([1, 2, 3]);
 // => [3]
- 
+
 _.takeRight([1, 2, 3], 2);
 // => [2, 3]
- 
+
 _.takeRight([1, 2, 3], 5);
 // => [1, 2, 3]
- 
+
 _.takeRight([1, 2, 3], 0);
 // => []
 ==================================================================
@@ -4880,7 +4895,7 @@ uniq函数完成
  * 并且创建一个数组，分组元素到打包前的结构。
  * （愚人码头：返回数组的第一个元素包含所有的输入数组的第一元素，
  * 第一个元素包含了所有的输入数组的第二元素，依此类推。）
- * 
+ *
  *
  * 参数
  * [arrays] (...Array): 要处理的数组。
@@ -4988,23 +5003,23 @@ capitalize('FRED');
 
 /**
  * 参数
- * 
+ *
  *[string=''] (string): 要检索的字符串。
  *[target] (string): 要检索字符。
  *[position=string.length] (number): 检索的位置。
  *
  * 返回
- * 
+ *
  * (boolean): 如果字符串string以target字符串结尾，那么返回 true，否则返回 false。
- * 
+ *
  * 例子
- * 
+ *
  * endsWith('abc', 'c');
  * => true
- *	
+ *
  *	endsWith('abc', 'b');
  *	// => false
- *	 
+ *
  *	endsWith('abc', 'b', 2);
  *	// => true
  */
@@ -5028,23 +5043,23 @@ capitalize('FRED');
 
 /**
  * 参数
- * 
+ *
  *[string=''] (string): 要检索的字符串。
  *[target] (string): 要检索字符。
  *[position=string.length] (number): 检索的位置。
  *
  * 返回
- * 
+ *
  * (boolean): 如果字符串string以target字符串结尾，那么返回 true，否则返回 false。
- * 
+ *
  * 例子
- * 
+ *
  * endsWith('abc', 'c');
  * => true
- *	
+ *
  *	endsWith('abc', 'b');
  *	// => false
- *	 
+ *
  *	endsWith('abc', 'b', 2);
  *	// => true
  */
@@ -5053,16 +5068,16 @@ capitalize('FRED');
 
 /**
  * 参数
- * 
+ *
  * [string=''] (string): 待替换的字符串。
  * pattern (RegExp|string): 要匹配的内容。
  * replacement (Function|string): 替换的内容。
  * 返回
- * 
+ *
  * (string): 返回替换后的字符串
- * 
+ *
  * 例子
- * 
+ *
  * replace('Hi Fred', 'Fred', 'Barney');
  *  => 'Hi Barney'
  */
@@ -5092,7 +5107,7 @@ capitalize('FRED');
  *
  *parseInt('08');
  *=> 8
- * 
+ *
  *map(['6', '08', '10'], _.parseInt);
  *=> [6, 8, 10]
  */
@@ -5116,7 +5131,7 @@ capitalize('FRED');
  *
  *lastIndexOf([1, 2, 1, 2], 2);
  * => 3
- * 
+ *
  *lastIndexOf([1, 2, 1, 2], 2, 2);
  *=> 1
  */
@@ -5142,5 +5157,5 @@ capitalize('FRED');
  *
  * xor([2, 1], [2, 3]);
  * => [1, 3]
- * 
+ *
  */
