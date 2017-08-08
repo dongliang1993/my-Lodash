@@ -273,3 +273,30 @@ _.isNull = function(obj) {
 _.isArray = nativeIsArray || function(obj) {
   return toString.call(obj) === '[object Array]'
 }
+
+// Is a given variable undefined?
+// 判断是否是 undefined
+// undefined 能被改写 （IE < 9）
+// undefined 只是全局对象的一个属性
+// 在局部环境能被重新定义
+// 但是「void 0」始终是 undefined
+_.isUndefined = function(obj) {
+  return obj === void 0
+}
+
+// Is a given array, string, or object empty?
+// An "empty" object has no enumerable own-properties.
+// 是否是 {}、[] 或者 "" 或者 null、undefined
+_.isEmpty = function(obj) {
+  if (obj == null) return true // null 和 undefined
+
+  // 如果是数组、类数组、或者字符串
+  // 根据 length 属性判断是否为空
+  // 后面的条件是为了过滤 isArrayLike 对于 {length: 10} 这样对象的判断 bug？
+  // 感觉类数组对象不会进入这里
+  if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) return obj.length === 0
+
+  // 如果是对象
+  // 根据 keys 数量判断是否为 Empty
+  return _.keys(obj).length === 0;
+};
