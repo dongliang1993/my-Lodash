@@ -256,6 +256,7 @@ _.isNaN = function(obj) {
 // 个人觉得直接用 toString.call(obj) 来判断就可以了
 // toString.call(obj) 的知识 http://www.cnblogs.com/youhong/p/6209054.html
 // http://www.jb51.net/article/79941.htm
+// type 是对象的构造函数
 _.isBoolean = function(obj) {
   return obj === true || obj === false || toString.call(obj) === '[object Boolean]'
 }
@@ -264,4 +265,11 @@ _.isBoolean = function(obj) {
 // 判断是否是 null
 _.isNull = function(obj) {
   return obj === null
+}
+
+// Is a given value an array?
+// Delegates to ECMA5's native Array.isArray
+// 判断是否为数组
+_.isArray = nativeIsArray || function(obj) {
+  return toString.call(obj) === '[object Array]'
 }
