@@ -389,3 +389,43 @@ _.each = _.forEach = function(obj, iteratee, context) {
   // 应该仅 OOP 调用有效
   return obj;
 };
+
+// A mostly-internal function to generate callbacks that can be applied
+// to each element in a collection, returning the desired result — either
+// identity, an arbitrary callback, a property matcher, or a property accessor.
+var cb = function(value, context, argCount) {
+  if (value == null) return _.identity;
+  if (_.isFunction(value)) return optimizeCb(value, context, argCount);
+  if (_.isObject(value)) return _.matcher(value);
+  return _.property(value);
+};
+
+// Return the results of applying the iteratee to each element.
+// 与 ES5 中 Array.prototype.map 使用方法类似
+// 传参形式与 _.each 方法类似
+// 遍历数组（每个元素）或者对象的每个元素（value）
+// 对每个元素执行 iteratee 迭代方法
+// 将结果保存到新的数组中，并返回
+_.map = _.collect = function(obj, iteratee, context) {
+  // 根据 context 确定不同的迭代函数
+  iteratee = cb(iteratee, context);
+
+  // 如果传参是对象，则获取它的 keys 值数组（短路表达式）
+  // http://www.qdfuns.com/notes/17897/234cca8e6a0bc114e22e93bb7d58c6a4.html
+  var keys = !isArrayLike(obj) && _.keys(obj),
+      // 如果 obj 为对象，则 length 为 key.length
+      // 如果 obj 为数组，则 length 为 obj.length
+      length = (keys || obj).length,
+      results = Array(length); // 结果数组
+
+  // 遍历
+  for (let index = 0; index < length; index++) {
+    // 如果 obj 为对象，则 currentKey 为对象键值 key
+    // 如果 obj 为数组，则 currentKey 为 index 值
+    var currentKey = keys ? keys[index] : index;
+    results[index] = iteratee(obj[currentKey], currentKey, obj);
+  }
+
+  // 返回新的结果数组
+  return results;
+};
