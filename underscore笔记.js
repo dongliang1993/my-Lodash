@@ -236,3 +236,32 @@ _.object = function(list, values) {
   }
   return result
 }
+
+// Is the given value `NaN`? (NaN is the only number which does not equal itself).
+// 判断是否是 NaN
+// NaN 是唯一的一个 `自己不等于自己` 的 number 类型
+// 这样写有 BUG
+// _.isNaN(new Number(0)) => true
+// 详见 https://github.com/hanzichi/underscore-analysis/issues/13
+// 最新版本（edge 版）已经修复该 BUG
+_.isNaN = function(obj) {
+  return _.isNumber(obj) && obj !== +obj;
+};
+
+// Is a given value a boolean?
+// 判断是否是布尔值
+// 基础类型（true、 false）
+// 以及 new Boolean() 两个方向判断
+// 有点多余了吧？
+// 个人觉得直接用 toString.call(obj) 来判断就可以了
+// toString.call(obj) 的知识 http://www.cnblogs.com/youhong/p/6209054.html
+// http://www.jb51.net/article/79941.htm
+_.isBoolean = function(obj) {
+  return obj === true || obj === false || toString.call(obj) === '[object Boolean]'
+}
+
+// Is a given value equal to null?
+// 判断是否是 null
+_.isNull = function(obj) {
+  return obj === null
+}
