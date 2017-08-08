@@ -103,8 +103,26 @@ _.keys = function(obj) {
   if (hasEnumBug) collectNonEnumProps(obj, keys);
 
   return keys;
-};
+}
 
+// Retrieve all the property names of an object.
+// 返回一个对象的 keys 数组
+// 不仅仅是 own enumerable properties
+// 还包括原型链上继承的属性
+_.allKeys = function(obj) {
+  // 容错
+  // 不是对象，则返回空数组
+  if (!_.isObject(obj)) return [];
+
+  const keys = []
+  for (var key in obj) keys.push(key)
+
+  // Ahem, IE < 9.
+  // IE < 9 下的 bug，同 _.keys 方法
+  if (hasEnumBug) collectNonEnumProps(obj, keys)
+
+  return keys
+}
 
 // IE < 9 下不能用 for in 来枚举的 key 值集合
 // 其实还有个 `constructor` 属性
@@ -185,4 +203,20 @@ _.values = function(obj) {
     values[i] = obj[keys[i]]
   }
   return values
+}
+
+// Invert the keys and values of an object. The values must be serializable.
+// 将一个对象的 key-value 键值对颠倒
+// 即原来的 key 为 value 值，原来的 value 值为 key 值
+// 需要注意的是，value 值不能重复（不然后面的会覆盖前面的）
+// 且新构造的对象符合对象构造规则
+// 并且返回新构造的对象
+_.invert = function(obj) {
+  // 返回的新的对象
+  const result = {}
+  const keys = _.keys(obj)
+  for (let i = 0, length = keys.length; i < length; i++) {
+    result[obj[keys[i]]] = keys[i]
+  }
+  return result
 }
