@@ -298,5 +298,94 @@ _.isEmpty = function(obj) {
 
   // 如果是对象
   // 根据 keys 数量判断是否为 Empty
-  return _.keys(obj).length === 0;
+  return _.keys(obj).length === 0
+}
+
+// Internal function that returns an efficient (for current engines) version
+// of the passed-in callback, to be repeatedly applied in other Underscore
+// functions.
+// underscore 内部方法
+// 根据 this 指向（context 参数）
+// 以及 argCount 参数
+// 二次操作返回一些回调、迭代方法
+// 函数的名字是 优化回调
+var optimizeCb = function(func, context, argCount) {
+  // 如果没有指定 this 指向，则返回原函数
+  if (context === void 0)
+    return func
+
+  switch (argCount == null ? 3 : argCount) {
+    case 1: return function(value) {
+      return func.call(context, value);
+    };
+    case 2: return function(value, other) {
+      return func.call(context, value, other);
+    };
+
+    // 如果有指定 this，但没有传入 argCount 参数
+    // 则执行以下 case
+    // _.each、_.map
+    case 3: return function(value, index, collection) {
+      return func.call(context, value, index, collection);
+    };
+
+    // _.reduce、_.reduceRight
+    case 4: return function(accumulator, value, index, collection) {
+      return func.call(context, accumulator, value, index, collection);
+    };
+  }
+
+  // 其实不用上面的 switch-case 语句
+  // 直接执行下面的 return 函数就行了
+  // 不这样做的原因是 call 比 apply 快很多
+  // .apply 在运行前要对作为参数的数组进行一系列检验和深拷贝，.call 则没有这些步骤
+  // 具体可以参考：
+  // https://segmentfault.com/q/1010000007894513
+  // http://www.ecma-international.org/ecma-262/5.1/#sec-15.3.4.3
+  // http://www.ecma-international.org/ecma-262/5.1/#sec-15.3.4.4
+  return function() {
+    return func.apply(context, arguments);
+  };
+};
+
+// The cornerstone, an `each` implementation, aka `forEach`.
+// Handles raw objects in addition to array-likes. Treats all
+// sparse array-likes as if they were dense.
+// 与 ES5 中 Array.prototype.forEach 使用方法类似
+// 遍历数组或者对象的每个元素
+// 第一个参数为数组（包括类数组）或者对象
+// 第二个参数为迭代方法，对数组或者对象每个元素都执行该方法
+// 该方法又能传入三个参数，分别为 (item, index, array)（(value, key, obj) for object）
+// 与 ES5 中 Array.prototype.forEach 方法传参格式一致
+// 第三个参数（可省略）确定第二个参数 iteratee 函数中的（可能有的）this 指向
+// 即 iteratee 中出现的（如果有）所有 this 都指向 context
+// notice: 不要传入一个带有 key 类型为 number 的对象！
+// notice: _.each 方法不能用 return 跳出循环（同样，Array.prototype.forEach 也不行）
+_.each = _.forEach = function(obj, iteratee, context) {
+  // 根据 context 确定不同的迭代函数
+  iteratee = optimizeCb(iteratee, context)
+
+  var i, length;
+
+  // 如果是类数组
+  // 默认不会传入类似 {length: 10} 这样的数据
+  if (isArrayLike(obj)) {
+    // 遍历
+    for (i = 0, length = obj.length; i < length; i++) {
+      iteratee(obj[i], i, obj);
+    }
+  } else { // 如果 obj 是对象
+    // 获取对象的所有 key 值
+    var keys = _.keys(obj);
+
+    // 如果是对象，则遍历处理 values 值
+    for (i = 0, length = keys.length; i < length; i++) {
+      iteratee(obj[keys[i]], keys[i], obj); // (value, key, obj)
+    }
+  }
+
+  // 返回 obj 参数
+  // 供链式调用（Returns the list for chaining）
+  // 应该仅 OOP 调用有效
+  return obj;
 };
