@@ -142,7 +142,7 @@ function collectNonEnumProps(obj, keys) {
   // see https://github.com/hanzichi/underscore-analysis/issues/3
   // 如果 obj 有 `constructor` 这个 key
   // 并且该 key 没有在 keys 数组中
-  // 存入 keys 数组
+  // 存入 keys 数组.
   var prop = 'constructor';
   if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
 
