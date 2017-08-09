@@ -26,12 +26,13 @@ var
 
 // Shortcut function for checking if an object has a given property directly
 // on itself (in other words, not on a prototype).
-// 判断对象中是否有指定 key
 // own properties, not on a prototype
+// 判断对象中是否有指定 key，不会沿着原型链去找
 _.has = function(obj, key) {
   // obj 不能为 null 或者 undefined
-  return obj != null && hasOwnProperty.call(obj, key);
-};
+  // 因为 null == undefined ，所以 obj != null 就排除了两者
+  return obj != null && hasOwnProperty.call(obj, key)
+}
 
 // Is a given variable an object?
 // 判断是否为对象
