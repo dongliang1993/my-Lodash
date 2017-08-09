@@ -213,6 +213,10 @@ _.invert = function(obj) {
   // 返回的新的对象
   const result = {}
   const keys = _.keys(obj)
+  // 为什么不用 for in ？
+  // 一个原因是 for in 会遍历原型链上的，另一个原因是
+  // for in 遍历的顺序是不稳定的
+  // 然而 _.keys 也是 for in 实现的。。。  尴尬了
   for (let i = 0, length = keys.length; i < length; i++) {
     result[obj[keys[i]]] = keys[i]
   }
@@ -244,8 +248,8 @@ _.object = function(list, values) {
 // 详见 https://github.com/hanzichi/underscore-analysis/issues/13
 // 最新版本（edge 版）已经修复该 BUG
 _.isNaN = function(obj) {
-  return _.isNumber(obj) && obj !== +obj;
-};
+  return _.isNumber(obj) && obj !== +obj
+}
 
 // Is a given value a boolean?
 // 判断是否是布尔值
@@ -292,7 +296,7 @@ _.isEmpty = function(obj) {
   // 如果是数组、类数组、或者字符串
   // 根据 length 属性判断是否为空
   // 后面的条件是为了过滤 isArrayLike 对于 {length: 10} 这样对象的判断 bug？
-  // 感觉类数组对象不会进入这里
+  // {length: 10} 这样的类数组对象会直接到最后的return
   if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) return obj.length === 0
 
   // 如果是对象
