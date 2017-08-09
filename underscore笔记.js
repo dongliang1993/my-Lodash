@@ -307,11 +307,13 @@ _.isEmpty = function(obj) {
 // Internal function that returns an efficient (for current engines) version
 // of the passed-in callback, to be repeatedly applied in other Underscore
 // functions.
+// 函数的名字是 优化回调, 接受三个参数，func、上下文、参数个数
+// 感觉这个函数最主要的作用是把传进来的函数和上下文绑定在一起 ，
+// 然后根据 argCount 参数确定处理几个参数
 // underscore 内部方法
 // 根据 this 指向（context 参数）
 // 以及 argCount 参数
 // 二次操作返回一些回调、迭代方法
-// 函数的名字是 优化回调
 var optimizeCb = function(func, context, argCount) {
   // 如果没有指定 this 指向，则返回原函数
   if (context === void 0)
@@ -319,23 +321,23 @@ var optimizeCb = function(func, context, argCount) {
 
   switch (argCount == null ? 3 : argCount) {
     case 1: return function(value) {
-      return func.call(context, value);
-    };
+      return func.call(context, value)
+    }
     case 2: return function(value, other) {
       return func.call(context, value, other);
-    };
+    }
 
     // 如果有指定 this，但没有传入 argCount 参数
     // 则执行以下 case
     // _.each、_.map
     case 3: return function(value, index, collection) {
-      return func.call(context, value, index, collection);
-    };
+      return func.call(context, value, index, collection)
+    }
 
     // _.reduce、_.reduceRight
     case 4: return function(accumulator, value, index, collection) {
-      return func.call(context, accumulator, value, index, collection);
-    };
+      return func.call(context, accumulator, value, index, collection)
+    }
   }
 
   // 其实不用上面的 switch-case 语句
@@ -347,9 +349,9 @@ var optimizeCb = function(func, context, argCount) {
   // http://www.ecma-international.org/ecma-262/5.1/#sec-15.3.4.3
   // http://www.ecma-international.org/ecma-262/5.1/#sec-15.3.4.4
   return function() {
-    return func.apply(context, arguments);
-  };
-};
+    return func.apply(context, arguments)
+  }
+}
 
 // The cornerstone, an `each` implementation, aka `forEach`.
 // Handles raw objects in addition to array-likes. Treats all
