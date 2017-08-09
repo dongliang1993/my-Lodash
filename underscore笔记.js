@@ -141,6 +141,7 @@ const hasEnumBug = !{toString: null}.propertyIsEnumerable('toString')
 // keys 为键数组
 // 利用 JavaScript 按值传递的特点
 // 传入数组作为参数，能直接改变数组的值
+// TODO
 function collectNonEnumProps(obj, keys) {
   var nonEnumIdx = nonEnumerableProps.length
   var constructor = obj.constructor
@@ -150,7 +151,7 @@ function collectNonEnumProps(obj, keys) {
   // 则 proto 变量为 Object.prototype
   // 如果没有被重写
   // 则为 obj.constructor.prototype
-  var proto = (_.isFunction(constructor) && constructor.prototype) || ObjProto;
+  var proto = (_.isFunction(constructor) && constructor.prototype) || ObjProto
 
   // Constructor is a special case.
   // `constructor` 属性需要特殊处理 (是否有必要？)
@@ -158,7 +159,7 @@ function collectNonEnumProps(obj, keys) {
   // 如果 obj 有 `constructor` 这个 key
   // 并且该 key 没有在 keys 数组中
   // 存入 keys 数组.
-  var prop = 'constructor';
+  var prop = 'constructor'
   if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
 
   // 遍历 nonEnumerableProps 数组中的 keys
@@ -177,9 +178,9 @@ function collectNonEnumProps(obj, keys) {
 // 如果是数组（类数组），返回长度（length 属性）
 // 如果是对象，返回键值对数量
 _.size = function(obj) {
-  if (obj == null) return 0; // 这里用 == 是因为 undefined == null, 不穿参数返回 0
-  return isArrayLike(obj) ? obj.length : _.keys(obj).length;
-};
+  if (obj == null) return 0 // undefined, null 返回 0
+  return isArrayLike(obj) ? obj.length : _.keys(obj).length
+}
 
 // Retrieve the values of an object's properties.
 // ===== //
@@ -222,6 +223,7 @@ _.invert = function(obj) {
 // pairs, or two parallel arrays of the same length -- one of keys, and one of
 // the corresponding values.
 // 将数组转化为对象
+// 分为一维数组和二维数组,处理方法不同
 _.object = function(list, values) {
   const result = {}
   for (let i = 0, length = getLength(list); i < length; i++) {
