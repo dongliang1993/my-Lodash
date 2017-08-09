@@ -66,7 +66,6 @@ const getLength = property('length')
 // 类数组，即拥有 length 属性并且 length 属性值为 Number 类型的元素，就这两条规则
 // 包括数组、arguments、HTML Collection 以及 NodeList 等等
 // 包括类似 {length: 10} 这样的对象
-// 包括字符串、函数等
 // https://segmentfault.com/a/1190000000415572 参考文章
 const isArrayLike = function(collection) {
   // 返回参数 collection 的 length 属性值
@@ -85,28 +84,27 @@ const isArrayLike = function(collection) {
 _.keys = function(obj) {
   // 容错
   // 如果传入的参数不是对象，则返回空数组
-  if (!_.isObject(obj)) return [];
+  if (!_.isObject(obj)) return []
 
   // 如果浏览器支持 ES5 Object.key() 方法
   // 则优先使用该方法
-  if (nativeKeys) return nativeKeys(obj);
+  if (nativeKeys) return nativeKeys(obj)
 
-  var keys = [];
-
-  // own enumerable properties
-  for (var key in obj)
-    // hasOwnProperty
-    if (_.has(obj, key)) keys.push(key);
-
+  var keys = []
+  for (var key in obj) {
+    // 循环将迭代对象的所有可枚举属性和从它的构造函数的 prototype 继承而来的（包括被覆盖的内建属性）。
+    // 所以要做个限制, 只遍历自身的可枚举属性，注意，是自身和可枚举两个条件
+    if (_.has(obj, key)) keys.push(key)
+  }
   // Ahem, IE < 9.
   // IE < 9 下不能用 for in 来枚举某些 key 值
   // 传入 keys 数组为参数
   // 因为 JavaScript 下函数参数按值传递
   // 所以 keys 当做参数传入后会在 `collectNonEnumProps` 方法中改变值
-  if (hasEnumBug) collectNonEnumProps(obj, keys);
-
-  return keys;
+  if (hasEnumBug) collectNonEnumProps(obj, keys) return keys
 }
+
+
 
 // Retrieve all the property names of an object.
 // 返回一个对象的 keys 数组
