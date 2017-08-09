@@ -13,7 +13,7 @@ var
   push             = ArrayProto.push,
   slice            = ArrayProto.slice,
   toString         = ObjProto.toString,
-  hasOwnProperty   = ObjProto.hasOwnProperty;
+  hasOwnProperty   = ObjProto.hasOwnProperty
 
 // All **ECMAScript 5** native function implementations that we hope to use
 // are declared here.
@@ -369,31 +369,28 @@ var optimizeCb = function(func, context, argCount) {
 _.each = _.forEach = function(obj, iteratee, context) {
   // 根据 context 确定不同的迭代函数
   iteratee = optimizeCb(iteratee, context)
-
-  var i, length;
-
+  var i, length
   // 如果是类数组
   // 默认不会传入类似 {length: 10} 这样的数据
   if (isArrayLike(obj)) {
     // 遍历
     for (i = 0, length = obj.length; i < length; i++) {
-      iteratee(obj[i], i, obj);
+      iteratee(obj[i], i, obj)
     }
   } else { // 如果 obj 是对象
     // 获取对象的所有 key 值
-    var keys = _.keys(obj);
-
+    const keys = _.keys(obj)
     // 如果是对象，则遍历处理 values 值
     for (i = 0, length = keys.length; i < length; i++) {
-      iteratee(obj[keys[i]], keys[i], obj); // (value, key, obj)
+      iteratee(obj[keys[i]], keys[i], obj) // (value, key, obj)
     }
   }
-
+  
   // 返回 obj 参数
   // 供链式调用（Returns the list for chaining）
   // 应该仅 OOP 调用有效
-  return obj;
-};
+  return obj
+}
 
 
 // Returns a predicate for checking whether an object has a given set of
