@@ -44,16 +44,18 @@ _.isObject = function(obj) {
 }
 
 // 闭包
+// 不知道为什么要包一层，可能是为了可读性更好吧
 // void 0 就是 undefined
 // https://github.com/hanzichi/underscore-analysis/issues/1
 const property = function(key) {
   return function(obj) {
+    // 也算是个容错处理吧，undefined[key] 会报错
     return obj == null ? void 0 : obj[key]
   }
 }
 
 // Math.pow(2, 53) - 1 是 JavaScript 中能精确表示的最大数字
-const MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+const MAX_ARRAY_INDEX = Math.pow(2, 53) - 1
 
 // getLength 函数
 // 该函数传入一个参数，返回参数的 length 属性值
@@ -68,8 +70,8 @@ const getLength = property('length')
 // https://segmentfault.com/a/1190000000415572 参考文章
 const isArrayLike = function(collection) {
   // 返回参数 collection 的 length 属性值
-  const length = getLength(collection);
-  return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX
+  const length = getLength(collection)
+  return typeof length === 'number' && length >= 0 && length <= MAX_ARRAY_INDEX
 }
 
 // Retrieve the names of an object's own properties.
