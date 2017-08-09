@@ -104,8 +104,6 @@ _.keys = function(obj) {
   if (hasEnumBug) collectNonEnumProps(obj, keys) return keys
 }
 
-
-
 // Retrieve all the property names of an object.
 // 返回一个对象的 keys 数组
 // 不仅仅是 own enumerable properties
@@ -113,15 +111,13 @@ _.keys = function(obj) {
 _.allKeys = function(obj) {
   // 容错
   // 不是对象，则返回空数组
-  if (!_.isObject(obj)) return [];
+  if (!_.isObject(obj)) return []
 
   const keys = []
   for (var key in obj) keys.push(key)
-
   // Ahem, IE < 9.
   // IE < 9 下的 bug，同 _.keys 方法
   if (hasEnumBug) collectNonEnumProps(obj, keys)
-
   return keys
 }
 
