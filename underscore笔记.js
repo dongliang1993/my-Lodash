@@ -390,6 +390,105 @@ _.each = _.forEach = function(obj, iteratee, context) {
   return obj;
 };
 
+
+// Returns a predicate for checking whether an object has a given set of
+// `key:value` pairs.
+// 判断一个给定的对象是否有某些键值对
+// 函数名字叫【 匹配器 】
+_.matcher = _.matches = function(attrs) {
+  attrs = _.extendOwn({}, attrs);
+  return function(obj) {
+    return _.isMatch(obj, attrs);
+  };
+};
+
+// Returns whether an object has a given set of `key:value` pairs.
+// attrs 参数为一个对象
+// 判断 object 对象中是否有 attrs 中的所有 key-value 键值对
+// 返回布尔值
+_.isMatch = function(object, attrs) {
+  // 提取 attrs 对象的所有 keys
+  var keys = _.keys(attrs), length = keys.length;
+
+  // 如果 object 为空
+  // 根据 attrs 的键值对数量返回布尔值
+  if (object == null) return !length;
+
+  // 这一步有必要？
+  var obj = Object(object);
+
+  // 遍历 attrs 对象键值对
+  for (var i = 0; i < length; i++) {
+    var key = keys[i];
+
+    // 如果 obj 对象没有 attrs 对象的某个 key
+    // 或者对于某个 key，它们的 value 值不同
+    // 则证明 object 并不拥有 attrs 的所有键值对
+    // 则返回 false
+    if (attrs[key] !== obj[key] || !(key in obj)) return false;
+  }
+
+  return true;
+};
+
+// Assigns a given object with all the own properties in the passed-in object(s)
+// (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+// 跟 extend 方法类似，但是只把 own properties 拷贝给第一个参数对象
+// 只继承 own properties 的键值对
+// 参数个数 >= 1
+_.extendOwn = _.assign = createAssigner(_.keys);
+
+// An internal function for creating assigner functions.
+// 有三个方法用到了这个内部函数
+// _.extend & _.extendOwn & _.defaults
+// _.extend = createAssigner(_.allKeys);
+// _.extendOwn = _.assign = createAssigner(_.keys);
+// _.defaults = createAssigner(_.allKeys, true);
+var createAssigner = function(keysFunc, undefinedOnly) {
+  // 返回函数
+  // 经典闭包（undefinedOnly 参数在返回的函数中被引用）
+  // 返回的函数参数个数 >= 1
+  // 将第二个开始的对象参数的键值对 "继承" 给第一个参数
+  return function(obj) {
+    var length = arguments.length;
+    // 只传入了一个参数（或者 0 个？）
+    // 或者传入的第一个参数是 null
+    if (length < 2 || obj == null) return obj;
+
+    // 枚举第一个参数除外的对象参数
+    // 即 arguments[1], arguments[2] ...
+    for (var index = 1; index < length; index++) {
+      // source 即为对象参数
+      var source = arguments[index],
+          // 提取对象参数的 keys 值
+          // keysFunc 参数表示 _.keys
+          // 或者 _.allKeys
+          keys = keysFunc(source),
+          l = keys.length;
+
+      // 遍历该对象的键值对
+      for (var i = 0; i < l; i++) {
+        var key = keys[i];
+        // _.extend 和 _.extendOwn 方法
+        // 没有传入 undefinedOnly 参数，即 !undefinedOnly 为 true
+        // 即肯定会执行 obj[key] = source[key]
+        // 后面对象的键值对直接覆盖 obj
+        // ==========================================
+        // _.defaults 方法，undefinedOnly 参数为 true
+        // 即 !undefinedOnly 为 false
+        // 那么当且仅当 obj[key] 为 undefined 时才覆盖
+        // 即如果有相同的 key 值，取最早出现的 value 值
+        // *defaults 中有相同 key 的也是一样取首次出现的
+        if (!undefinedOnly || obj[key] === void 0)
+          obj[key] = source[key];
+      }
+    }
+
+    // 返回已经继承后面对象参数属性的第一个参数对象
+    return obj;
+  };
+};
+
 // A mostly-internal function to generate callbacks that can be applied
 // to each element in a collection, returning the desired result — either
 // identity, an arbitrary callback, a property matcher, or a property accessor.
@@ -428,4 +527,58 @@ _.map = _.collect = function(obj, iteratee, context) {
 
   // 返回新的结果数组
   return results;
+};
+
+// Generator function to create the findIndex and findLastIndex functions
+// (dir === 1) => 从前往后找
+// (dir === -1) => 从后往前找
+function createPredicateIndexFinder(dir) {
+  // 经典闭包
+  return function(array, predicate, context) {
+    predicate = cb(predicate, context)
+
+    var length = getLength(array)
+
+    // 根据 dir 变量来确定数组遍历的起始位置
+    var index = dir > 0 ? 0 : length - 1;
+
+    for (; index >= 0 && index < length; index += dir) {
+      // 找到第一个符合条件的元素
+      // 并返回下标值
+      if (predicate(array[index], index, array))
+        return index;
+    }
+
+    return -1;
+  };
+}
+
+// Returns the first index on an array-like that passes a predicate test
+// 从前往后找到数组中 `第一个满足条件` 的元素，并返回下标值
+// 没找到返回 -1
+// _.findIndex(array, predicate, [context])
+_.findIndex = createPredicateIndexFinder(1);
+
+// 从后往前找到数组中 `第一个满足条件` 的元素，并返回下标值
+// 没找到返回 -1
+// _.findLastIndex(array, predicate, [context])
+_.findLastIndex = createPredicateIndexFinder(-1);
+
+// Determine if the array or object contains a given item (using `===`).
+// Aliased as `includes` and `include`.
+// 判断数组或者对象中（value 值）是否有指定元素
+// 如果是 object，则忽略 key 值，只需要查找 value 值即可
+// 即该 obj 中是否有指定的 value 值
+// 返回布尔值
+_.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
+  // 如果是对象，返回 values 组成的数组
+  if (!isArrayLike(obj)) obj = _.values(obj);
+
+  // fromIndex 表示查询起始位置
+  // 如果没有指定该参数，则默认从头找起
+  if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+
+  // _.indexOf 是数组的扩展方法（Array Functions）
+  // 数组中寻找某一元素
+  return _.indexOf(obj, item, fromIndex) >= 0;
 };
