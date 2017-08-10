@@ -395,10 +395,12 @@ _.each = _.forEach = function(obj, iteratee, context) {
 
 // Returns a predicate for checking whether an object has a given set of
 // `key:value` pairs.
-// 返回一个函数, 这个函数用来判断一个对象是不是有穿进去的属性
+// 接受一个 attr 的对象
+// 返回一个 _.isMatch 这个函数, 闭包
+// 后面的参数需要传 obj
 // 函数名字叫【 匹配器 】
 _.matcher = _.matches = function(attrs) {
-  attrs = _.extendOwn({}, attrs)
+  attrs = _.extendOwn({}, attrs) // 浅拷贝一个对象
   return function(obj) {
     return _.isMatch(obj, attrs)
   }
@@ -413,7 +415,7 @@ _.matcher = _.matches = function(attrs) {
 // 返回布尔值
 _.isMatch = function(object, attrs) {
   // 提取 attrs 对象的所有 keys
-  var keys = _.keys(attrs), length = keys.length
+    var keys = _.keys(attrs), length = keys.length
 
   // 如果 object 为空
   // 根据 attrs 的键值对数量返回布尔值
@@ -437,9 +439,10 @@ _.isMatch = function(object, attrs) {
 // Assigns a given object with all the own properties in the passed-in object(s)
 // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 // 跟 extend 方法类似，但是只把 own properties 拷贝给第一个参数对象
+// 所以传进去的
 // 只继承 own properties 的键值对
 // 参数个数 >= 1
-_.extendOwn = _.assign = createAssigner(_.keys);
+_.extendOwn = _.assign = createAssigner(_.keys)
 
 // An internal function for creating assigner functions.
 // 有三个方法用到了这个内部函数
@@ -453,10 +456,10 @@ var createAssigner = function(keysFunc, undefinedOnly) {
   // 返回的函数参数个数 >= 1
   // 将第二个开始的对象参数的键值对 "继承" 给第一个参数
   return function(obj) {
-    var length = arguments.length;
+    var length = arguments.length
     // 只传入了一个参数（或者 0 个？）
     // 或者传入的第一个参数是 null
-    if (length < 2 || obj == null) return obj;
+    if (length < 2 || obj == null) return obj
 
     // 枚举第一个参数除外的对象参数
     // 即 arguments[1], arguments[2] ...
@@ -495,12 +498,13 @@ var createAssigner = function(keysFunc, undefinedOnly) {
 // A mostly-internal function to generate callbacks that can be applied
 // to each element in a collection, returning the desired result — either
 // identity, an arbitrary callback, a property matcher, or a property accessor.
+// 第一个参数是函数
 var cb = function(value, context, argCount) {
-  if (value == null) return _.identity;
-  if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-  if (_.isObject(value)) return _.matcher(value);
-  return _.property(value);
-};
+  if (value == null) return _.identity
+  if (_.isFunction(value)) return optimizeCb(value, context, argCount)
+  if (_.isObject(value)) return _.matcher(value)
+  return _.property(value)
+}
 
 // Return the results of applying the iteratee to each element.
 // 与 ES5 中 Array.prototype.map 使用方法类似
@@ -511,26 +515,24 @@ var cb = function(value, context, argCount) {
 _.map = _.collect = function(obj, iteratee, context) {
   // 根据 context 确定不同的迭代函数
   iteratee = cb(iteratee, context);
-
   // 如果传参是对象，则获取它的 keys 值数组（短路表达式）
   // http://www.qdfuns.com/notes/17897/234cca8e6a0bc114e22e93bb7d58c6a4.html
   var keys = !isArrayLike(obj) && _.keys(obj),
       // 如果 obj 为对象，则 length 为 key.length
       // 如果 obj 为数组，则 length 为 obj.length
       length = (keys || obj).length,
-      results = Array(length); // 结果数组
-
+      results = Array(length) // 结果数组
   // 遍历
   for (let index = 0; index < length; index++) {
     // 如果 obj 为对象，则 currentKey 为对象键值 key
     // 如果 obj 为数组，则 currentKey 为 index 值
-    var currentKey = keys ? keys[index] : index;
-    results[index] = iteratee(obj[currentKey], currentKey, obj);
+    var currentKey = keys ? keys[index] : index
+    results[index] = iteratee(obj[currentKey], currentKey, obj)
   }
 
   // 返回新的结果数组
-  return results;
-};
+  return results
+}
 
 // Generator function to create the findIndex and findLastIndex functions
 // (dir === 1) => 从前往后找
