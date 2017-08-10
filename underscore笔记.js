@@ -385,7 +385,7 @@ _.each = _.forEach = function(obj, iteratee, context) {
       iteratee(obj[keys[i]], keys[i], obj) // (value, key, obj)
     }
   }
-  
+
   // 返回 obj 参数
   // 供链式调用（Returns the list for chaining）
   // 应该仅 OOP 调用有效
@@ -395,43 +395,44 @@ _.each = _.forEach = function(obj, iteratee, context) {
 
 // Returns a predicate for checking whether an object has a given set of
 // `key:value` pairs.
-// 判断一个给定的对象是否有某些键值对
+// 返回一个函数, 这个函数用来判断一个对象是不是有穿进去的属性
 // 函数名字叫【 匹配器 】
 _.matcher = _.matches = function(attrs) {
-  attrs = _.extendOwn({}, attrs);
+  attrs = _.extendOwn({}, attrs)
   return function(obj) {
-    return _.isMatch(obj, attrs);
-  };
-};
+    return _.isMatch(obj, attrs)
+  }
+}
 
 // Returns whether an object has a given set of `key:value` pairs.
+// var stooge = {name: 'moe', age: 32}
+// _.isMatch(stooge, {age: 32})
+// => true
 // attrs 参数为一个对象
 // 判断 object 对象中是否有 attrs 中的所有 key-value 键值对
 // 返回布尔值
 _.isMatch = function(object, attrs) {
   // 提取 attrs 对象的所有 keys
-  var keys = _.keys(attrs), length = keys.length;
+  var keys = _.keys(attrs), length = keys.length
 
   // 如果 object 为空
   // 根据 attrs 的键值对数量返回布尔值
-  if (object == null) return !length;
+  if (object == null) return !length
 
   // 这一步有必要？
-  var obj = Object(object);
+  var obj = Object(object)
 
   // 遍历 attrs 对象键值对
   for (var i = 0; i < length; i++) {
-    var key = keys[i];
-
+    var key = keys[i]
     // 如果 obj 对象没有 attrs 对象的某个 key
     // 或者对于某个 key，它们的 value 值不同
     // 则证明 object 并不拥有 attrs 的所有键值对
     // 则返回 false
-    if (attrs[key] !== obj[key] || !(key in obj)) return false;
+    if (attrs[key] !== obj[key] || !(key in obj)) return false
   }
-
-  return true;
-};
+  return true
+}
 
 // Assigns a given object with all the own properties in the passed-in object(s)
 // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
