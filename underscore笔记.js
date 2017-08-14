@@ -707,3 +707,10 @@ _.filter = _.select = function(obj, predicate, context) {
 //   const tempMax = Math.floor(max)
 //   return Math.floor(Math.random() * (max - min)) + min
 // }
+
+  // Generates a function for a given object that returns a given property.
+  _.propertyOf = function(obj) {
+    return obj == null ? function(){} : function(key) {
+      return obj[key]
+    }
+  }
