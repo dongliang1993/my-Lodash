@@ -665,3 +665,25 @@ _.filter = _.select = function(obj, predicate, context) {
   })
   return results
 }
+
+  // Returns everything but the last entry of the array. Especially useful on
+  // the arguments object. Passing **n** will return all the values in
+  // the array, excluding the last N.
+  // 传入一个数组
+  // 返回剔除最后一个元素之后的数组副本
+  // 如果传入参数 n，则剔除最后 n 个元素
+  _.initial = function(array, n, guard) {
+    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)))
+  }
+  // 下面是自己的代码
+  // function initial(arr, n = 1) {
+  //   return Array.prototype.slice.call(arr, 0, arr.length - n >= 0 ? arr.length - n : 0)
+  // }
+
+  // A (possibly faster) way to get the current timestamp as an integer.
+  // 返回当前时间的 "时间戳"（单位 ms）
+  // 其实并不是时间戳，时间戳还要除以 1000（单位 s）
+  // +new Date 类似
+  _.now = Date.now || function() {
+    return new Date().getTime()
+  }
