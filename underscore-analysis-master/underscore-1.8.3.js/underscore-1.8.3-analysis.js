@@ -447,25 +447,6 @@
     else result[key] = 1;
   });
 
-  // Safely create a real, live array from anything iterable.
-  // 伪数组 -> 数组
-  // 对象 -> 提取 value 值组成数组
-  // 返回数组
-  _.toArray = function(obj) {
-    if (!obj) return [];
-
-    // 如果是数组，则返回副本数组
-    // 是否用 obj.concat() 更方便？
-    if (_.isArray(obj)) return slice.call(obj);
-
-    // 如果是类数组，则重新构造新的数组
-    // 是否也可以直接用 slice 方法？
-    if (isArrayLike(obj)) return _.map(obj, _.identity);
-
-    // 如果是对象，则返回 values 集合
-    return _.values(obj);
-  };
-
   // Split a collection into two arrays: one whose elements all satisfy the given
   // predicate, and one whose elements all do not satisfy the predicate.
   // 将数组或者对象中符合条件（predicate）的元素
