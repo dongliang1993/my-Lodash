@@ -741,3 +741,18 @@ _.filter = _.select = function(obj, predicate, context) {
       return obj[key]
     }
   }
+
+  // Run a function **n** times.
+  // 执行某函数 n 次
+  // 返回一个由每次返回值组成的数组
+  _.times = function(n, iteratee, context) {
+    // 如果传进来一个小数呢？
+    // 可以加一层处理
+    // const times = Math.floor(n)
+    var accum = Array(Math.max(0, n))
+    iteratee = optimizeCb(iteratee, context, 1)
+    for (var i = 0; i < n; i++)
+      accum[i] = iteratee(i)
+    return accum
+  }
+  

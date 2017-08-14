@@ -506,15 +506,6 @@
     return _.initial(array, array.length - n);
   };
 
-  // Returns everything but the last entry of the array. Especially useful on
-  // the arguments object. Passing **n** will return all the values in
-  // the array, excluding the last N.
-  // 传入一个数组
-  // 返回剔除最后一个元素之后的数组副本
-  // 如果传入参数 n，则剔除最后 n 个元素
-  _.initial = function(array, n, guard) {
-    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
-  };
 
   // Get the last element of an array. Passing **n** will return the last N
   // values in the array.
@@ -1917,67 +1908,17 @@
     return this;
   };
 
-  // Keep the identity function around for default iteratees.
-  // 返回传入的参数，看起来好像没什么卵用
-  // 其实 _.identity 在 undescore 内大量作为迭代函数出现
-  // 能简化很多迭代函数的书写
-  _.identity = function(value) {
-    return value;
-  };
-
-  // Predicate-generating functions. Often useful outside of Underscore.
-  _.constant = function(value) {
-    return function() {
-      return value;
-    };
-  };
-
-  _.noop = function(){};
-
-  // 传送门
-  /*
-  var property = function(key) {
-    return function(obj) {
-      return obj == null ? void 0 : obj[key];
-    };
-  };
-  */
-  _.property = property;
-
-  // Generates a function for a given object that returns a given property.
-  _.propertyOf = function(obj) {
-    return obj == null ? function(){} : function(key) {
-      return obj[key];
-    };
-  };
 
   // Run a function **n** times.
   // 执行某函数 n 次
   _.times = function(n, iteratee, context) {
     var accum = Array(Math.max(0, n));
-    iteratee = optimizeCb(iteratee, context, 1);
+    iteratee = optimizeCb(iteratee, context, 1)
     for (var i = 0; i < n; i++)
-      accum[i] = iteratee(i);
+      accum[i] = iteratee(i)
     return accum;
-  };
+  }
 
-  // Return a random integer between min and max (inclusive).
-  // 返回一个 [min, max] 范围内的任意整数
-  _.random = function(min, max) {
-    if (max == null) {
-      max = min;
-      min = 0;
-    }
-    return min + Math.floor(Math.random() * (max - min + 1));
-  };
-
-  // A (possibly faster) way to get the current timestamp as an integer.
-  // 返回当前时间的 "时间戳"（单位 ms）
-  // 其实并不是时间戳，时间戳还要除以 1000（单位 s）
-  // +new Date 类似
-  _.now = Date.now || function() {
-    return new Date().getTime();
-  };
 
   // List of HTML entities for escaping.
   // HTML 实体编码
