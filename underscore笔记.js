@@ -776,7 +776,7 @@ _.filter = _.select = function(obj, predicate, context) {
     if (!obj) return []
     // 如果是数组，则返回副本数组
     // 是否用 obj.concat() 更方便？
-    if (_.isArray(obj)) return slice.call(obj);
+    if (_.isArray(obj)) return slice.call(obj)
 
     // 如果是类数组，则重新构造新的数组
     // 是否也可以直接用 slice 方法？
@@ -784,5 +784,28 @@ _.filter = _.select = function(obj, predicate, context) {
 
     // 如果是对象，则返回 values 集合
     return _.values(obj)
-  };
+  }
+
+    // Determine whether all of the elements match a truth test.
+  // Aliased as `all`.
+  // 与 ES5 中的 Array.prototype.every 方法类似
+  // 判断数组中的每个元素或者对象中每个 value 值是否都满足 predicate 函数中的判断条件
+  // 如果是，则返回 ture；否则返回 false（有一个不满足就返回 false）
+  // _.every(list, [predicate], [context])
+  _.every = _.all = function(obj, predicate, context) {
+    // 根据 this 指向，返回相应 predicate 函数
+    predicate = cb(predicate, context)
+
+    var keys = !isArrayLike(obj) && _.keys(obj),
+        length = (keys || obj).length
+
+    for (var index = 0; index < length; index++) {
+      var currentKey = keys ? keys[index] : index;
+      // 如果有一个不能满足 predicate 中的条件
+      // 则返回 false
+      if (!predicate(obj[currentKey], currentKey, obj))
+        return false
+    }
+    return true
+  }
   
