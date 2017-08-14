@@ -577,13 +577,91 @@ _.findLastIndex = createPredicateIndexFinder(-1);
 // 返回布尔值
 _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
   // 如果是对象，返回 values 组成的数组
-  if (!isArrayLike(obj)) obj = _.values(obj);
+  if (!isArrayLike(obj)) obj = _.values(obj)
 
   // fromIndex 表示查询起始位置
   // 如果没有指定该参数，则默认从头找起
-  if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+  if (typeof fromIndex != 'number' || guard) fromIndex = 0
 
   // _.indexOf 是数组的扩展方法（Array Functions）
   // 数组中寻找某一元素
-  return _.indexOf(obj, item, fromIndex) >= 0;
+  return _.indexOf(obj, item, fromIndex) >= 0
+}
+
+// Return the position of the first occurrence of an item in an array,
+// or -1 if the item is not included in the array.
+// If the array is large and already in sort order, pass `true`
+// for **isSorted** to use binary search.
+// _.indexOf(array, value, [isSorted])
+// 找到数组 array 中 value 第一次出现的位置
+// 并返回其下标值
+// 如果数组有序，则第三个参数可以传入 true
+// 这样算法效率会更高（二分查找）
+// [isSorted] 参数表示数组是否有序
+// 同时第三个参数也可以表示 [fromIndex] （见下面的 _.lastIndexOf）
+_.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
+
+// 和 _indexOf 相似
+// 反序查找
+// _.lastIndexOf(array, value, [fromIndex])
+// [fromIndex] 参数表示从倒数第几个开始往前找
+_.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
+
+// Return the maximum element (or element-based computation).
+// 寻找数组中的最大元素
+// 或者对象中的最大 value 值
+// 如果有 iteratee 参数，则求每个元素经过该函数迭代后的最值
+// _.max(list, [iteratee], [context])
+_.max = function(obj, iteratee, context) {
+  var result = -Infinity, lastComputed = -Infinity,
+      value, computed;
+
+  // 单纯地寻找最值
+  if (iteratee == null && obj != null) {
+    // 如果是数组，则寻找数组中最大元素
+    // 如果是对象，则寻找最大 value 值
+    obj = isArrayLike(obj) ? obj : _.values(obj);
+
+    for (var i = 0, length = obj.length; i < length; i++) {
+      value = obj[i];
+      if (value > result) {
+        result = value;
+      }
+    }
+  } else {  // 寻找元素经过迭代后的最值
+    iteratee = cb(iteratee, context);
+
+    // result 保存结果元素
+    // lastComputed 保存计算过程中出现的最值
+    // 遍历元素
+    _.each(obj, function(value, index, list) {
+      // 经过迭代函数后的值
+      computed = iteratee(value, index, list);
+      // && 的优先级高于 ||
+      if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+        result = value;
+        lastComputed = computed;
+      }
+    });
+  }
+  return result;
 };
+
+// Return all the elements that pass a truth test.
+// Aliased as `select`.
+// 与 ES5 中 Array.prototype.filter 使用方法类似
+// 寻找数组或者对象中所有满足条件的元素
+// 如果是数组，则将 `元素值` 存入数组
+// 如果是对象，则将 `value 值` 存入数组
+// 返回该数组
+// _.filter(list, predicate, [context])
+_.filter = _.select = function(obj, predicate, context) {
+  const results = []
+  // 根据 this 指向，返回 predicate 函数（判断函数）
+  predicate = cb(predicate, context)
+  // 遍历每个元素，如果符合条件则存入数组
+  _.each(obj, function(value, index, list) {
+    if (predicate(value, index, list)) results.push(value)
+  })
+  return results
+}

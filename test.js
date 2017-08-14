@@ -10,3 +10,28 @@ function isMatch(obj, attrs) {
   }
   return true
 }
+
+function max(obj, iteratee, context) {
+  let keys, max = -Infinity, result
+  if (iteratee === null && !!obj) {
+    if (!isArrayLike(obj)) {
+      keys = _.keys(obj)
+      for (let i = 0; i < keys.length; i++) {
+          if (obj[key] > max) {
+            result = obj[key]
+          }
+      }
+    }
+  } else {
+
+  }
+}
+
+function filter(obj, predicate, context) {
+  const result = []
+  predicate = cb(predicate)
+  _.forEach(obj, function (value, index, obj) {
+    if(predicate(value, index, obj)) result.push(value)
+  })
+ return result 
+}
