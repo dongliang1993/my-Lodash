@@ -756,3 +756,9 @@ _.filter = _.select = function(obj, predicate, context) {
     return accum
   }
   
+  _.isFunction = function(obj) {
+    // 不太明白为什么要写成短路语法
+    // return typeof obj == 'function' 好像也可以吧？
+    return typeof obj == 'function' || false
+  }
+  
