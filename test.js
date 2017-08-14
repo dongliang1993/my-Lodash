@@ -35,3 +35,15 @@ function filter(obj, predicate, context) {
   })
  return result 
 }
+
+// _.initial([5, 4, 3, 2, 1]);
+// => [5, 4, 3, 2]
+function now() {
+  return Date.now()
+}
+
+function random(min, max) {
+  const tempMin = Math.ceil(min)
+  const tempMax = Math.floor(max)
+  return Math.floor(Math.random() * (max - min)) + min
+}

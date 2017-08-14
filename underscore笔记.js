@@ -687,3 +687,23 @@ _.filter = _.select = function(obj, predicate, context) {
   _.now = Date.now || function() {
     return new Date().getTime()
   }
+
+  // Return a random integer between min and max (inclusive).
+  // 返回一个 [min, max] 范围内的任意整数、
+  // 一看这就知道有问题，
+  // _.random(2.2, 5.4)
+  // 2.2
+  // 突然明白为什么 lodash 这么火了，因为 underscore 很多边缘情况没有考虑
+  _.random = function(min, max) {
+    if (max == null) {
+      max = min
+      min = 0
+    }
+    return min + Math.floor(Math.random() * (max - min + 1))
+  }
+  // 自己的代码
+// function random(min, max) {
+//   const tempMin = Math.ceil(min)
+//   const tempMax = Math.floor(max)
+//   return Math.floor(Math.random() * (max - min)) + min
+// }
