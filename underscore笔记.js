@@ -761,4 +761,10 @@ _.filter = _.select = function(obj, predicate, context) {
     // return typeof obj == 'function' 好像也可以吧？
     return typeof obj == 'function' || false
   }
+
+  // Is a given object a finite number?
+  // 判断是否是有限的数字
+  _.isFinite = function(obj) {
+    return isFinite(obj) && !isNaN(parseFloat(obj))
+  }
   

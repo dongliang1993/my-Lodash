@@ -47,3 +47,22 @@ function random(min, max) {
   const tempMax = Math.floor(max)
   return Math.floor(Math.random() * (max - min)) + min
 }
+
+function propertyOf(obj) {
+  return obj == null ? function(){} : function (property) {
+    return obj[property]
+  }
+}
+
+function identity(value) {
+  return value
+}
+
+function times(n, func, context) {
+  const times = Math.floor(n)
+  const iteratee = optimizeCb(iteratee, context, 1)
+}
+
+function isFunction(func) {
+  return typeof func === 'function'
+}

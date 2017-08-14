@@ -1885,11 +1885,6 @@
     };
   }
 
-  // Is a given object a finite number?
-  // 判断是否是有限的数字
-  _.isFinite = function(obj) {
-    return isFinite(obj) && !isNaN(parseFloat(obj));
-  };
 
   // Utility Functions
   // 工具类方法
@@ -1907,17 +1902,6 @@
     root._ = previousUnderscore;
     return this;
   };
-
-
-  // Run a function **n** times.
-  // 执行某函数 n 次
-  _.times = function(n, iteratee, context) {
-    var accum = Array(Math.max(0, n));
-    iteratee = optimizeCb(iteratee, context, 1)
-    for (var i = 0; i < n; i++)
-      accum[i] = iteratee(i)
-    return accum;
-  }
 
 
   // List of HTML entities for escaping.
