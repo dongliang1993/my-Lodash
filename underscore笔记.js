@@ -809,3 +809,22 @@ _.filter = _.select = function(obj, predicate, context) {
     return true
   }
   
+    // Determine if at least one element in the object matches a truth test.
+  // Aliased as `any`.
+  // 与 ES5 中 Array.prototype.some 方法类似
+  // 判断数组或者对象中是否有一个元素（value 值 for object）满足 predicate 函数中的条件
+  // 如果是则返回 true；否则返回 false
+  // _.some(list, [predicate], [context])
+  _.some = _.any = function(obj, predicate, context) {
+    // 根据 context 返回 predicate 函数
+    predicate = cb(predicate, context)
+    // 如果传参是对象，则返回该对象的 keys 数组
+    var keys = !isArrayLike(obj) && _.keys(obj),
+        length = (keys || obj).length;
+    for (var index = 0; index < length; index++) {
+      var currentKey = keys ? keys[index] : index
+      // 如果有一个元素满足条件，则返回 true
+      if (predicate(obj[currentKey], currentKey, obj)) return true
+    }
+    return false
+  }
