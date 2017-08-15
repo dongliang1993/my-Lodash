@@ -269,32 +269,6 @@
     return result;
   };
 
-  // Shuffle a collection, using the modern version of the
-  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
-  // 将数组乱序
-  // 如果是对象，则返回一个数组，数组由对象 value 值构成
-  // Fisher-Yates shuffle 算法
-  // 最优的洗牌算法，复杂度 O(n)
-  // 乱序不要用 sort + Math.random()，复杂度 O(nlogn)
-  // 而且，并不是真正的乱序
-  // @see https://github.com/hanzichi/underscore-analysis/issues/15
-  _.shuffle = function(obj) {
-    // 如果是对象，则对 value 值进行乱序
-    var set = isArrayLike(obj) ? obj : _.values(obj)
-    var length = set.length
-
-    // 乱序后返回的数组副本（参数是对象则返回乱序后的 value 数组）
-    var shuffled = Array(length)
-
-    // 枚举元素
-    for (var index = 0, rand; index < length; index++) {
-      // 将当前所枚举位置的元素和 `index=rand` 位置的元素交换
-      rand = _.random(0, index)
-      if (rand !== index) shuffled[index] = shuffled[rand]
-      shuffled[rand] = set[index]
-    }
-    return shuffled
-  }
 
   // Sample **n** random values from a collection.
   // If **n** is not specified, returns a single random element.
@@ -303,15 +277,16 @@
   // 如果指定了参数 `n`，则随机返回 n 个元素组成的数组
   // 如果参数是对象，则数组由 values 组成
   _.sample = function(obj, n, guard) {
-    // 随机返回一个元素
+    // 没有指定 n , 随机返回一个元素
     if (n == null || guard) {
       if (!isArrayLike(obj)) obj = _.values(obj);
-      return obj[_.random(obj.length - 1)];
+      return obj[_.random(obj.length - 1)]
     }
-
     // 随机返回 n 个
+    // 思路就是我先生成一个完全打乱的随机数组，然后再截取n个
+    // 反正数组是完全随机的，所以位置就不影响了
     return _.shuffle(obj).slice(0, Math.max(0, n));
-  };
+  }
 
   // Sort the object's values by a criterion produced by an iteratee.
   // 排序

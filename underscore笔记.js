@@ -855,3 +855,21 @@ _.filter = _.select = function(obj, predicate, context) {
     }
     return shuffled
   }
+
+    // Sample **n** random values from a collection.
+  // If **n** is not specified, returns a single random element.
+  // The internal `guard` argument allows it to work with `map`.
+  // 随机返回数组或者对象中的一个元素
+  // 如果指定了参数 `n`，则随机返回 n 个元素组成的数组
+  // 如果参数是对象，则数组由 values 组成
+  _.sample = function(obj, n, guard) {
+    // 没有指定 n , 随机返回一个元素
+    if (n == null || guard) {
+      if (!isArrayLike(obj)) obj = _.values(obj)
+      return obj[_.random(obj.length - 1)]
+    }
+    // 随机返回 n 个
+    // 思路就是我先生成一个完全打乱的随机数组，然后再截取n个
+    // 反正数组是完全随机的，所以位置就不影响了
+    return _.shuffle(obj).slice(0, Math.max(0, n))
+  }
