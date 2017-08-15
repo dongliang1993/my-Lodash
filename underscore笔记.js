@@ -828,3 +828,30 @@ _.filter = _.select = function(obj, predicate, context) {
     }
     return false
   }
+
+    // Shuffle a collection, using the modern version of the
+  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+  // 将数组乱序
+  // 如果是对象，则返回一个数组，数组由对象 value 值构成
+  // Fisher-Yates shuffle 算法
+  // 最优的洗牌算法，复杂度 O(n)
+  // 乱序不要用 sort + Math.random()，复杂度 O(nlogn)
+  // 而且，并不是真正的乱序
+  // @see https://github.com/hanzichi/underscore-analysis/issues/15
+  _.shuffle = function(obj) {
+    // 如果是对象，则对 value 值进行乱序
+    var set = isArrayLike(obj) ? obj : _.values(obj)
+    var length = set.length
+
+    // 乱序后返回的数组副本（参数是对象则返回乱序后的 value 数组）
+    var shuffled = Array(length)
+
+    // 枚举元素
+    for (var index = 0, rand; index < length; index++) {
+      // 将当前所枚举位置的元素和 `index=rand` 位置的元素交换
+      rand = _.random(0, index)
+      if (rand !== index) shuffled[index] = shuffled[rand]
+      shuffled[rand] = set[index]
+    }
+    return shuffled
+  }

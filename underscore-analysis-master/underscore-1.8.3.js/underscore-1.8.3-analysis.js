@@ -184,49 +184,6 @@
     return _.filter(obj, _.negate(cb(predicate)), context);
   };
 
-  // Determine whether all of the elements match a truth test.
-  // Aliased as `all`.
-  // 与 ES5 中的 Array.prototype.every 方法类似
-  // 判断数组中的每个元素或者对象中每个 value 值是否都满足 predicate 函数中的判断条件
-  // 如果是，则返回 ture；否则返回 false（有一个不满足就返回 false）
-  // _.every(list, [predicate], [context])
-  _.every = _.all = function(obj, predicate, context) {
-    // 根据 this 指向，返回相应 predicate 函数
-    predicate = cb(predicate, context);
-
-    var keys = !isArrayLike(obj) && _.keys(obj),
-        length = (keys || obj).length;
-
-    for (var index = 0; index < length; index++) {
-      var currentKey = keys ? keys[index] : index;
-      // 如果有一个不能满足 predicate 中的条件
-      // 则返回 false
-      if (!predicate(obj[currentKey], currentKey, obj))
-        return false;
-    }
-
-    return true;
-  };
-
-  // Determine if at least one element in the object matches a truth test.
-  // Aliased as `any`.
-  // 与 ES5 中 Array.prototype.some 方法类似
-  // 判断数组或者对象中是否有一个元素（value 值 for object）满足 predicate 函数中的条件
-  // 如果是则返回 true；否则返回 false
-  // _.some(list, [predicate], [context])
-  _.some = _.any = function(obj, predicate, context) {
-    // 根据 context 返回 predicate 函数
-    predicate = cb(predicate, context);
-    // 如果传参是对象，则返回该对象的 keys 数组
-    var keys = !isArrayLike(obj) && _.keys(obj),
-        length = (keys || obj).length;
-    for (var index = 0; index < length; index++) {
-      var currentKey = keys ? keys[index] : index;
-      // 如果有一个元素满足条件，则返回 true
-      if (predicate(obj[currentKey], currentKey, obj)) return true;
-    }
-    return false;
-  };
 
   // Invoke a method (with arguments) on every item in a collection.
   // Calls the method named by methodName on each value in the list.
@@ -323,22 +280,21 @@
   // @see https://github.com/hanzichi/underscore-analysis/issues/15
   _.shuffle = function(obj) {
     // 如果是对象，则对 value 值进行乱序
-    var set = isArrayLike(obj) ? obj : _.values(obj);
-    var length = set.length;
+    var set = isArrayLike(obj) ? obj : _.values(obj)
+    var length = set.length
 
     // 乱序后返回的数组副本（参数是对象则返回乱序后的 value 数组）
-    var shuffled = Array(length);
+    var shuffled = Array(length)
 
     // 枚举元素
     for (var index = 0, rand; index < length; index++) {
       // 将当前所枚举位置的元素和 `index=rand` 位置的元素交换
-      rand = _.random(0, index);
-      if (rand !== index) shuffled[index] = shuffled[rand];
-      shuffled[rand] = set[index];
+      rand = _.random(0, index)
+      if (rand !== index) shuffled[index] = shuffled[rand]
+      shuffled[rand] = set[index]
     }
-
-    return shuffled;
-  };
+    return shuffled
+  }
 
   // Sample **n** random values from a collection.
   // If **n** is not specified, returns a single random element.
