@@ -954,9 +954,28 @@ _.filter = _.select = function(obj, predicate, context) {
     // 根据 key 值分组
     // key 是元素经过迭代函数后的值
     // 或者元素自身的属性值
-
     // result 对象已经有该 key 值了
     if (_.has(result, key))
       result[key].push(value)
     else result[key] = [value]
+  })
+
+
+  // Indexes the object's values by a criterion, similar to `groupBy`, but for
+  // when you know that your index values will be unique.
+  _.indexBy = group(function(result, value, key) {
+    // key 值必须是独一无二的
+    // 不然后面的会覆盖前面的
+    // 其他和 _.groupBy 类似
+    result[key] = value
+  })
+
+  // Counts instances of an object that group by a certain criterion. Pass
+  // either a string attribute to count by, or a function that returns the
+  // criterion.
+  _.countBy = group(function(result, value, key) {
+    // 不同 key 值元素数量
+    if (_.has(result, key))
+      result[key]++;
+    else result[key] = 1
   })
