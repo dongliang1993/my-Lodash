@@ -873,3 +873,22 @@ _.filter = _.select = function(obj, predicate, context) {
     // 反正数组是完全随机的，所以位置就不影响了
     return _.shuffle(obj).slice(0, Math.max(0, n))
   }
+
+    // Convenience version of a common use case of `map`: fetching a property.
+  // 一个数组，元素都是对象
+  // 根据指定的 key 值
+  // 返回一个数组，元素都是指定 key 值的 value 值
+  // var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+  // _.pluck(stooges, 'name');
+  // => ["moe", "larry", "curly"]
+  /*
+  var property = function(key) {
+    return function(obj) {
+      return obj == null ? void 0 : obj[key];
+    };
+  };
+  */
+  // _.pluck(list, propertyName)
+  _.pluck = function(obj, key) {
+    return _.map(obj, _.property(key))
+  }
