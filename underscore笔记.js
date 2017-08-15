@@ -996,3 +996,13 @@ _.filter = _.select = function(obj, predicate, context) {
     // 返回前 n 个元素，即剔除后 array.length - n 个元素
     return _.initial(array, array.length - n)
   }
+
+  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
+  // Especially useful on the arguments object. Passing an **n** will return
+  // the rest N values in the array.
+  // 传入一个数组
+  // 返回剔除第一个元素后的数组副本
+  // 如果传入参数 n，则剔除前 n 个元素
+  _.rest = _.tail = _.drop = function(array, n, guard) {
+    return slice.call(array, n == null || guard ? 1 : n)
+  }
