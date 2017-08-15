@@ -979,3 +979,20 @@ _.filter = _.select = function(obj, predicate, context) {
       result[key]++;
     else result[key] = 1
   })
+
+  // Get the first element of an array. Passing **n** will return the first N
+  // values in the array. Aliased as `head` and `take`. The **guard** check
+  // allows it to work with `_.map`.
+  // 返回数组第一个元素
+  // 如果有参数 n，则返回数组前 n 个元素（组成的数组）
+  _.first = _.head = _.take = function(array, n, guard) {
+    // 容错，数组为空则返回 undefined
+    if (array == null) return void 0
+
+    // 没指定参数 n，则默认返回第一个元素
+    if (n == null || guard) return array[0]
+
+    // 如果传入参数 n，则返回前 n 个元素组成的数组
+    // 返回前 n 个元素，即剔除后 array.length - n 个元素
+    return _.initial(array, array.length - n)
+  }
