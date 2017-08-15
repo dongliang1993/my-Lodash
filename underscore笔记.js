@@ -920,3 +920,43 @@ _.filter = _.select = function(obj, predicate, context) {
   _.pluck = function(obj, key) {
     return _.map(obj, _.property(key))
   }
+
+    // An internal funvction used for aggregate "group by" operations.
+  // 接受一个函数参数 behavior，返回一个函数
+  // _.groupBy, _.indexBy 以及 _.countBy 其实都是对数组元素进行分类
+  // 分类规则就是 behavior 函数
+  var group = function(behavior) {
+    return function(obj, iteratee, context) {
+      // 返回结果是一个对象
+      const result = {}
+      iteratee = cb(iteratee, context)
+      // 遍历元素
+      _.each(obj, function(value, index) {
+        // 经过迭代，获取结果值，存为 key
+        let key = iteratee(value, index, obj)
+        // 按照不同的规则进行分组操作
+        // 将变量 result 当做参数传入，能在 behavior 中改变该值
+        behavior(result, value, key)
+      })
+      // 返回结果对象
+      return result
+    }
+  }
+
+  // Groups the object's values by a criterion. Pass either a string attribute
+  // to group by, or a function that returns the criterion.
+  // groupBy_  _.groupBy(list, iteratee, [context])
+  // 根据特定规则对数组或者对象中的元素进行分组
+  // result 是返回对象
+  // value 是数组元素
+  // key 是迭代后的值
+  _.groupBy = group(function(result, value, key) {
+    // 根据 key 值分组
+    // key 是元素经过迭代函数后的值
+    // 或者元素自身的属性值
+
+    // result 对象已经有该 key 值了
+    if (_.has(result, key))
+      result[key].push(value)
+    else result[key] = [value]
+  })

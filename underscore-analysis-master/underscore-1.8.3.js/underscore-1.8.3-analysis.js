@@ -209,24 +209,6 @@
     });
   };
 
-  // Convenience version of a common use case of `map`: fetching a property.
-  // 一个数组，元素都是对象
-  // 根据指定的 key 值
-  // 返回一个数组，元素都是指定 key 值的 value 值
-  // var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
-  // _.pluck(stooges, 'name');
-  // => ["moe", "larry", "curly"]
-  /*
-  var property = function(key) {
-    return function(obj) {
-      return obj == null ? void 0 : obj[key];
-    };
-  };
-  */
-  // _.pluck(list, propertyName)
-  _.pluck = function(obj, key) {
-    return _.map(obj, _.property(key));
-  };
 
   // Convenience version of a common use case of `filter`: selecting only objects
   // containing specific `key:value` pairs.
@@ -241,35 +223,6 @@
   // 寻找第一个有指定 key-value 键值对的对象
   _.findWhere = function(obj, attrs) {
     return _.find(obj, _.matcher(attrs));
-  };
-
-
-  // Return the minimum element (or element-based computation).
-  // 寻找最小的元素
-  // 类似 _.max
-  // _.min(list, [iteratee], [context])
-  _.min = function(obj, iteratee, context) {
-    var result = Infinity, lastComputed = Infinity,
-        value, computed;
-    if (iteratee == null && obj != null) {
-      obj = isArrayLike(obj) ? obj : _.values(obj);
-      for (var i = 0, length = obj.length; i < length; i++) {
-        value = obj[i];
-        if (value < result) {
-          result = value;
-        }
-      }
-    } else {
-      iteratee = cb(iteratee, context);
-      _.each(obj, function(value, index, list) {
-        computed = iteratee(value, index, list);
-        if (computed < lastComputed || computed === Infinity && result === Infinity) {
-          result = value;
-          lastComputed = computed;
-        }
-      });
-    }
-    return result;
   };
 
 
@@ -304,27 +257,27 @@
 
   };
 
-  // An internal function used for aggregate "group by" operations.
-  // behavior 是一个函数参数
+  // An internal funvction used for aggregate "group by" operations.
+  // 接受一个函数参数 behavior，返回一个函数
   // _.groupBy, _.indexBy 以及 _.countBy 其实都是对数组元素进行分类
   // 分类规则就是 behavior 函数
   var group = function(behavior) {
     return function(obj, iteratee, context) {
       // 返回结果是一个对象
-      var result = {};
-      iteratee = cb(iteratee, context);
+      const result = {}
+      iteratee = cb(iteratee, context)
       // 遍历元素
       _.each(obj, function(value, index) {
         // 经过迭代，获取结果值，存为 key
-        var key = iteratee(value, index, obj);
+        let key = iteratee(value, index, obj)
         // 按照不同的规则进行分组操作
         // 将变量 result 当做参数传入，能在 behavior 中改变该值
-        behavior(result, value, key);
-      });
+        behavior(result, value, key)
+      })
       // 返回结果对象
-      return result;
-    };
-  };
+      return result
+    }
+  }
 
   // Groups the object's values by a criterion. Pass either a string attribute
   // to group by, or a function that returns the criterion.
@@ -340,8 +293,8 @@
 
     // result 对象已经有该 key 值了
     if (_.has(result, key))
-      result[key].push(value);
-    else result[key] = [value];
+      result[key].push(value)
+    else result[key] = [value]
   });
 
   // Indexes the object's values by a criterion, similar to `groupBy`, but for
