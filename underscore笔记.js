@@ -1126,7 +1126,7 @@ _.filter = _.select = function(obj, predicate, context) {
   // var tmp = _.compose(f, g, h)
   // tmp(args) => f(g(h(args)))
   // compose 的函数按照栈结构一次调用，高阶函数
-  _. = function() {
+  _.compose = function() {
     var args = arguments; // funcs
     var start = args.length - 1; // 倒序调用
     return function() {
@@ -1149,5 +1149,32 @@ _.filter = _.select = function(obj, predicate, context) {
   //       result = funcsArr[i].call(this, result)
   //     }
   //     return result
+  //   }
+  // }
+
+  // Returns a function that will only be executed on and after the Nth call.
+  // 第 times 触发执行 func（事实上之后的每次触发还是会执行 func）
+  // 有什么用呢？
+  // 如果有 N 个异步事件，所有异步执行完后执行该回调，即 func 方法（联想 eventproxy）
+  // _.after 会返回一个函数
+  // 当这个函数第 times 被执行的时候
+  // 触发 func 方法
+  _.after = function(times, func) {
+    return function() {
+      // 函数被触发了 times 了，则执行 func 函数
+      // 事实上 times 次后如果函数继续被执行，也会触发 func
+      // 感觉应该是 times-- 
+      // 执行times次之后才会执行，他这种是，执行到第times时执行
+      if (--times < 1) {
+        return func.apply(this, arguments)
+      }
+    }
+  }
+  // 自己
+  // function after(times, func) {
+  //   return function() {
+  //     if (times-- < 1) {
+  //       func.apply(this, arguments)
+  //     }
   //   }
   // }

@@ -91,3 +91,24 @@ function delay(func, await, ...arg) {
     func.apply(null, arg)
   }, await)
 }
+
+function compose(...funcs) {
+  const funcsArr = funcs
+  const start = funcsArr.length - 1
+  return function(...args) {
+    // 第一次的结果
+    let result = funcsArr[start].apply(this, args)
+    for (let i = start - 1; i >= 0; i--) {
+      result = funcsArr[i].call(this, result)
+    }
+    return result
+  }
+}
+
+function after(times, func) {
+  return function() {
+    if (times-- < 1) {
+      func.apply(this, arguments)
+    }
+  }
+}
