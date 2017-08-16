@@ -1126,13 +1126,13 @@ _.filter = _.select = function(obj, predicate, context) {
   // var tmp = _.compose(f, g, h)
   // tmp(args) => f(g(h(args)))
   // compose 的函数按照栈结构一次调用，高阶函数
-  _.compose = function() {
+  _. = function() {
     var args = arguments; // funcs
     var start = args.length - 1; // 倒序调用
     return function() {
       var i = start;
       var result = args[start].apply(this, arguments)
-      // 一个一个方法地执行
+      // 一个一个方法地执行compose
       while (i--)
         result = args[i].call(this, result);
       return result;
