@@ -1097,3 +1097,25 @@ _.filter = _.select = function(obj, predicate, context) {
   //   }
   //   return result
   // }
+
+  // Delays a function for the given number of milliseconds, and then calls
+  // it with the arguments supplied.
+  // 延迟触发某方法
+  // _.delay(function, wait, *arguments)
+  //  如果传入了 arguments 参数，则会被当作 func 的参数在触发时调用
+  // 其实是封装了「延迟触发某方法」，使其复用
+  _.delay = function(func, wait) {
+    // 获取 *arguments
+    // 是 func 函数所需要的参数
+    var args = slice.call(arguments, 2)
+    return setTimeout(function(){
+      // 将参数赋予 func 函数
+      return func.apply(null, args)
+    }, wait)
+  }
+  // 自己
+  // function delay(func, await, ...arg) {
+  //   return setTimeout(() => {
+  //     func.apply(null, arg)
+  //   }, await)
+  // }

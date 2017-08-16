@@ -85,3 +85,9 @@ function range(start, stop, step = 1) {
   }
   return result
 }
+
+function delay(func, await, ...arg) {
+  return setTimeout(() => {
+    func.apply(null, arg)
+  }, await)
+}
