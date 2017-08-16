@@ -1032,3 +1032,15 @@ _.filter = _.select = function(obj, predicate, context) {
   _.rest = _.tail = _.drop = function(array, n, guard) {
     return slice.call(array, n == null || guard ? 1 : n)
   }
+
+  // Trim out all falsy values from an array.
+  // 去掉数组中所有的假值
+  // 返回数组副本
+  // JavaScript 中的假值包括 false、null、undefined、''、NaN、0
+  // 联想 PHP 中的 array_filter() 函数
+  // _.identity = function(value) {
+  //   return value;
+  // };
+  _.compact = function(array) {
+    return _.filter(array, _.identity)
+  }
