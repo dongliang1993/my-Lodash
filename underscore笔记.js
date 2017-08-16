@@ -1119,3 +1119,35 @@ _.filter = _.select = function(obj, predicate, context) {
   //     func.apply(null, arg)
   //   }, await)
   // }
+
+  // Returns a function that is the composition of a list of functions, each
+  // consuming the return value of the function that follows.
+  // _.compose(*functions)
+  // var tmp = _.compose(f, g, h)
+  // tmp(args) => f(g(h(args)))
+  // compose 的函数按照栈结构一次调用，高阶函数
+  _.compose = function() {
+    var args = arguments; // funcs
+    var start = args.length - 1; // 倒序调用
+    return function() {
+      var i = start;
+      var result = args[start].apply(this, arguments)
+      // 一个一个方法地执行
+      while (i--)
+        result = args[i].call(this, result);
+      return result;
+    }
+  }
+  // 自己
+  // function compose(...funcs) {
+  //   const funcsArr = funcs
+  //   const start = funcsArr.length - 1
+  //   return function(...args) {
+  //     // 第一次的结果
+  //     let result = funcsArr[start].apply(this, args)
+  //     for (let i = start - 1; i >= 0; i--) {
+  //       result = funcsArr[i].call(this, result)
+  //     }
+  //     return result
+  //   }
+  // }
