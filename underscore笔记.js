@@ -1178,3 +1178,27 @@ _.filter = _.select = function(obj, predicate, context) {
   //     }
   //   }
   // }
+
+  // Returns a function that will only be executed up to (but not including) the Nth call.
+  // 函数至多被调用 times - 1 次（(but not including) the Nth call）
+  // func 函数会触发 time - 1 次（Creates a version of the function that can be called no more than count times）
+  // func 函数有个返回值，前 time - 1 次触发的返回值都是将参数代入重新计算的
+  // 第 times 开始的返回值为第 times - 1 次时的返回值（不重新计算）
+  // The result of the last function call is memoized and returned when count has been reached.
+  _.before = function(times, func) {
+    var memo;
+    return function() {
+      if (--times > 0) {
+        // 缓存函数执行结果
+        memo = func.apply(this, arguments);
+      }
+
+      // func 引用置为空，其实不置为空也用不到 func 了
+      if (times <= 1)
+        func = null;
+
+      // 前 times - 1 次触发，memo 都是分别计算返回
+      // 第 times 次开始，memo 值同 times - 1 次时的 memo
+      return memo;
+    };
+  };
