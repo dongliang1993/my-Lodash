@@ -257,64 +257,6 @@
 
   };
 
-  // An internal funvction used for aggregate "group by" operations.
-  // 接受一个函数参数 behavior，返回一个函数
-  // _.groupBy, _.indexBy 以及 _.countBy 其实都是对数组元素进行分类
-  // 分类规则就是 behavior 函数
-  var group = function(behavior) {
-    return function(obj, iteratee, context) {
-      // 返回结果是一个对象
-      const result = {}
-      iteratee = cb(iteratee, context)
-      // 遍历元素
-      _.each(obj, function(value, index) {
-        // 经过迭代，获取结果值，存为 key
-        let key = iteratee(value, index, obj)
-        // 按照不同的规则进行分组操作
-        // 将变量 result 当做参数传入，能在 behavior 中改变该值
-        behavior(result, value, key)
-      })
-      // 返回结果对象
-      return result
-    }
-  }
-
-  // Groups the object's values by a criterion. Pass either a string attribute
-  // to group by, or a function that returns the criterion.
-  // groupBy_  _.groupBy(list, iteratee, [context])
-  // 根据特定规则对数组或者对象中的元素进行分组
-  // result 是返回对象
-  // value 是数组元素
-  // key 是迭代后的值
-  _.groupBy = group(function(result, value, key) {
-    // 根据 key 值分组
-    // key 是元素经过迭代函数后的值
-    // 或者元素自身的属性值
-
-    // result 对象已经有该 key 值了
-    if (_.has(result, key))
-      result[key].push(value)
-    else result[key] = [value]
-  });
-
-  // Indexes the object's values by a criterion, similar to `groupBy`, but for
-  // when you know that your index values will be unique.
-  _.indexBy = group(function(result, value, key) {
-    // key 值必须是独一无二的
-    // 不然后面的会覆盖前面的
-    // 其他和 _.groupBy 类似
-    result[key] = value;
-  });
-
-  // Counts instances of an object that group by a certain criterion. Pass
-  // either a string attribute to count by, or a function that returns the
-  // criterion.
-  _.countBy = group(function(result, value, key) {
-    // 不同 key 值元素数量
-    if (_.has(result, key))
-      result[key]++;
-    else result[key] = 1;
-  });
 
   // Split a collection into two arrays: one whose elements all satisfy the given
   // predicate, and one whose elements all do not satisfy the predicate.
@@ -339,23 +281,6 @@
   // However, Underscore functions are not designed to work on "sparse" arrays.
   // ---------------
 
-  // Get the first element of an array. Passing **n** will return the first N
-  // values in the array. Aliased as `head` and `take`. The **guard** check
-  // allows it to work with `_.map`.
-  // 返回数组第一个元素
-  // 如果有参数 n，则返回数组前 n 个元素（组成的数组）
-  _.first = _.head = _.take = function(array, n, guard) {
-    // 容错，数组为空则返回 undefined
-    if (array == null) return void 0;
-
-    // 没指定参数 n，则默认返回第一个元素
-    if (n == null || guard) return array[0];
-
-    // 如果传入参数 n，则返回前 n 个元素组成的数组
-    // 返回前 n 个元素，即剔除后 array.length - n 个元素
-    return _.initial(array, array.length - n);
-  };
-
 
   // Get the last element of an array. Passing **n** will return the last N
   // values in the array.
@@ -375,15 +300,6 @@
     return _.rest(array, Math.max(0, array.length - n));
   };
 
-  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
-  // Especially useful on the arguments object. Passing an **n** will return
-  // the rest N values in the array.
-  // 传入一个数组
-  // 返回剔除第一个元素后的数组副本
-  // 如果传入参数 n，则剔除前 n 个元素
-  _.rest = _.tail = _.drop = function(array, n, guard) {
-    return slice.call(array, n == null || guard ? 1 : n);
-  };
 
   // Trim out all falsy values from an array.
   // 去掉数组中所有的假值

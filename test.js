@@ -66,3 +66,9 @@ function times(n, func, context) {
 function isFunction(func) {
   return typeof func === 'function'
 }
+
+function last(array, n = 1) {
+  if (array == null) return undefined
+  const length = array.length
+  return Array.prototype.slice.call(array, Math.max(n, length - n), length )
+}

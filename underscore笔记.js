@@ -997,6 +997,32 @@ _.filter = _.select = function(obj, predicate, context) {
     return _.initial(array, array.length - n)
   }
 
+  // Get the last element of an array. Passing **n** will return the last N
+  // values in the array.
+  // 返回数组最后一个元素
+  // 如果传入参数 n
+  // 则返回该数组后 n 个元素组成的数组
+  // 即剔除前 array.length - n 个元素
+  _.last = function(array, n, guard) {
+    // 容错
+    if (array == null) return void 0
+
+    // 如果没有指定参数 n，则返回最后一个元素
+    if (n == null || guard) return array[array.length - 1]
+
+    // 如果传入参数 n，则返回后 n 个元素组成的数组
+    // 即剔除前 array.length - n 个元素
+    return _.rest(array, Math.max(0, array.length - n))
+  }
+  // 自己的
+  // function last(array, n = 1) {
+  //   if (array == null) return undefined
+  //   const length = array.length
+  //   return Array.prototype.slice.call(array, Math.max(n, length - n), length)
+  // }
+
+
+
   // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
   // Especially useful on the arguments object. Passing an **n** will return
   // the rest N values in the array.
