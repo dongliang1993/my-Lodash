@@ -70,5 +70,18 @@ function isFunction(func) {
 function last(array, n = 1) {
   if (array == null) return undefined
   const length = array.length
-  return Array.prototype.slice.call(array, Math.max(n, length - n), length )
+  return Array.prototype.slice.call(array, Math.max(n, length - n), length)
+}
+
+function range(start, stop, step = 1) {
+  if (stop == null) { // 只传了一个参数
+    stop = start    
+    start = 0
+  }
+  const length = (Math.ceil((stop - start) / step))
+  const result = Array(length)
+  for (let i = 0; i < length; i++) {
+    result[i] = start + i * step
+  }
+  return result
 }

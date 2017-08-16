@@ -1064,3 +1064,36 @@ _.filter = _.select = function(obj, predicate, context) {
     }
     return result
   }
+
+  // Generate an integer Array containing an arithmetic progression. A port of
+  // the native Python `range()` function. See
+  // [the Python documentation](http://docs.python.org/library/functions.html#range).
+  // 返回某一个范围内的数组成的数组
+  _.range = function(start, stop, step) {
+    if (stop == null) {
+      stop = start || 0
+      start = 0
+    }
+    step = step || 1
+    // 返回数组的长度
+    var length = Math.max(Math.ceil((stop - start) / step), 0)
+    // 返回的数组
+    var range = Array(length)
+    for (var idx = 0; idx < length; idx++, start += step) {
+      range[idx] = start
+    }
+    return range
+  }
+  // 自己写的
+  // function range(start, stop, step = 1) {
+  //   if (stop == null) { // 只传了一个参数
+  //     stop = start    
+  //     start = 0
+  //   }
+  //   const length = (Math.ceil((stop - start) / step))
+  //   const result = Array(length)
+  //   for (let i = 0; i < length; i++) {
+  //     result[i] = start + i * step
+  //   }
+  //   return result
+  // }
