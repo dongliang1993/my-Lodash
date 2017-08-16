@@ -1044,3 +1044,23 @@ _.filter = _.select = function(obj, predicate, context) {
   _.compact = function(array) {
     return _.filter(array, _.identity)
   }
+
+  // Complement of _.zip. Unzip accepts an array of arrays and groups
+  // each array's elements on shared indices
+  // The opposite of zip. Given an array of arrays,
+  // returns a series of new arrays,
+  // the first of which contains all of the first elements in the input arrays,
+  // the second of which contains all of the second elements, and so on.
+  // ===== //
+  // _.unzip([["moe", 30, true], ["larry", 40, false], ["curly", 50, false]]);
+  // => [['moe', 'larry', 'curly'], [30, 40, 50], [true, false, false]]
+  // ===== //
+  _.unzip = function(array) {
+    var length = array && _.max(array, getLength).length || 0
+    var result = Array(length)
+
+    for (var index = 0; index < length; index++) {
+      result[index] = _.pluck(array, index)
+    }
+    return result
+  }
