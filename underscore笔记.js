@@ -1240,3 +1240,26 @@ _.filter = _.select = function(obj, predicate, context) {
   //   }
   //   return result
   // }
+
+
+  // Convert an object into a list of `[key, value]` pairs.
+  // 将一个对象转换为元素为 [key, value] 形式的数组
+  // _.pairs({one: 1, two: 2, three: 3});
+  // => [["one", 1], ["two", 2], ["three", 3]]
+  _.pairs = function(obj) {
+    var keys = _.keys(obj);
+    var length = keys.length;
+    var pairs = Array(length);
+    for (var i = 0; i < length; i++) {
+      pairs[i] = [keys[i], obj[keys[i]]];
+    }
+    return pairs;
+  };
+  // 自己
+  // function pairs(obj) {
+  //   const result = []
+  //   for (let key in obj) {
+  //     if (obj.hasOwnProperty(key)) result.push([key, obj[key]])
+  //   }
+  //   return result
+  // }
