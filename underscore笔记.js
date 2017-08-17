@@ -1263,3 +1263,27 @@ _.filter = _.select = function(obj, predicate, context) {
   //   }
   //   return result
   // }
+
+  // Return a sorted list of the function names available on the object.
+  // Aliased as `methods`
+  // 传入一个对象
+  // 遍历该对象的键值对（包括 own properties 以及 原型链上的）
+  // 如果某个 value 的类型是方法（function），则将该 key 存入数组
+  // 将该数组排序后返回
+  _.functions = _.methods = function(obj) {
+    // 返回的数组
+    var names = [];
+
+    // if IE < 9
+    // 且对象重写了 `nonEnumerableProps` 数组中的某些方法
+    // 那么这些方法名是不会被返回的
+    // 可见放弃了 IE < 9 可能对 `toString` 等方法的重写支持
+    for (var key in obj) {
+      // 如果某个 key 对应的 value 值类型是函数
+      // 则将这个 key 值存入数组
+      if (_.isFunction(obj[key])) names.push(key);
+    }
+
+    // 返回排序后的数组
+    return names.sort();
+  };
