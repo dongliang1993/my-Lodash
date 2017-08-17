@@ -112,3 +112,14 @@ function after(times, func) {
     }
   }
 }
+
+function mapObject(obj, iteratee, context) {
+  const result = {}
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      let value = iteratee(obj[key], key, obj)
+      result[key] = value
+    }
+  }
+  return result
+}

@@ -1202,3 +1202,41 @@ _.filter = _.select = function(obj, predicate, context) {
       return memo;
     };
   };
+
+  // Returns the results of applying the iteratee to each element of the object
+  // In contrast to _.map it returns an object
+  // 跟 _.map 方法很像
+  // 但是是专门为对象服务的 map 方法
+  // 迭代函数改变对象的 values 值
+  // 返回对象副本
+  // 很简单的一个函数，没事说的
+  _.mapObject = function(obj, iteratee, context) {
+    // 迭代函数
+    // 对每个键值对进行迭代
+    iteratee = cb(iteratee, context)
+
+    var keys =  _.keys(obj),
+        length = keys.length,
+        results = {}, // 对象副本，该方法返回的对象
+        currentKey;
+
+    for (var index = 0; index < length; index++) {
+      currentKey = keys[index];
+      // key 值不变
+      // 对每个 value 值用迭代函数迭代
+      // 返回经过函数运算后的值
+      results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
+    }
+    return results;
+  };
+  // 自己
+  // function mapObject(obj, iteratee, context) {
+  //   const result = {}
+  //   for (let key in obj) {
+  //     if (obj.hasOwnProperty(key)) {
+  //       let value = iteratee(obj[key], key, obj)
+  //       result[key] = value
+  //     }
+  //   }
+  //   return result
+  // }
