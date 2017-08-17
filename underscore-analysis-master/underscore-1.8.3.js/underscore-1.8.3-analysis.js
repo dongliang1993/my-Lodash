@@ -282,20 +282,6 @@
   // ---------------
 
 
-
-
-  // Trim out all falsy values from an array.
-  // 去掉数组中所有的假值
-  // 返回数组副本
-  // JavaScript 中的假值包括 false、null、undefined、''、NaN、0
-  // 联想 PHP 中的 array_filter() 函数
-  // _.identity = function(value) {
-  //   return value;
-  // };
-  _.compact = function(array) {
-    return _.filter(array, _.identity);
-  };
-
   // Internal implementation of a recursive `flatten` function.
   // 递归调用数组，将数组展开
   // 即 [1, 2, [3, 4]] => [1, 2, 3, 4]
@@ -556,25 +542,6 @@
     return _.unzip(arguments);
   };
 
-  // Complement of _.zip. Unzip accepts an array of arrays and groups
-  // each array's elements on shared indices
-  // The opposite of zip. Given an array of arrays,
-  // returns a series of new arrays,
-  // the first of which contains all of the first elements in the input arrays,
-  // the second of which contains all of the second elements, and so on.
-  // ===== //
-  // _.unzip([["moe", 30, true], ["larry", 40, false], ["curly", 50, false]]);
-  // => [['moe', 'larry', 'curly'], [30, 40, 50], [true, false, false]]
-  // ===== //
-  _.unzip = function(array) {
-    var length = array && _.max(array, getLength).length || 0;
-    var result = Array(length);
-
-    for (var index = 0; index < length; index++) {
-      result[index] = _.pluck(array, index);
-    }
-    return result;
-  };
 
 
   // Use a comparator function to figure out the smallest index at which
@@ -673,31 +640,6 @@
     };
   }
 
-
-  // Generate an integer Array containing an arithmetic progression. A port of
-  // the native Python `range()` function. See
-  // [the Python documentation](http://docs.python.org/library/functions.html#range).
-  // 返回某一个范围内的数组成的数组
-  _.range = function(start, stop, step) {
-    if (stop == null) {
-      stop = start || 0;
-      start = 0;
-    }
-
-    step = step || 1;
-
-    // 返回数组的长度
-    var length = Math.max(Math.ceil((stop - start) / step), 0);
-
-    // 返回的数组
-    var range = Array(length);
-
-    for (var idx = 0; idx < length; idx++, start += step) {
-      range[idx] = start;
-    }
-
-    return range;
-  };
 
 
   // Function (ahem) Functions
@@ -862,22 +804,7 @@
     return memoize;
   };
 
-  // Delays a function for the given number of milliseconds, and then calls
-  // it with the arguments supplied.
-  // 延迟触发某方法
-  // _.delay(function, wait, *arguments)
-  //  如果传入了 arguments 参数，则会被当作 func 的参数在触发时调用
-  // 其实是封装了「延迟触发某方法」，使其复用
-  _.delay = function(func, wait) {
-    // 获取 *arguments
-    // 是 func 函数所需要的参数
-    var args = slice.call(arguments, 2);
-    return setTimeout(function(){
-      // 将参数赋予 func 函数
-      return func.apply(null, args);
-    }, wait);
-  };
-
+  
   // Defers a function, scheduling it to run after the current call stack has
   // cleared.
   // 和 setTimeout(func, 0) 相似（源码看来似乎应该是 setTimeout(func, 1)）
@@ -1098,64 +1025,6 @@
     };
   };
 
-  // Returns a function that is the composition of a list of functions, each
-  // consuming the return value of the function that follows.
-  // _.compose(*functions)
-  // var tmp = _.compose(f, g, h)
-  // tmp(args) => f(g(h(args)))
-  _.compose = function() {
-    var args = arguments; // funcs
-    var start = args.length - 1; // 倒序调用
-    return function() {
-      var i = start;
-      var result = args[start].apply(this, arguments);
-      // 一个一个方法地执行
-      while (i--)
-        result = args[i].call(this, result);
-      return result;
-    };
-  };
-
-  // Returns a function that will only be executed on and after the Nth call.
-  // 第 times 触发执行 func（事实上之后的每次触发还是会执行 func）
-  // 有什么用呢？
-  // 如果有 N 个异步事件，所有异步执行完后执行该回调，即 func 方法（联想 eventproxy）
-  // _.after 会返回一个函数
-  // 当这个函数第 times 被执行的时候
-  // 触发 func 方法
-  _.after = function(times, func) {
-    return function() {
-      // 函数被触发了 times 了，则执行 func 函数
-      // 事实上 times 次后如果函数继续被执行，也会触发 func
-      if (--times < 1) {
-        return func.apply(this, arguments);
-      }
-    };
-  };
-
-  // Returns a function that will only be executed up to (but not including) the Nth call.
-  // 函数至多被调用 times - 1 次（(but not including) the Nth call）
-  // func 函数会触发 time - 1 次（Creates a version of the function that can be called no more than count times）
-  // func 函数有个返回值，前 time - 1 次触发的返回值都是将参数代入重新计算的
-  // 第 times 开始的返回值为第 times - 1 次时的返回值（不重新计算）
-  // The result of the last function call is memoized and returned when count has been reached.
-  _.before = function(times, func) {
-    var memo;
-    return function() {
-      if (--times > 0) {
-        // 缓存函数执行结果
-        memo = func.apply(this, arguments);
-      }
-
-      // func 引用置为空，其实不置为空也用不到 func 了
-      if (times <= 1)
-        func = null;
-
-      // 前 times - 1 次触发，memo 都是分别计算返回
-      // 第 times 次开始，memo 值同 times - 1 次时的 memo
-      return memo;
-    };
-  };
 
   // Returns a function that will be executed at most one time, no matter how
   // often you call it. Useful for lazy initialization.
@@ -1172,69 +1041,6 @@
   // 共 38 个扩展方法
   // ----------------
 
-  // Returns the results of applying the iteratee to each element of the object
-  // In contrast to _.map it returns an object
-  // 跟 _.map 方法很像
-  // 但是是专门为对象服务的 map 方法
-  // 迭代函数改变对象的 values 值
-  // 返回对象副本
-  _.mapObject = function(obj, iteratee, context) {
-    // 迭代函数
-    // 对每个键值对进行迭代
-    iteratee = cb(iteratee, context);
-
-    var keys =  _.keys(obj),
-        length = keys.length,
-        results = {}, // 对象副本，该方法返回的对象
-        currentKey;
-
-    for (var index = 0; index < length; index++) {
-      currentKey = keys[index];
-      // key 值不变
-      // 对每个 value 值用迭代函数迭代
-      // 返回经过函数运算后的值
-      results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
-    }
-    return results;
-  };
-
-  // Convert an object into a list of `[key, value]` pairs.
-  // 将一个对象转换为元素为 [key, value] 形式的数组
-  // _.pairs({one: 1, two: 2, three: 3});
-  // => [["one", 1], ["two", 2], ["three", 3]]
-  _.pairs = function(obj) {
-    var keys = _.keys(obj);
-    var length = keys.length;
-    var pairs = Array(length);
-    for (var i = 0; i < length; i++) {
-      pairs[i] = [keys[i], obj[keys[i]]];
-    }
-    return pairs;
-  };
-
-  // Return a sorted list of the function names available on the object.
-  // Aliased as `methods`
-  // 传入一个对象
-  // 遍历该对象的键值对（包括 own properties 以及 原型链上的）
-  // 如果某个 value 的类型是方法（function），则将该 key 存入数组
-  // 将该数组排序后返回
-  _.functions = _.methods = function(obj) {
-    // 返回的数组
-    var names = [];
-
-    // if IE < 9
-    // 且对象重写了 `nonEnumerableProps` 数组中的某些方法
-    // 那么这些方法名是不会被返回的
-    // 可见放弃了 IE < 9 可能对 `toString` 等方法的重写支持
-    for (var key in obj) {
-      // 如果某个 key 对应的 value 值类型是函数
-      // 则将这个 key 值存入数组
-      if (_.isFunction(obj[key])) names.push(key);
-    }
-
-    // 返回排序后的数组
-    return names.sort();
-  };
 
   // Extend a given object with all the properties in passed-in object(s).
   // extend_.extend(destination, *sources)
