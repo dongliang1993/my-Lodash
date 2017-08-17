@@ -123,3 +123,19 @@ function mapObject(obj, iteratee, context) {
   }
   return result
 }
+
+function pairs(obj) {
+  const result = []
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) result.push([key, obj[key]])
+  }
+  return result
+}
+
+function partition(array, predicate) {
+  const success = [], fail = []
+  array.forEach((value, key, array) => {
+    predicate(value, key, array) ? success.push(value) : fail.push(value)
+  })
+  return [success, fail]
+}

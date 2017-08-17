@@ -1302,3 +1302,26 @@ _.filter = _.select = function(obj, predicate, context) {
       if (predicate(obj[key], key, obj)) return key
     }
   }
+
+  // Split a collection into two arrays: one whose elements all satisfy the given
+  // predicate, and one whose elements all do not satisfy the predicate.
+  // 将数组或者对象中符合条件（predicate）的元素
+  // 和不符合条件的元素（数组为元素，对象为 value 值）
+  // 分别放入两个数组中
+  // 返回一个数组，数组元素为以上两个数组（[[pass array], [fail array]]）
+  _.partition = function(obj, predicate, context) {
+    predicate = cb(predicate, context);
+    var pass = [], fail = [];
+    _.each(obj, function(value, key, obj) {
+      (predicate(value, key, obj) ? pass : fail).push(value);
+    });
+    return [pass, fail];
+  };
+  // 自己
+  // function partition(array, predicate) {
+  //   const success = [], fail = []
+  //   array.forEach((value, key, array) => {
+  //     predicate(value, key, array) ? success.push(value) : fail.push(value)
+  //   })
+  //   return [success, fail]
+  // }
