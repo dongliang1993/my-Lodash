@@ -8,22 +8,6 @@
 
 (function() {
 
-
-  // An internal function for creating a new object that inherits from another.
-  // use in `_.create`
-  var baseCreate = function(prototype) {
-    // 如果 prototype 参数不是对象
-    if (!_.isObject(prototype)) return {};
-
-    // 如果浏览器支持 ES5 Object.create
-    if (nativeCreate) return nativeCreate(prototype);
-
-    Ctor.prototype = prototype;
-    var result = new Ctor;
-    Ctor.prototype = null;
-    return result;
-  };
-
   // Helper for collection methods to determine whether a collection
   // should be iterated as an array or as an object
   // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength

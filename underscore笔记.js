@@ -61,7 +61,20 @@
   // 当前 underscore 版本号
   _.VERSION = '1.8.3';
 
+// An internal function for creating a new object that inherits from another.
+  // use in `_.create`
+  var baseCreate = function(prototype) {
+    // 如果 prototype 参数不是对象
+    if (!_.isObject(prototype)) return {};
 
+    // 如果浏览器支持 ES5 Object.create
+    if (nativeCreate) return nativeCreate(prototype);
+
+    Ctor.prototype = prototype;
+    var result = new Ctor;
+    Ctor.prototype = null;
+    return result;
+  };
 
 // Save bytes in the minified (but not gzipped) version:
 // 缓存变量, 便于压缩代码
@@ -1463,4 +1476,25 @@ _.filter = _.select = function(obj, predicate, context) {
     }
 
     return result;
+  };
+
+  // Bind a number of an object's methods to that object. Remaining arguments
+  // are the method names to be bound. Useful for ensuring that all callbacks
+  // defined on an object belong to it.
+  // 指定一系列方法（methodNames）中的 this 指向（object）
+  // _.bindAll(object, *methodNames)
+  _.bindAll = function(obj) {
+    var i, length = arguments.length, key;
+
+    // 如果只传入了一个参数（obj），没有传入 methodNames，则报错
+    if (length <= 1)
+      throw new Error('bindAll must be passed function names');
+
+    // 遍历 methodNames
+    for (i = 1; i < length; i++) {
+      key = arguments[i];
+      // 逐个绑定
+      obj[key] = _.bind(obj[key], obj);
+    }
+    return obj;
   };
