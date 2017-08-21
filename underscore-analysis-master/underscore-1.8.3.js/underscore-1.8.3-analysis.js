@@ -579,66 +579,6 @@
     return bound;
   };
 
-  // Bind a number of an object's methods to that object. Remaining arguments
-  // are the method names to be bound. Useful for ensuring that all callbacks
-  // defined on an object belong to it.
-  // 指定一系列方法（methodNames）中的 this 指向（object）
-  // _.bindAll(object, *methodNames)
-  _.bindAll = function(obj) {
-    var i, length = arguments.length, key;
-
-    // 如果只传入了一个参数（obj），没有传入 methodNames，则报错
-    if (length <= 1)
-      throw new Error('bindAll must be passed function names');
-
-    // 遍历 methodNames
-    for (i = 1; i < length; i++) {
-      key = arguments[i];
-      // 逐个绑定
-      obj[key] = _.bind(obj[key], obj);
-    }
-    return obj;
-  };
-
-  // Memoize an expensive function by storing its results.
-  //「记忆化」，存储中间运算结果，提高效率
-  // 参数 hasher 是个 function，用来计算 key
-  // 如果传入了 hasher，则用 hasher 来计算 key
-  // 否则用 key 参数直接当 key（即 memoize 方法传入的第一个参数）
-  // _.memoize(function, [hashFunction])
-  // 适用于需要大量重复求值的场景
-  // 比如递归求解菲波那切数
-  // @http://www.jameskrob.com/memoize.html
-  // create hash for storing "expensive" function outputs
-  // run expensive function
-  // check whether function has already been run with given arguments via hash lookup
-  // if false - run function, and store output in hash
-  // if true, return output stored in hash
-  _.memoize = function(func, hasher) {
-    var memoize = function(key) {
-      // 储存变量，方便使用
-      var cache = memoize.cache;
-
-      // 求 key
-      // 如果传入了 hasher，则用 hasher 函数来计算 key
-      // 否则用 参数 key（即 memoize 方法传入的第一个参数）当 key
-      var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-
-      // 如果这个 key 还没被 hash 过（还没求过值）
-      if (!_.has(cache, address))
-        cache[address] = func.apply(this, arguments);
-
-      // 返回
-      return cache[address];
-    };
-
-    // cache 对象被当做 key-value 键值对缓存中间运算结果
-    memoize.cache = {};
-
-    // 返回一个函数（经典闭包）
-    return memoize;
-  };
-
   
   // Defers a function, scheduling it to run after the current call stack has
   // cleared.
