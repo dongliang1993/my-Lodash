@@ -8,73 +8,6 @@
 
 (function() {
 
-  // Baseline setup
-  // 基本设置、配置
-  // --------------
-
-  // Establish the root object, `window` in the browser, or `exports` on the server.
-  // 将 this 赋值给局部变量 root
-  // root 的值, 客户端为 `window`, 服务端(node) 中为 `exports`
-  var root = this;
-
-  // Save the previous value of the `_` variable.
-  // 将原来全局环境中的变量 `_` 赋值给变量 previousUnderscore 进行缓存
-  // 在后面的 noConflict 方法中有用到
-  var previousUnderscore = root._;
-
-  // Naked function reference for surrogate-prototype-swapping.
-  var Ctor = function(){};
-
-  // Create a safe reference to the Underscore object for use below.
-  // 核心函数
-  // `_` 其实是一个构造函数
-  // 支持无 new 调用的构造函数（思考 jQuery 的无 new 调用）
-  // 将传入的参数（实际要操作的数据）赋值给 this._wrapped 属性
-  // OOP 调用时，_ 相当于一个构造函数
-  // each 等方法都在该构造函数的原型链上
-  // _([1, 2, 3]).each(alert)
-  // _([1, 2, 3]) 相当于无 new 构造了一个新的对象
-  // 调用了该对象的 each 方法，该方法在该对象构造函数的原型链上
-  var _ = function(obj) {
-    // 以下均针对 OOP 形式的调用
-    // 如果是非 OOP 形式的调用，不会进入该函数内部
-
-    // 如果 obj 已经是 `_` 函数的实例，则直接返回 obj
-    if (obj instanceof _)
-      return obj;
-
-    // 如果不是 `_` 函数的实例
-    // 则调用 new 运算符，返回实例化的对象
-    if (!(this instanceof _))
-      return new _(obj);
-
-    // 将 obj 赋值给 this._wrapped 属性
-    this._wrapped = obj;
-  };
-  // Export the Underscore object for **Node.js**, with
-  // backwards-compatibility for the old `require()` API. If we're in
-  // the browser, add `_` as a global object.
-  // 将上面定义的 `_` 局部变量赋值给全局对象中的 `_` 属性
-  // 即客户端中 window._ = _
-  // 服务端(node)中 exports._ = _
-  // 同时在服务端向后兼容老的 require() API
-  // 这样暴露给全局后便可以在全局环境中使用 `_` 变量(方法)
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = _;
-    }
-    exports._ = _;
-  } else {
-    root._ = _;
-  }
-
-  // Current version.
-  // 当前 underscore 版本号
-  _.VERSION = '1.8.3';
-
-  _.iteratee = function(value, context) {
-    return cb(value, context, Infinity);
-  };
 
   // An internal function for creating a new object that inherits from another.
   // use in `_.create`
@@ -184,32 +117,6 @@
     return _.filter(obj, _.negate(cb(predicate)), context);
   };
 
-
-  // Invoke a method (with arguments) on every item in a collection.
-  // Calls the method named by methodName on each value in the list.
-  // Any extra arguments passed to invoke will be forwarded on to the method invocation.
-  // 数组或者对象中的每个元素都调用 method 方法
-  // 返回调用后的结果（数组或者关联数组）
-  // method 参数后的参数会被当做参数传入 method 方法中
-  // _.invoke(list, methodName, *arguments)
-  _.invoke = function(obj, method) {
-    // *arguments 参数
-    var args = slice.call(arguments, 2);
-
-    // 判断 method 是不是函数
-    var isFunc = _.isFunction(method);
-
-    // 用 map 方法对数组或者对象每个元素调用方法
-    // 返回数组
-    return _.map(obj, function(value) {
-      // 如果 method 不是函数，则可能是 obj 的 key 值
-      // 而 obj[method] 可能为函数
-      var func = isFunc ? method : value[method];
-      return func == null ? func : func.apply(value, args);
-    });
-  };
-
-
   // Convenience version of a common use case of `filter`: selecting only objects
   // containing specific `key:value` pairs.
   // 根据指定的键值对
@@ -255,22 +162,6 @@
       return left.index - right.index;
     }), 'value');
 
-  };
-
-
-  // Split a collection into two arrays: one whose elements all satisfy the given
-  // predicate, and one whose elements all do not satisfy the predicate.
-  // 将数组或者对象中符合条件（predicate）的元素
-  // 和不符合条件的元素（数组为元素，对象为 value 值）
-  // 分别放入两个数组中
-  // 返回一个数组，数组元素为以上两个数组（[[pass array], [fail array]]）
-  _.partition = function(obj, predicate, context) {
-    predicate = cb(predicate, context);
-    var pass = [], fail = [];
-    _.each(obj, function(value, key, obj) {
-      (predicate(value, key, obj) ? pass : fail).push(value);
-    });
-    return [pass, fail];
   };
 
 
@@ -466,46 +357,6 @@
     return _.uniq(flatten(arguments, true, true));
   };
 
-  // Produce an array that contains every item shared between all the
-  // passed-in arrays.
-  // 寻找几个数组中共有的元素
-  // 将这些每个数组中都有的元素存入另一个数组中返回
-  // _.intersection(*arrays)
-  // _.intersection([1, 2, 3, 1], [101, 2, 1, 10, 1], [2, 1, 1])
-  // => [1, 2]
-  // 注意：返回的结果数组是去重的
-  _.intersection = function(array) {
-    // 结果数组
-    var result = [];
-
-    // 传入的参数（数组）个数
-    var argsLength = arguments.length;
-
-     // 遍历第一个数组的元素
-    for (var i = 0, length = getLength(array); i < length; i++) {
-      var item = array[i];
-
-      // 如果 result[] 中已经有 item 元素了，continue
-      // 即 array 中出现了相同的元素
-      // 返回的 result[] 其实是个 "集合"（是去重的）
-      if (_.contains(result, item)) continue;
-
-      // 判断其他参数数组中是否都有 item 这个元素
-      for (var j = 1; j < argsLength; j++) {
-        if (!_.contains(arguments[j], item))
-          break;
-      }
-
-      // 遍历其他参数数组完毕
-      // j === argsLength 说明其他参数数组中都有 item 元素
-      // 则将其放入 result[] 中
-      if (j === argsLength)
-        result.push(item);
-    }
-
-    return result;
-  };
-
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   // _.difference(array, *others)
@@ -658,7 +509,7 @@
     // 如果是用 new 调用 _.bind 返回的方法
 
     // self 为 sourceFunc 的实例，继承了它的原型链
-    // self 理论上是一个空对象（还没赋值），但是有原型链
+    // self 理论上是一个空对象（还没赋值），但是有原型链寒假快乐；“
     var self = baseCreate(sourceFunc.prototype);
 
     // 用 new 生成一个构造函数的实例
@@ -1391,13 +1242,6 @@
     return !!(obj && obj.nodeType === 1);
   };
 
-  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
-  // 其他类型判断
-  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
-    _['is' + name] = function(obj) {
-      return toString.call(obj) === '[object ' + name + ']';
-    };
-  });
 
   // Define a fallback version of the method in browsers (ahem, IE < 9), where
   // there isn't any inspectable "Arguments" type.

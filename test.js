@@ -139,3 +139,7 @@ function partition(array, predicate) {
   })
   return [success, fail]
 }
+
+function test() {
+  console.log(Object.prototype.toString.call(arguments))
+}
