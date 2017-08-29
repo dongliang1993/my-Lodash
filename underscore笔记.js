@@ -12,54 +12,7 @@
   // 在后面的 noConflict 方法中有用到
   var previousUnderscore = root._;
   
-  // Naked function reference for surrogate-prototype-swapping.
-  var Ctor = function(){};
-
-  // Create a safe reference to the Underscore object for use below.
-  // 核心函数
-  // `_` 其实是一个构造函数
-  // 支持无 new 调用的构造函数（思考 jQuery 的无 new 调用）
-  // 将传入的参数（实际要操作的数据）赋值给 this._wrapped 属性
-  // OOP 调用时，_ 相当于一个构造函数
-  // each 等方法都在该构造函数的原型链上
-  // _([1, 2, 3]).each(alert)
-  // _([1, 2, 3]) 相当于无 new 构造了一个新的对象
-  // 调用了该对象的 each 方法，该方法在该对象构造函数的原型链上
-  // 其实主要就是一个兼容，支持了无 new 主动调用构造函数
-  var _ = function(obj) {
-    // 以下均针对 OOP 形式的调用
-    // 如果是非 OOP 形式的调用，不会进入该函数内部
-    // 如果 obj 已经是 `_` 函数的实例，则直接返回 obj
-    if (obj instanceof _)
-      return obj;
-    // 如果不是 `_` 函数的实例
-    // 则调用 new 运算符，返回实例化的对象
-    if (!(this instanceof _))
-      return new _(obj);
-    // 将 obj 赋值给 this._wrapped 属性
-    this._wrapped = obj;
-  };
-
-  // Export the Underscore object for **Node.js**, with
-  // backwards-compatibility for the old `require()` API. If we're in
-  // the browser, add `_` as a global object.
-  // 将上面定义的 `_` 局部变量赋值给全局对象中的 `_` 属性
-  // 即客户端中 window._ = _
-  // 服务端(node)中 exports._ = _
-  // 同时在服务端向后兼容老的 require() API
-  // 这样暴露给全局后便可以在全局环境中使用 `_` 变量(方法)
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = _;
-    }
-    exports._ = _;
-  } else {
-    root._ = _;
-  }
-
-  // Current version.
-  // 当前 underscore 版本号
-  _.VERSION = '1.8.3';
+ 
 
 // An internal function for creating a new object that inherits from another.
   // use in `_.create`
@@ -90,20 +43,66 @@ const
 // 同时可减少在原型链中的查找次数(提高代码效率)
 // http://www.cnblogs.com/ziyunfei/archive/2012/09/22/2698505.html
 // 应该没有什么必要吧？
-const
-  push             = ArrayProto.push,
-  slice            = ArrayProto.slice,
-  toString         = ObjProto.toString,
-  hasOwnProperty   = ObjProto.hasOwnProperty
+var push = ArrayProto.push,
+    slice = ArrayProto.slice,
+    toString = ObjProto.toString,
+    hasOwnProperty = ObjProto.hasOwnProperty;
 
 // All **ECMAScript 5** native function implementations that we hope to use
 // are declared here.
-// ES5 原生方法, 如果浏览器支持, 则 underscore 中会优先使用
-const
-  nativeIsArray      = Array.isArray,
-  nativeKeys         = Object.keys,
-  nativeBind         = FuncProto.bind,
-  nativeCreate       = Object.create;
+// ES5 原生方法, 如果浏览器支持, 在 underscore 中会优先使用
+var nativeIsArray = Array.isArray,
+    nativeKeys = Object.keys,
+    nativeCreate = Object.create;
+
+ // Naked function reference for surrogate-prototype-swapping.
+ var Ctor = function(){};
+ 
+// Create a safe reference to the Underscore object for use below.
+// 核心函数
+// `_` 其实是一个构造函数
+// 支持无 new 调用的构造函数（思考 jQuery 的无 new 调用）
+// 将传入的参数（实际要操作的数据）赋值给 this._wrapped 属性
+// OOP 调用时，_ 相当于一个构造函数
+// each 等方法都在该构造函数的原型链上
+// _([1, 2, 3]).each(alert)
+// _([1, 2, 3]) 相当于无 new 构造了一个新的对象
+// 调用了该对象的 each 方法，该方法在该对象构造函数的原型链上
+// 其实主要就是一个兼容，支持了无 new 主动调用构造函数
+var _ = function(obj) {
+  // 以下均针对 OOP 形式的调用
+  // 如果是非 OOP 形式的调用，不会进入该函数内部
+  // 如果 obj 已经是 `_` 函数的实例，则直接返回 obj
+  if (obj instanceof _) return obj;
+  // 如果不是 `_` 函数的实例
+  // 则调用 new 运算符，返回实例化的对象
+  if (!(this instanceof _)) return new _(obj);
+  // 将 obj 赋值给 this._wrapped 属性
+  this._wrapped = obj;
+};
+ 
+// Export the Underscore object for **Node.js**, with
+// backwards-compatibility for the old `require()` API. If we're in
+// the browser, add `_` as a global object.
+// (`nodeType` is checked to ensure that `module`
+// and `exports` are not HTML elements.)
+// 将上面定义的 `_` 局部变量赋值给全局对象中的 `_` 属性
+// 即客户端中 window._ = _
+// 服务端(node)中 exports._ = _
+// 同时在服务端向后兼容老的 require() API
+// 这样暴露给全局后便可以在全局环境中使用 `_` 变量(方法)
+if (typeof exports != 'undefined') {
+  if (typeof module != 'undefined' && module.exports) {
+    exports = module.exports = _;
+  }
+  exports._ = _;
+} else {
+  root._ = _;
+}
+ 
+// Current version.
+// 当前 underscore 版本号
+_.VERSION = '1.8.3';
 
 // Shortcut function for checking if an object has a given property directly
 // on itself (in other words, not on a prototype).
