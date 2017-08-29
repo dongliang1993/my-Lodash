@@ -80,14 +80,17 @@
 // 缓存变量, 便于压缩代码
 // 此处「压缩」指的是压缩到 min.js 版本
 // 而不是 gzip 压缩
-var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+const 
+    ArrayProto = Array.prototype,
+    ObjProto   = Object.prototype,
+    FuncProto  = Function.prototype;
 
 // Create quick reference variables for speed access to core prototypes.
 // 缓存变量, 便于压缩代码
 // 同时可减少在原型链中的查找次数(提高代码效率)
 // http://www.cnblogs.com/ziyunfei/archive/2012/09/22/2698505.html
 // 应该没有什么必要吧？
-var
+const
   push             = ArrayProto.push,
   slice            = ArrayProto.slice,
   toString         = ObjProto.toString,
@@ -96,7 +99,7 @@ var
 // All **ECMAScript 5** native function implementations that we hope to use
 // are declared here.
 // ES5 原生方法, 如果浏览器支持, 则 underscore 中会优先使用
-var
+const
   nativeIsArray      = Array.isArray,
   nativeKeys         = Object.keys,
   nativeBind         = FuncProto.bind,
@@ -114,7 +117,7 @@ _.has = function(obj, key) {
 
 // Is a given variable an object?
 // 判断是否为对象
-// 这里的对象包括 function 和 object
+// 这里的对象包括 function 和 object`
 // null则认为不是 object，用 !!obj 排除
 _.isObject = function(obj) {
   const type = typeof obj
