@@ -106,13 +106,25 @@ _.VERSION = '1.8.3';
 
 // Shortcut function for checking if an object has a given property directly
 // on itself (in other words, not on a prototype).
-// own properties, not on a prototype
-// 判断对象中是否有指定 key，不会沿着原型链去找
-_.has = function(obj, key) {
-  // obj 不能为 null 或者 undefined
-  // 因为 null == undefined ，所以 obj != null 就排除了两者
-  return obj != null && hasOwnProperty.call(obj, key)
-}
+// 判断一个对象自身的属性中是否有指定 key, 不会沿着原型链去寻找
+// 有两种用法，一个是传入一个字符串当做要验证的key，判断是否能在对象上找到
+// 第二种是传入一个数组，只有数组中所有的 key 都能在对象中找到，才会返回 true
+_.has = function(obj, path) {
+  if (!_.isArray(path)) {
+    // obj 不能为 null 或者 undefined
+    // 因为  null == undefined ，所以 obj != null 就排除了两者
+    return obj != null && hasOwnProperty.call(obj, path);
+  }
+  var length = path.length;
+  for (var i = 0; i < length; i++) {
+    var key = path[i];
+    if (obj == null || !hasOwnProperty.call(obj, key)) {
+      return false;
+    }
+    obj = obj[key];
+  }
+  return !!length;
+};
 
 // Is a given variable an object?
 // 判断是否为对象
@@ -185,7 +197,7 @@ _.keys = function(obj) {
 }
 
 // Retrieve all the property names of an object.
-// 返回一个对象的 keys 数组
+// 返回一个对象的 keys 数组随。。。...
 // 不仅仅是 own enumerable properties
 // 还包括原型链上继承的属性
 _.allKeys = function(obj) {
