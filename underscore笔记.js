@@ -121,6 +121,7 @@ _.has = function(obj, path) {
     if (obj == null || !hasOwnProperty.call(obj, key)) {
       return false;
     }
+    // 
     obj = obj[key];
   }
   return !!length;
@@ -141,7 +142,7 @@ _.isObject = function(obj) {
 // https://github.com/hanzichi/underscore-analysis/issues/1
 const property = function(key) {
   return function(obj) {
-    // 也算是个容错处理吧，undefined[key] 会报错
+    // 也算是个容错处理吧，undefined[key] 会报错。
     return obj == null ? void 0 : obj[key]
   }
 }

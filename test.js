@@ -143,3 +143,71 @@ function partition(array, predicate) {
 function test() {
   console.log(Object.prototype.toString.call(arguments))
 }
+
+function has(obj, key) {
+  if (!Array.isArray(obj)) {
+    return obj != null && Object.prototype.hasOwnProperty.call(obj, key)    
+  }
+  return key.every(singleKey => {
+    return obj != null && Object.prototype.hasOwnProperty.call(obj, key)
+  })
+}
+
+arr1 = [{a:1}, {b:2}]
+arr2 = [{b:2}, {a:1}]
+function isEqual (arr1, arr2) {
+  const len1 = arr1.length, 
+        len2 = arr2.length
+  if (len1 !== len2) return false
+
+  return arr1.every(obj => {
+    let keys1 = Object.keys(obj)
+    for(let i = 0, j = arr2.length; i < j; i++) {
+      if() 
+    }
+    return arr2.every(obj2 => {
+      // let keys2 =  Object.keys(obj2)
+      // if (keys1.length !== keys2.length) return false
+      // return keys1.every(key => {
+      //   return obj[key] === obj2[key]
+      // }) 
+    })
+  })
+}
+
+
+maxSequence([-2, 1, -3, 4, -1, 2, 1, -5, 4])
+// should be 6: [4, -1, 2, 1]
+
+function maxSequence(arr) {
+  if(!arr.length) return 0
+  let max = -Infinity
+  for(let i = 0; i < arr.length; i++) {
+    // 第一次跑只有一个元素的
+    for( let j = 0; j < arr.length; j++) {
+      let tempSum = arr.slice(j, i + 1).length > 0 ? arr.slice(j, i + 1).reduce((cal, next) => cal + next) : 0
+      if (tempSum > max) {
+        max = tempSum
+      }
+    }
+  }
+  return max
+}
+
+validParentheses( "())" ), false
+
+function validParentheses(parens) {
+  const parensArr = parens.split('')
+  for(let i = parensArr.length - 1; i > 0; i--) {
+    let current = parensArr.pop()
+    let left = parensArr.pop()
+    if(!velidate(current, left)) return false
+  }
+  return true
+}
+function velidate(patten, flag) {
+  if (patten === ')' && flag === '(' || patten === '(' && flag === ')') {
+    return true
+  }
+  return false
+}
