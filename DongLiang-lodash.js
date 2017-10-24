@@ -35,21 +35,6 @@ var DongLiang = {
 		return result
 	},
 
-	isObject: function() {
-
-	}
-
-	keys: function(obj) {
-		if(!DongLiang.isObject(obj)) return []
-		const result = []
-		for (let key in obj) {
-			if (obj.hasOwnProperty(key)) {
-				result.push(key)
-			}
-		}
-		return result
-	}
-
 	/**
 	 * 创建一个新数组并包含原数组中所有的非假值元素。例如 false、null、 0、""、undefined 和 NaN 都是“假值”。
 	 * 参数
@@ -63,15 +48,46 @@ var DongLiang = {
 	compact: function(arr) {
 		//Falsey Values的布尔值类型都为false
 		//可以用!!来判断是什么类型的布尔值，也可放在循环中自动判断
-		var result = [];
-		for (var i = 0; i < arr.length; i++) {
+		const result = []
+		for (var i = 0, len = arr.length; i < len; i++) {
 			//如果输入的不是一个Falsey，放进空数组中
 			if (arr[i]) {
-				result.push(arr[i]);
+				result.push(arr[i])
 			}
 		}
-		return result;
+		return result
 	},
+
+	compact2: function(arr) {
+		return arr.filter(val => !!val)
+	}
+	/*
+	 *作用：创建一个新数组，把传入的数组/值连接起来
+	 *参数：
+	 * array (Array): 需要连接的数组,[values] (...Array): 需要连接的值
+	 * 返回值：(Array): 返回链接后的数组.
+	 * 例子:
+	 * var array = [1];
+	 * var other = concat(array, 2, [3], [[4]]);
+	 * console.log(other);
+	 * => [1, 2, 3, [4]]
+	 * console.log(array);
+	 * => [1]
+	 */
+	concat: function() {
+		return arguments[0].concat(...Array.prototype.slice.call(arguments).slice(1))
+	},
+
+	keys: function(obj) {
+		if(!DongLiang.isObject(obj)) return []
+		const result = []
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				result.push(key)
+			}
+		}
+		return result
+	}
 
 	/**
 	 * Creates an array of unique array values not included in the other provided arrays using SameValueZero for equality comparisons.
@@ -4146,21 +4162,6 @@ var DongLiang = {
 	// 	}
 	// },
 
-	concat: function() {
-		var result = [];
-		var length = arguments.length;
-		for (var i = 0; i < length; i++) {
-			if (typeof arguments[i] == typeof 1) {
-				result.push(arguments[i]);
-			} else {
-				for (var j = 0; j < arguments[i].length; j++) {
-					result.push(arguments[i][j]);
-				}
-			}
-		}
-		return result;
-	},
-
 	/**
 	 * 创建一个从 object 中选中的属性的对象。
 	 * 注意: 这个方法对于对于空集合返回 true，因为空集合的任何元素都是 true 。
@@ -4323,26 +4324,6 @@ compact函数已完成
 //但是呢，我们绞尽脑汁会想到，用布尔值来判断
 //undefined,NaN,null,'',0，这种不正常的东西的布尔值都是false
 //所以，一下问题就很简单了
-
-
-/*
-==================================================================
-concat函数完成
-==================================================================
-*/
-/*
- *作用：创建一个新歌数组，把你传入的两个数组/值连接起来
- *参数：array (Array): 需要连接的数组,[values] (...Array): 需要连接的值
- * 返回值：(Array): 返回过滤后的数组.
- *
- * 例子:
- *var array = [1];
- * var other = concat(array, 2, [3], [[4]]);
- * console.log(other);
- * => [1, 2, 3, [4]]
- * console.log(array);
- * => [1]
- */
 
 
 //用arrguments，因为参数不确定嘛
