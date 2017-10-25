@@ -78,17 +78,6 @@ var DongLiang = {
 		return arguments[0].concat(...Array.prototype.slice.call(arguments).slice(1))
 	},
 
-	keys: function(obj) {
-		if(!DongLiang.isObject(obj)) return []
-		const result = []
-		for (let key in obj) {
-			if (obj.hasOwnProperty(key)) {
-				result.push(key)
-			}
-		}
-		return result
-	}
-
 	/**
 	 * Creates an array of unique array values not included in the other provided arrays using SameValueZero for equality comparisons.
 	 * 参数
@@ -105,22 +94,39 @@ var DongLiang = {
 	//思路就是，把第一个数组中的第一个和第二个数组的全部进行比较，
 	//要是都不相等，就把第一个push进一个空数组
 	//然后是第一个数组的第二个。。。
-	difference: function(arr1, arr2) {
-		var result = [];
-		for (var i = 0; i < arr1.length; i++) {
-			var isSingle = true;
-			for (var j = 0; j < arr2.length; j++) {
-				if (arr1[i] == arr2[j]) {
-					isSingle = false;
-					break;
-				}
-			}
-			if (isSingle == true) {
-				result.push(arr1[i])
+	difference: function(arr, ...arg) {
+		const result = []
+		return arr.filter(val => [...arg].includes(val))
+		// var result = [];
+		// for (var i = 0; i < arr1.length; i++) {
+		// 	var isSingle = true;
+		// 	for (var j = 0; j < arr2.length; j++) {
+		// 		if (arr1[i] == arr2[j]) {
+		// 			isSingle = false;
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (isSingle == true) {
+		// 		result.push(arr1[i])
+		// 	}
+		// }
+		// return result;
+	},
+
+	concat2: function(arr, ...arg) {
+		return arr.concat(...arg)
+	},
+
+	keys: function(obj) {
+		if(!DongLiang.isObject(obj)) return []
+		const result = []
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				result.push(key)
 			}
 		}
-		return result;
-	},
+		return result
+	}
 
 	/**
 	 * 这个方法类似_.difference ，除了它接受一个 iteratee （愚人码头注：迭代器）， 调用array 和 values 中的每个元素以产生比较的标准。 结果值是从第一数组中选择。iteratee 会调用一个参数：(value)。（愚人码头注：首先使用迭代器分别迭代array 和 values中的每个元素，返回的值作为比较值）。
