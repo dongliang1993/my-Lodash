@@ -1,10 +1,11 @@
-/**
- * 这个是干嘛的
- * 参数是干嘛的
- * 返回什么
- * 例子
- * 尽量，或者说，如非刻意，不要更改函数的实际传入的参数值
- */
+const argumentsToArr = (arg) => {
+	return Array.prototype.slice.call(arg)
+}
+
+// JavaScript专题之数组扁平化
+const flatten = (arr) => {
+	return [].concat(...arr)
+}
 
 var DongLiang = {
 	/**
@@ -21,15 +22,15 @@ var DongLiang = {
 	 * => [['a', 'b', 'c'], ['d']]
 	 **/
 	chunk: function(arr, n) {
-		const len = arr.length,
-					num,
-					result
+		let len = arr.length,
+				num,
+				result
 		if (len < size || size <= 0) {
 			return [arr]
 		}
 		len % size === 0 ? num = len / size : num = Math.floor(len / size) + 1
 		result = new Array(num)
-		for(let i = 0; i < num; i++) {
+		for (let i = 0; i < num; i++) {
 			result[i] = arr.slice(size * i, size * (i + 1))
 		}
 		return result
@@ -60,7 +61,7 @@ var DongLiang = {
 
 	compact2: function(arr) {
 		return arr.filter(val => !!val)
-	}
+	},
 	/*
 	 *作用：创建一个新数组，把传入的数组/值连接起来
 	 *参数：
@@ -76,6 +77,9 @@ var DongLiang = {
 	 */
 	concat: function() {
 		return arguments[0].concat(...Array.prototype.slice.call(arguments).slice(1))
+	},
+	concat2: function(arr, ...arg) {
+		return arr.concat(...arg)
 	},
 
 	/**
@@ -95,42 +99,14 @@ var DongLiang = {
 	//要是都不相等，就把第一个push进一个空数组
 	//然后是第一个数组的第二个。。。
 	difference: function(arr, ...arg) {
-		const result = []
-		return arr.filter(val => [...arg].includes(val))
-		// var result = [];
-		// for (var i = 0; i < arr1.length; i++) {
-		// 	var isSingle = true;
-		// 	for (var j = 0; j < arr2.length; j++) {
-		// 		if (arr1[i] == arr2[j]) {
-		// 			isSingle = false;
-		// 			break;
-		// 		}
-		// 	}
-		// 	if (isSingle == true) {
-		// 		result.push(arr1[i])
-		// 	}
-		// }
-		// return result;
+		const flattenedArg = flatten(arg)
+		return arr.filter(val => {
+			return !flattenedArg.includes(val)
+		})
 	},
-
-	concat2: function(arr, ...arg) {
-		return arr.concat(...arg)
-	},
-
-	keys: function(obj) {
-		if(!DongLiang.isObject(obj)) return []
-		const result = []
-		for (let key in obj) {
-			if (obj.hasOwnProperty(key)) {
-				result.push(key)
-			}
-		}
-		return result
-	}
 
 	/**
 	 * 这个方法类似_.difference ，除了它接受一个 iteratee （愚人码头注：迭代器）， 调用array 和 values 中的每个元素以产生比较的标准。 结果值是从第一数组中选择。iteratee 会调用一个参数：(value)。（愚人码头注：首先使用迭代器分别迭代array 和 values中的每个元素，返回的值作为比较值）。
-
 	 * Note: 不像 _.pullAllBy，这个方法会返回一个新数组。
 	 * 参数
 	 * array (Array): 要检查的数组。
@@ -147,8 +123,10 @@ var DongLiang = {
 	 * // => [{ 'x': 2 }]
 	 *
 	 **/
-	differenceBy: function(array, values, iteratee) {
-		var fn, result = []
+	differenceBy: function(arr, ...arg) {
+		let fn
+		let iteratee = arg.pop()
+		let result = []
 		if (typeof iteratee === 'string') {
 			fn = function(obj) {
 				return obj[iteratee]
@@ -156,14 +134,22 @@ var DongLiang = {
 		} else if (iteratee instanceof Function) {
 			fn = iteratee
 		}
-		array.forEach(function(item) {
-			var state = values.every(it => fn(it) != fn(item))
-			if (state) {
-				result.push(item)
-			}
+		const flattenedArg = flatten(arg)
+		return arr.filter(val => {
+			return !flattenedArg.includes(iteratee(val))
 		})
-		return result
 	},
+
+	keys: function(obj) {
+		if(!DongLiang.isObject(obj)) return []
+		const result = []
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				result.push(key)
+			}
+		}
+		return result
+	}
 
 	/**
 	 * 这个方法类似_.difference ，除了它接受一个 comparator （愚人码头注：比较器），它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
@@ -5146,3 +5132,4 @@ capitalize('FRED');
  * => [1, 3]
  *
  */
+module.export = DongLiang
