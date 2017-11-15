@@ -89,9 +89,6 @@ var DongLiang = {
 	 * difference([1, '2', 3], [4, 2]);
 	 * // => [1, "2", 3]
 	 **/
-	//思路就是，把第一个数组中的第一个和第二个数组的全部进行比较，
-	//要是都不相等，就把第一个push进一个空数组
-	//然后是第一个数组的第二个。。。
 	difference: function(arr, ...arg) {
 		if (!Array.isArray(arr)) {
 			return []
@@ -103,7 +100,9 @@ var DongLiang = {
 	},
 
 	/**
-	 * 这个方法类似_.difference ，除了它接受一个 iteratee （愚人码头注：迭代器）， 调用array 和 values 中的每个元素以产生比较的标准。 结果值是从第一数组中选择。iteratee 会调用一个参数：(value)。（愚人码头注：首先使用迭代器分别迭代array 和 values中的每个元素，返回的值作为比较值）。
+	 * 这个方法类似_.difference ，除了它接受一个 iteratee （愚人码头注：迭代器），
+	 * 调用array 和 values 中的每个元素以产生比较的标准。 结果值是从第一数组中选择。
+	 * iteratee 会调用一个参数：(value)。（愚人码头注：首先使用迭代器分别迭代array 和 values中的每个元素，返回的值作为比较值）。
 	 * Note: 不像 _.pullAllBy，这个方法会返回一个新数组。
 	 * 参数
 	 * array (Array): 要检查的数组。
@@ -118,22 +117,23 @@ var DongLiang = {
 	 * // The `_.property` iteratee shorthand.
 	 * _.differenceBy([{ 'x': 2 }, { 'x': 1 }], [{ 'x': 1 }], 'x');
 	 * // => [{ 'x': 2 }]
-	 *
 	 **/
 	differenceBy: function(arr, ...arg) {
-		let fn
-		let iteratee = arg.pop()
-		let result = []
+		let fn,
+				iteratee = arg[arg.length - 1],
+				result = []
 		if (typeof iteratee === 'string') {
 			fn = function(obj) {
 				return obj[iteratee]
 			}
+			arg.pop()
 		} else if (iteratee instanceof Function) {
 			fn = iteratee
+			arg.pop()
 		}
-		const flattenedArg = flatten(arg)
+		const flattenedArg = flatten(arg).map(fn)
 		return arr.filter(val => {
-			return !flattenedArg.includes(iteratee(val))
+			return !flattenedArg.includes(fn(val))
 		})
 	},
 
