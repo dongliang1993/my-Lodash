@@ -38,10 +38,11 @@ var DongLiang = {
 			result[i] = array.slice(i * size, size * (i + 1) )
 		}
 		return result
-	}
+	},
 
 	/**
-	 * 创建一个新数组并包含原数组中所有的非假值元素。例如 false、null、 0、""、undefined 和 NaN 都是“假值”。
+	 * 创建一个不包含原数组中所有的假值元素的新数组
+	 * 例如 false、null、 0、""、undefined 和 NaN 都是“假值”。
 	 * 参数
 	 * array (Array): 数组参数。
 	 * 返回值
@@ -51,19 +52,6 @@ var DongLiang = {
 	 * // => [1, 2, 3]
 	 **/
 	compact: function(arr) {
-		//Falsey Values的布尔值类型都为false
-		//可以用!!来判断是什么类型的布尔值，也可放在循环中自动判断
-		const result = []
-		for (var i = 0, len = arr.length; i < len; i++) {
-			//如果输入的不是一个Falsey，放进空数组中
-			if (arr[i]) {
-				result.push(arr[i])
-			}
-		}
-		return result
-	},
-
-	compact2: function(arr) {
 		return arr.filter(val => !!val)
 	},
 	/*
