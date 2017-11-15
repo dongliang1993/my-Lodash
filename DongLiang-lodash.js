@@ -74,7 +74,7 @@ var DongLiang = {
 		return arg.reduce((a, b) => {
 			return a.concat(b)
 		}, [])
-	}
+	},
 
 	/**
 	 * Creates an array of unique array values not included in the other provided arrays using SameValueZero for equality comparisons.
@@ -93,6 +93,9 @@ var DongLiang = {
 	//要是都不相等，就把第一个push进一个空数组
 	//然后是第一个数组的第二个。。。
 	difference: function(arr, ...arg) {
+		if (!Array.isArray(arr)) {
+			return []
+		}
 		const flattenedArg = flatten(arg)
 		return arr.filter(val => {
 			return !flattenedArg.includes(val)
@@ -143,7 +146,7 @@ var DongLiang = {
 			}
 		}
 		return result
-	}
+	},
 
 	/**
 	 * 这个方法类似_.difference ，除了它接受一个 comparator （愚人码头注：比较器），它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
