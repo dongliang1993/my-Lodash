@@ -9,7 +9,8 @@ const flatten = (arr) => {
 
 var DongLiang = {
 	/**
-	 * 将 array 拆分成多个 size 长度的块把这些块组成一个新数组。如果 array 无法被分割成全部等长的块，那么最后剩余的元素将组成一个块。
+	 * 将 array 拆分成多个 size 长度的块,把这些块组成一个新数组。
+	 * 如果 array 无法被分割成全部等长的块，那么最后剩余的元素将组成一个块。
 	 * 参数
 	 * array (Array): 需要被处理的数组。
 	 * [size=1] (number): 每个块的长度。
@@ -21,20 +22,23 @@ var DongLiang = {
 	 * chunk(['a', 'b', 'c', 'd'], 3);
 	 * => [['a', 'b', 'c'], ['d']]
 	 **/
-	chunk: function(arr, n) {
-		let len = arr.length,
-				num,
-				result
-		if (len < size || size <= 0) {
-			return [arr]
+	chunk: function(array, size = 1) {
+		if (size <= 0) {
+			return []
 		}
-		len % size === 0 ? num = len / size : num = Math.floor(len / size) + 1
-		result = new Array(num)
-		for (let i = 0; i < num; i++) {
-			result[i] = arr.slice(size * i, size * (i + 1))
+		const length = array.length
+		const subChunkLength = Math.ceil(length / size)
+		const result = new Array(subChunkLength)
+		// 可以写成
+		// let length = array.length
+		//     subChunkLength = Math.ceil(length / size)
+		//     result = new Array(subChunkLength)
+		// 但是个人认为，还是要合理的使用 const 和 let
+		for (let i = 0; i < subChunkLength; i++) {
+			result[i] = array.slice(i * size, size * (i + 1) )
 		}
 		return result
-	},
+	}
 
 	/**
 	 * 创建一个新数组并包含原数组中所有的非假值元素。例如 false、null、 0、""、undefined 和 NaN 都是“假值”。
