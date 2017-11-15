@@ -65,3 +65,19 @@ function concat() {
   }
   return result
 }
+
+// final
+function concat(...arg) {
+  let result = []
+  for (let i = 0, length = arg.length; i < length; i++) {
+    result = result.concat(arg[i])
+  }
+  return result
+}
+
+// real final
+function concat(...arg) {
+  return arg.reduce((a, b) => {
+    return a.concat(b)
+  }, [])
+}

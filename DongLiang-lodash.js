@@ -54,11 +54,14 @@ var DongLiang = {
 	compact: function(arr) {
 		return arr.filter(val => !!val)
 	},
+
 	/*
-	 *作用：创建一个新数组，把传入的数组/值连接起来
-	 *参数：
-	 * array (Array): 需要连接的数组,[values] (...Array): 需要连接的值
-	 * 返回值：(Array): 返回链接后的数组.
+	 * 创建一个新数组，把额外传入的数组/值连接起来
+	 * 参数：
+	 * array (Array): 需要连接的数组,[values]
+	 * (...Array): 需要连接的值
+	 * 返回值：
+	 * (Array): 返回连接后的数组.
 	 * 例子:
 	 * var array = [1];
 	 * var other = concat(array, 2, [3], [[4]]);
@@ -67,12 +70,11 @@ var DongLiang = {
 	 * console.log(array);
 	 * => [1]
 	 */
-	concat: function() {
-		return arguments[0].concat(...Array.prototype.slice.call(arguments).slice(1))
-	},
-	concat2: function(arr, ...arg) {
-		return arr.concat(...arg)
-	},
+	concat: function(...arg) {
+		return arg.reduce((a, b) => {
+			return a.concat(b)
+		}, [])
+	}
 
 	/**
 	 * Creates an array of unique array values not included in the other provided arrays using SameValueZero for equality comparisons.
