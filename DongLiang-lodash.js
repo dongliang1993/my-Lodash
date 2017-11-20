@@ -194,12 +194,18 @@ var DongLiang = {
 	 * drop([1, 2, 3], 0);
 	 * // => [1, 2, 3]
 	 **/
-	drop: function(arr, number) {
-		if (number == undefined) {
-			number = 1;
+	drop: function(arr, number = 1) {
+		if (number <= 0) {
+			// 如果传入的个数 <= ，直接返回原数组
+			return arr
 		}
-		arr.splice(0, number);
-		return arr;
+		const arrLength = arr.length
+		// 如果 number - arrLength >=0 
+		// 比如 number = 10 ，length = 3
+		// 这个时候应该返回一个空数组
+		// 我们是倒着切的
+		// 所以直接slice（arr.length）就可以了
+		return arr.slice(number - arrLength >= 0 ? arrLength : number - arrLength)
 	},
 
 	/**

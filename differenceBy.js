@@ -2,7 +2,6 @@ const flatten = (arr) => {
 	return [].concat(...arr)
 }
 function differenceBy(arr, ...arg) {
-  debugger
   let fn,
       iteratee = arg[arg.length - 1],
       result = []
@@ -20,3 +19,4 @@ function differenceBy(arr, ...arg) {
     return !flattenedArg.includes(fn(val))
   })
 }
+
