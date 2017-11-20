@@ -7,6 +7,50 @@ const flatten = (arr) => {
 	return [].concat(...arr)
 }
 
+/**
+ * 高阶函数
+ * 根据 flag 决定return 什么类型的 drop 函数
+ * 参数
+ * array (Array): 需要被处理的数组。
+ * [size=1] (number): 每个块的长度。
+ * flag (Number): 从左开始还是从右开始
+ * 返回值
+ * (Funtion): 返回一个函数
+ **/
+const baseDrop = (arr, number = 1, flag) => {
+	if (flag) { // 如果 flag = 1，从左到右切
+		if (number <= 0) {
+			// 如果传入的个数 <= 0
+			// 直接返回原数组
+			return arr
+		}
+		return function(arr, number = 1, flag) {
+			const arrLength = arr.length
+			// 如果 number - arrLength >=0 
+			// 比如 number = 10 ，length = 3
+			// 这个时候应该返回一个空数组
+			// 我们是倒着切的
+			// 所以直接slice（arr.length）就可以了
+			return arr.slice(number - arrLength >= 0 ? arrLength : number - arrLength)			
+		}
+	} else {
+		return function(arr, number = 1, flag) {
+			if (number <= 0) {
+				// 如果传入的个数 <= 0
+				// 直接返回原数组
+				return arr
+			}
+			const arrLength = arr.length
+			// 如果 number - arrLength >=0 
+			// 比如 number = 10 ，length = 3
+			// 这个时候应该返回一个空数组
+			// 我们是倒着切的
+			// 所以直接slice（arr.length）就可以了
+			return arr.slice(0, arrLength - number >= 0 ? arrLength - number : 0)
+		}
+	}
+},
+
 var DongLiang = {
 	/**
 	 * 将 array 拆分成多个 size 长度的块,把这些块组成一个新数组。
@@ -194,19 +238,7 @@ var DongLiang = {
 	 * drop([1, 2, 3], 0);
 	 * // => [1, 2, 3]
 	 **/
-	drop: function(arr, number = 1) {
-		if (number <= 0) {
-			// 如果传入的个数 <= ，直接返回原数组
-			return arr
-		}
-		const arrLength = arr.length
-		// 如果 number - arrLength >=0 
-		// 比如 number = 10 ，length = 3
-		// 这个时候应该返回一个空数组
-		// 我们是倒着切的
-		// 所以直接slice（arr.length）就可以了
-		return arr.slice(number - arrLength >= 0 ? arrLength : number - arrLength)
-	},
+	drop: baseDrop(arr, 1, 1),
 
 	/**
 	 * 将 array 尾部的 n 个元素去除，并返回剩余的部分。
