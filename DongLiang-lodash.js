@@ -8,6 +8,25 @@ const flatten = (arr) => {
 }
 
 /**
+ * 二分查找，递归实现。
+ * @param target
+ * @param arr
+ * @param start
+ * @param end
+ * @returns {*}
+ */
+const binarySearch = (arr, target, start = 0, end = arr.length - 1) => {
+  let mid = parseInt(start + (end - start) / 2)
+  if (target === arr[mid]) {
+    return mid
+  } else if (target > arr[mid]) {
+    return binarySearch(arr, target, mid + 1, end)
+  } else {
+    return binarySearch(arr, target, start, mid - 1)
+  }
+  return -1
+}
+/**
  * 高阶函数
  * 根据 flag 决定return 什么类型的 drop 函数
  * 参数
@@ -504,7 +523,13 @@ var DongLiang = {
 		baseFlatten(array, isDeep)
 		return result
 	},
-
+	/**
+	 * 递归地平坦一个嵌套的数组.相当于_.flatten(array, true)
+	 * 参数
+	 * array (Array): 需要
+	 * 返回值
+	 * (Array): 返回处理后的数组.
+	 **/
 	flattenDeep: function(arr) {
 		flatten(arr, true)
 	},
@@ -545,22 +570,36 @@ var DongLiang = {
 	head: function(arr) {
 		return arr[0];
 	},
+	/**
+	 * 获取value在数组 array所在的索引值 
+	 * 使用 SameValueZero 来保证比较的质量（第一个全等===的元素）
+	 * 如果 fromIndex 值是负数, 则从array末尾起算. 
+	 * 如果 fromIndex为true时，对已排序的数组array执行二分（二进制）查找
+	 * 参数
+	 * array (Array): 需要查找的数组
+	 * value (*): 需要查找的元素
+	 * [fromIndex=0] (boolean|number): 查询的位置或者true值时对一个已排序的数组进行二分查找.
+	 * 返回值
+	 * (number): 返回元素在数组中的索引位置, else -1.
+	 * 例子
+	 * _.indexOf([1, 2, 1, 2], 2);
+			// => 1
 
-	indexOf: function(array, vallue, fromIndex) {
-		//第三个参数是可选的，如果没有，那么就默认为1
-		if (fromIndex == undefined) {
-			fromIndex = 1;
-		}
-		//因为我要判断想要检测的东西是第几次出现的，所以需要一个
-		//计数器
-		var counter = 0;
-		for (var i = 0; i < array.length; i++) {
-			if (array[i] == vallue) {
-				//一旦找到了和输入的value相等的array[i]，计数器+1
-				counter++;
-				//只有和第三个参数相同，位数才能输出
-				if (counter == fromIndex) {
-					return i;
+			// using `fromIndex`
+			_.indexOf([1, 2, 1, 2], 2, 2);
+			// => 3
+
+			// performing a binary search
+			_.indexOf([1, 1, 2, 2], 2, true);
+			// => 2
+	**/
+	indexOf: function (array, value, fromIndex = 0) {
+		if (typeof fromIndex === 'boolean') {
+			binarySearch(array, value)
+		} else {
+			for (let i = fromIndex, arrLength = array.length; i < arrLength; i++) {
+				if (array[i] === value) {
+					return i
 				}
 			}
 		}
