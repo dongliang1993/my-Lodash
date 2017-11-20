@@ -257,19 +257,11 @@ var DongLiang = {
 	 * dropRight([1, 2, 3], 0);
 	 * // => [1, 2, 3]
 	 **/
-	dropRight: function(arr, number) {
-		var result = arr.reverse();
-
-		if (number == undefined) {
-			number = 1;
-		}
-
-		result.splice(0, number);
-		return result.reverse();
-	},
+	dropRight: baseDrop(arr, 1, -1),
 
 	/**
-	 * 创建一个切片数组，去除array中从 predicate 返回假值开始到尾部的部分。predicate 会传入3个参数： (value, index, array)。
+	 * 创建一个切片数组，去除array中从 predicate 返回假值开始到尾部的部分。
+	 * predicate 会传入3个参数： (value, index, array)。
 	 * 参数
 	 * array (Array): 要查询的数组。
 	 * [predicate=_.identity] (Function): 这个函数会在每一次迭代调用
@@ -359,25 +351,12 @@ var DongLiang = {
 	 * fill([4, 6, 8, 10], '*', 1, 3);
 	 * // => [4, '*', '*', 10]
 	 **/
-	fill: function() {
-		var length = arguments[0].length;
-		if (arguments.length == 2) {
-			for (var j = 0; j < length; j++) {
-				arguments[0][j] = arguments[1];
-			}
+	fill: function (array, value = '', start = 0, end = array.length) {
+		// 为了防止稀疏数组，要用 for 循环
+		for (let i = start; i < end; i++) {
+			array[i] = value
 		}
-
-		if (arguments.length == 3) {
-			for (var i = arguments[2]; i < length; i++) {
-				arguments[0][i] = arguments[2];
-			}
-		}
-		if (arguments.length == 4) {
-			for (var i = arguments[2]; i < arguments[3]; i++) {
-				arguments[0][i] = arguments[1];
-			}
-		}
-		return arguments[0];
+		return array
 	},
 
 	/**
