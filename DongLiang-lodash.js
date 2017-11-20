@@ -480,25 +480,33 @@ var DongLiang = {
 			}
 		}
 	},
-
-	flatten: function(arr) {
-		var result = [];
-		for (var i = 0; i < arr.length; i++) {
-			result = result.concat(arr[i])
+	/**
+	 * 可以理解为将嵌套数组的维数减少，
+	 * flattened（平坦）. 如果 isDeep 值为 true 时，
+	 * 嵌套数组将递归为一维数组, 否则只减少嵌套数组一个级别的维数.
+	 * 参数
+	 * array (Array): 需要flattened（减少维数）的嵌套数组
+	 * [isDeep] (boolean): 是否深递归
+	 * 返回值
+	 * (Array): 返回处理后的数组
+	 **/
+	flatten: function (array, isDeep = false) {
+		let result = []
+		const baseFlatten = (array, isDeep) => {
+			array.forEach(item => {
+				if (Array.isArray(item) && isDeep) {
+					baseFlatten(item, true)
+				} else {
+					result = result.concat(item)
+				}
+			})
 		}
-		return result;
+		baseFlatten(array, isDeep)
+		return result
 	},
 
 	flattenDeep: function(arr) {
-		var result = DongLiang.flatten(arr);
-
-		for (var i = 0; i < result.length; i++) {
-			if (Array.isArray(result[i])) {
-				result = DongLiang.flatten(result);
-				i = -1;
-			}
-		}
-		return result;
+		flatten(arr, true)
 	},
 
 	/**
