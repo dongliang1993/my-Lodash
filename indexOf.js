@@ -33,7 +33,6 @@ function indexOf (array, value, fromIndex = 0) {
     }
   }
 }
-// 现在只是实现一个和原生一样的 indexOf
 // 还需要当 fromIndex = true 的时候，进行二分查找
 // 先实现一个 二分查找
 /**
